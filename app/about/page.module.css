@@ -1,0 +1,76 @@
+.hero {
+  padding: 140px 0 70px;
+}
+
+.headline {
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-md);
+  line-height: 1.1;
+}
+
+.sub {
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+  max-width: 620px;
+  line-height: 1.7;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+}
+
+.block {}
+
+.blockTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  letter-spacing: -0.02em;
+}
+
+.blockText {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  margin-bottom: var(--space-sm);
+}
+
+.founderCard {
+  padding: var(--space-xl);
+  background: var(--color-card);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-md);
+}
+
+.founderText {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.ctaSection {
+  background: var(--color-card);
+}
+
+.ctaInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+}
+
+.ctaH2 {
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+}
+
+.ctaBtns {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}

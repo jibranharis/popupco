@@ -1,0 +1,145 @@
+.hero {
+  padding: 140px 0 70px;
+}
+
+.badge { margin-bottom: var(--space-md); }
+
+.headline {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-md);
+  line-height: 1.08;
+}
+
+.sub {
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+  max-width: 560px;
+  line-height: 1.65;
+  margin-bottom: var(--space-xl);
+}
+
+.sectionH2 {
+  font-size: clamp(1.75rem, 3vw, 2.375rem);
+  margin-bottom: var(--space-2xl);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Types */
+.typesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+
+.typeCard {
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.typeIcon { font-size: 1.375rem; flex-shrink: 0; }
+.typeLabel { font-size: 0.9rem; font-weight: 600; }
+
+/* Benefits */
+.benefitsSection { background: var(--color-card); }
+
+.benefitsInner {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+.benefitsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: var(--space-xl);
+}
+
+.benefitItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.checkIcon { color: var(--color-sage); flex-shrink: 0; margin-top: 2px; }
+
+.trustCard {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.trustTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.trustText {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.trustDivider {
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* Steps */
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+.stepCard {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.stepNum { font-size: 2rem; font-weight: 800; color: var(--color-accent); opacity: 0.35; letter-spacing: -0.03em; line-height: 1; }
+.stepTitle { font-size: 1.0625rem; font-weight: 700; }
+.stepDesc { font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.65; }
+
+/* CTA */
+.ctaSection { padding: var(--space-5xl) 0; }
+
+.ctaInner {
+  max-width: 580px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.ctaH2 { color: #fff; font-size: clamp(2rem, 3.5vw, 2.75rem); }
+.ctaSub { color: #9ca3af; font-size: 1rem; line-height: 1.7; }
+.ctaDisclaimer { font-size: 0.8125rem; color: #4b5563; }
+
+@media (max-width: 1024px) {
+  .typesGrid { grid-template-columns: repeat(3, 1fr); }
+  .stepsGrid { grid-template-columns: repeat(2, 1fr); }
+  .benefitsInner { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .typesGrid { grid-template-columns: repeat(2, 1fr); }
+  .stepsGrid { grid-template-columns: 1fr; }
+}

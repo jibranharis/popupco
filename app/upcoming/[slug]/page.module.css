@@ -1,0 +1,264 @@
+.main {
+  padding-top: 68px;
+}
+
+.heroWrap {
+  position: relative;
+  height: 420px;
+  overflow: hidden;
+}
+
+.heroImage {
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(23,23,23,0.7) 0%, rgba(23,23,23,0.2) 60%, transparent 100%);
+}
+
+.heroContent {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: color 200ms ease;
+  margin-bottom: 4px;
+}
+
+.backLink:hover {
+  color: #fff;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.statusGreen { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+.statusOrange { background: rgba(251,146,60,0.15); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+.statusSage { background: rgba(143,165,142,0.15); color: #86efac; border: 1px solid rgba(143,165,142,0.3); }
+
+.heroTitle {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.heroMeta {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.heroMeta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 48px;
+  padding-top: 48px;
+  padding-bottom: 80px;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.section {}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.sectionText {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.checkList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.checkIcon {
+  color: var(--color-sage);
+  flex-shrink: 0;
+}
+
+.foodNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.faqs {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.faq {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq:last-child {
+  border-bottom: none;
+}
+
+.faqQ {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  margin-bottom: 6px;
+}
+
+.faqA {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 88px;
+  align-self: start;
+}
+
+.sideCard {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sideDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sideDetail:last-of-type {
+  border-bottom: none;
+}
+
+.sideLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-light);
+}
+
+.sideVal {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.nonprofitNote {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.applyBtn {
+  width: 100%;
+}
+
+.comingSoonNote {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 12px;
+  background: rgba(23,23,23,0.04);
+  border-radius: var(--radius-md);
+}
+
+.notifyLink {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.disclaimer {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+  text-align: center;
+}
+
+.feeCard {
+  padding: 20px;
+}
+
+.feeTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.feeText {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+}
+
+@media (max-width: 900px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+  }
+  .heroWrap {
+    height: 320px;
+  }
+}

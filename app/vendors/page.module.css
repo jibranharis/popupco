@@ -1,0 +1,229 @@
+.hero {
+  padding: 140px 0 70px;
+}
+
+.badge {
+  margin-bottom: var(--space-md);
+}
+
+.headline {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-md);
+  line-height: 1.08;
+}
+
+.sub {
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+  max-width: 560px;
+  line-height: 1.65;
+  margin-bottom: var(--space-xl);
+}
+
+.heroCtas {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.sectionH2 {
+  font-size: clamp(1.75rem, 3vw, 2.375rem);
+  margin-bottom: var(--space-2xl);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Who */
+.whoGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+
+.whoCard {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.whoIcon { font-size: 1.75rem; line-height: 1; }
+.whoLabel { font-size: 1rem; font-weight: 700; }
+.whoDesc { font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.55; }
+
+/* What you get */
+.getSection {
+  background: var(--color-card);
+}
+
+.getInner {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+.getList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.getItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.checkIcon { color: var(--color-sage); flex-shrink: 0; margin-top: 2px; }
+
+.getVisual {}
+
+.pricingPreview {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.pricingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.pricingLabel {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.pricingVal {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: right;
+}
+
+.pricingDivider {
+  height: 1px;
+  background: var(--color-border);
+}
+
+.pricingLink {
+  margin-top: var(--space-sm);
+  align-self: flex-start;
+}
+
+/* Checklist */
+.checklistInner {
+  max-width: 800px;
+}
+
+.checklistGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.checkItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.requiredDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.optionalDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-sage);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.notice {}
+
+/* Process */
+.processSection {
+  background: var(--color-card);
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.stepCard {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.stepNum {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  opacity: 0.35;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.stepTitle { font-size: 1.125rem; font-weight: 700; }
+.stepDesc { font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.65; }
+
+/* CTA */
+.ctaSection {
+  padding: var(--space-5xl) 0;
+}
+
+.ctaInner {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.ctaH2 { color: #fff; font-size: clamp(2rem, 3.5vw, 2.75rem); }
+.ctaSub { color: #9ca3af; font-size: 1rem; line-height: 1.7; }
+
+@media (max-width: 1024px) {
+  .whoGrid { grid-template-columns: repeat(2, 1fr); }
+  .getInner { grid-template-columns: 1fr; }
+  .stepsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .checklistGrid { grid-template-columns: 1fr; }
+  .heroCtas { flex-direction: column; }
+  .stepsGrid { grid-template-columns: 1fr; }
+}
