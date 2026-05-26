@@ -646,7 +646,7 @@ function VendorApplicationForm() {
                 </div>
 
                 <div className={`notice notice--info`}>
-                  A $25 application fee is collected before review. If accepted, it is credited toward your booth fee. Application fee policy may vary by event.
+                  Apply free. If accepted, a $25 deposit is credited toward your booth fee. Application policies may vary by event.
                 </div>
 
                 {error && <p className="form-error">{error}</p>}

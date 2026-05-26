@@ -446,7 +446,7 @@ export default function VenueApplicationPage() {
                       checked={form.consent}
                       onChange={(e) => setField('consent', e.target.checked)}
                     />
-                    <span>I understand that submitting a space does not guarantee Pop Up Co. will host an event there.</span>
+                    <span>Submitting your space does not commit you to hosting, and does not guarantee Pop Up Co. will host an event there.</span>
                   </label>
                 </div>
                 {error && <p className="form-error">{error}</p>}

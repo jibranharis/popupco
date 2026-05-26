@@ -3,22 +3,28 @@ import './globals.css';
 export const metadata = {
   metadataBase: new URL('https://popupco.com'),
   title: {
-    default: 'Pop Up Co. | Bay Area Pop-Up Markets & Retail Spaces',
+    default: 'Pop Up Co. | Find space for your next pop-up',
     template: '%s | Pop Up Co.',
   },
-  description: 'Pop Up Co. helps small brands, vendors, creators, nonprofits, and local businesses apply for curated pop-up events and short-term retail opportunities in the Bay Area.',
-  keywords: ['pop up market', 'bay area vendors', 'pop up events', 'local brands', 'vendor application', 'retail pop up'],
+  description: 'Launch your brand in person. Pop Up Co. helps vendors access curated pop-up events and short-term retail spaces across the Bay Area.',
+  keywords: ['pop up market', 'retail space', 'short term rental', 'bay area vendors', 'pop up events', 'local brands'],
   openGraph: {
-    title: 'Pop Up Co. | Bay Area Pop-Up Markets & Retail Spaces',
-    description: 'Launch your brand in person. Pop Up Co. helps vendors access curated pop-up events across the Bay Area.',
+    title: 'Pop Up Co. | Find space for your next pop-up',
+    description: 'Launch your brand in person. Browse curated retail spaces and markets.',
     type: 'website',
   },
 };
 
+import { AuthProvider } from '@/components/AuthContext';
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }
