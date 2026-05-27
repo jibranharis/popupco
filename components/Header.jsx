@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Store, User, X } from 'lucide-react';
+import { Menu, User, X } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import styles from './Header.module.css';
 
@@ -72,7 +72,7 @@ export default function Header() {
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
         <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
-          <span className={styles.logoMark}><Store size={17} /></span>
+          <img className={styles.logoImage} src="/images/popupco-logo.png" alt="PopUpCo" />
           <span className={styles.logoText}>PopUpCo</span>
         </Link>
 

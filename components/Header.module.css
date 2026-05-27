@@ -44,6 +44,15 @@
   box-shadow: var(--shadow-sm);
 }
 
+.logoImage {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  object-fit: contain;
+  background: #fff7ee;
+  box-shadow: var(--shadow-xs);
+}
+
 .logoText {
   font-family: var(--font-display);
   font-weight: 700; /* Bold typography wordmark */
