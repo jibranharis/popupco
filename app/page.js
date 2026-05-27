@@ -192,14 +192,24 @@ export default function HomePage() {
               <div className={styles.rolePills}>
                 {['Vendors', 'Venues', 'Hosts', 'Bay Area first'].map((item) => <span key={item}>{item}</span>)}
               </div>
-              <h1>Find your next pop-up opportunity.</h1>
-              <p>
-                PopUpCo connects vendors, hosts, and venues so local markets, pop-ups, and community events can come to life.
-              </p>
+              <h1>
+                <span>Find your next</span>
+                <span>Pop-Up</span>
+                <span>Opportunity.</span>
+              </h1>
             </div>
 
             <div className={`fade-in fade-in--d2 ${styles.heroMedia}`}>
               <Image src="/hero-market.png" alt="Local vendors selling at a warm market" fill priority className={styles.heroImage} />
+              <div className={`${styles.heroTag} ${styles.heroTagPrimary}`}>
+                <span>Vendor Market</span>
+                <strong>Booth from $50+</strong>
+              </div>
+              <div className={`${styles.heroTag} ${styles.heroTagSecondary}`}>
+                <span>Applications open</span>
+                <strong>Expected attendance: 400+</strong>
+              </div>
+              <div className={`${styles.heroTag} ${styles.heroTagSmall}`}>Bay Area</div>
             </div>
 
             <div className={`fade-in fade-in--d3 ${styles.searchPanel}`} aria-label="PopUpCo search">
