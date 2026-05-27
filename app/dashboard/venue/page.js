@@ -43,7 +43,7 @@ export default function VenueDashboard() {
                   </div>
                   <h3>{user.name}</h3>
                   <p className="text-muted text-sm">{user.email}</p>
-                  <p className="text-sm font-medium mt-2">⭐ 4.9 (12 reviews)</p>
+                  <p className="text-sm font-medium mt-2">4.9 rating from 12 reviews</p>
                 </div>
               </div>
 
@@ -96,7 +96,7 @@ export default function VenueDashboard() {
                     <div>
                       <div className="badge badge--orange mb-2">New Request</div>
                       <h4>Weekend Pop-Up: Vintage & Vinyl</h4>
-                      <p className="text-sm text-muted mt-1">Requested by Retro Finds • Dates: Jun 12 - Jun 14</p>
+                      <p className="text-sm text-muted mt-1">Requested by Retro Finds · Dates: Jun 12 - Jun 14</p>
                     </div>
                     <div className="flex gap-2">
                       <button className="btn btn--secondary btn--sm">Decline</button>
@@ -108,7 +108,7 @@ export default function VenueDashboard() {
                     <div>
                       <div className="badge badge--neutral mb-2">Message Received</div>
                       <h4>Inquiry about space layout</h4>
-                      <p className="text-sm text-muted mt-1">From: Bloom Skincare • Regarding: San Jose Community Market</p>
+                      <p className="text-sm text-muted mt-1">From: Bloom Skincare · Regarding: San Jose Community Market</p>
                     </div>
                     <button className="btn btn--secondary btn--sm">Reply</button>
                   </div>
@@ -128,10 +128,24 @@ export default function VenueDashboard() {
                     </div>
                     <div>
                       <h4 style={{marginBottom: '4px'}}>San Jose Community Market</h4>
-                      <p className="text-sm text-muted">Active • $150/day</p>
+                      <p className="text-sm text-muted">Active · $150/day</p>
                     </div>
                   </div>
                   <button className="btn btn--secondary btn--sm">Edit Listing</button>
+                </div>
+              </section>
+
+              <section id="messages" className={styles.section}>
+                <h2 className={styles.sectionTitle}>Messages</h2>
+                <div className={styles.welcomeMessage}>
+                  <div className={styles.messageAvatar}>P</div>
+                  <div>
+                    <div className={styles.messageTop}>
+                      <strong>PopUpCo</strong>
+                      <span className={styles.unreadPill}>New</span>
+                    </div>
+                    <p>Welcome to PopUpCo. Venue messages will show host inquiries, vendor questions, booking requests, and setup coordination here.</p>
+                  </div>
                 </div>
               </section>
 

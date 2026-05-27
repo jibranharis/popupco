@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, User, X } from 'lucide-react';
+import { Mail, Menu, User, X } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import styles from './Header.module.css';
 
@@ -16,34 +16,24 @@ const publicNav = [
 
 const roleNav = {
   vendor: [
-    { label: 'Opportunities', href: '/browse' },
-    { label: 'Applications', href: '/dashboard/vendor#applications' },
-    { label: 'Saved', href: '/dashboard/vendor#saved' },
-    { label: 'Messages', href: '/dashboard/vendor#messages' },
-    { label: 'Dashboard', href: '/dashboard/vendor' },
-    { label: 'Profile', href: '/dashboard/vendor#profile' },
+    { label: 'Discover', href: '/browse' },
+    { label: 'How It Works', href: '/#how-it-works' },
+    { label: 'For Vendors', href: '/vendors' },
   ],
   venue: [
-    { label: 'Listings', href: '/dashboard/venue#listings' },
-    { label: 'Requests', href: '/dashboard/venue#requests' },
-    { label: 'Calendar', href: '/dashboard/venue#calendar' },
-    { label: 'Messages', href: '/dashboard/venue#messages' },
-    { label: 'Dashboard', href: '/dashboard/venue' },
-    { label: 'Profile', href: '/dashboard/venue#profile' },
+    { label: 'Discover', href: '/browse' },
+    { label: 'How It Works', href: '/#how-it-works' },
+    { label: 'For Venues', href: '/venues' },
   ],
   host: [
-    { label: 'My Events', href: '/dashboard/host#events' },
-    { label: 'Vendor Applications', href: '/dashboard/host#applications' },
-    { label: 'Spaces', href: '/browse' },
-    { label: 'Messages', href: '/dashboard/host#messages' },
-    { label: 'Dashboard', href: '/dashboard/host' },
-    { label: 'Profile', href: '/dashboard/host#profile' },
+    { label: 'Discover', href: '/browse' },
+    { label: 'How It Works', href: '/#how-it-works' },
+    { label: 'For Hosts', href: '/hosts' },
   ],
   attendee: [
     { label: 'Discover', href: '/browse' },
-    { label: 'Saved Events', href: '/dashboard/attendee#saved' },
-    { label: 'Messages', href: '/dashboard/attendee#messages' },
-    { label: 'Profile', href: '/dashboard/attendee#profile' },
+    { label: 'How It Works', href: '/#how-it-works' },
+    { label: 'For Events', href: '/browse' },
   ],
 };
 
@@ -72,7 +62,7 @@ export default function Header() {
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
         <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
-          <img className={styles.logoImage} src="/images/popupco-logo.png" alt="PopUpCo" />
+          <img className={styles.logoImage} src="/images/popupco-logo-mark.png" alt="PopUpCo" />
           <span className={styles.logoText}>PopUpCo</span>
         </Link>
 
@@ -96,24 +86,30 @@ export default function Header() {
               <Link href="/browse" className="btn btn--primary btn--sm">Get Started</Link>
             </>
           ) : (
-            <div className={styles.profileMenuContainer}>
-              <button className={styles.profileBtn} onClick={() => setProfileOpen(!profileOpen)} aria-label="Open profile menu">
-                <div className={styles.avatar}>{user.name ? user.name.charAt(0).toUpperCase() : <User size={16} />}</div>
-              </button>
-              {profileOpen && (
-                <div className={styles.profileDropdown}>
-                  <div className={styles.profileHeader}>
-                    <p className={styles.profileName}>{user.name}</p>
-                    <p className={styles.profileEmail}>{user.email}</p>
+            <>
+              <Link href={`${dashboardHref}#messages`} className={styles.messageBtn} aria-label="Messages">
+                <Mail size={18} />
+                <span>1</span>
+              </Link>
+              <div className={styles.profileMenuContainer}>
+                <button className={styles.profileBtn} onClick={() => setProfileOpen(!profileOpen)} aria-label="Open profile menu">
+                  <div className={styles.avatar}>{user.name ? user.name.charAt(0).toUpperCase() : <User size={16} />}</div>
+                </button>
+                {profileOpen && (
+                  <div className={styles.profileDropdown}>
+                    <div className={styles.profileHeader}>
+                      <p className={styles.profileName}>{user.name}</p>
+                      <p className={styles.profileEmail}>{user.email}</p>
+                    </div>
+                    <div className={styles.dropdownLinks}>
+                      <Link href={dashboardHref} onClick={() => setProfileOpen(false)}>Dashboard</Link>
+                      <Link href={`${dashboardHref}#profile`} onClick={() => setProfileOpen(false)}>Profile</Link>
+                      <button onClick={() => { logout(); setProfileOpen(false); }}>Log out</button>
+                    </div>
                   </div>
-                  <div className={styles.dropdownLinks}>
-                    <Link href={dashboardHref} onClick={() => setProfileOpen(false)}>Dashboard</Link>
-                    <Link href={`${dashboardHref}#profile`} onClick={() => setProfileOpen(false)}>Profile</Link>
-                    <button onClick={() => { logout(); setProfileOpen(false); }}>Log out</button>
-                  </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            </>
           )}
         </div>
 
@@ -140,7 +136,11 @@ export default function Header() {
               <Link href="/signup" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Sign up</Link>
             </>
           ) : (
-            <button className={styles.mobileNavLink} onClick={() => { logout(); setMenuOpen(false); }}>Log out</button>
+            <>
+              <Link href={`${dashboardHref}#messages`} className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Messages (1)</Link>
+              <Link href={dashboardHref} className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Dashboard</Link>
+              <button className={styles.mobileNavLink} onClick={() => { logout(); setMenuOpen(false); }}>Log out</button>
+            </>
           )}
         </nav>
         {!user && (

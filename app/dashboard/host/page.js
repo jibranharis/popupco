@@ -78,10 +78,15 @@ export default function HostDashboard() {
 
           <section id="messages" className={styles.section}>
             <h2 className={styles.sectionTitle}>Messages</h2>
-            <div className={styles.emptyState}>
-              <MessageSquare size={30} className="text-muted" />
-              <h4>Messages are ready for your accepted vendors.</h4>
-              <p className="text-muted">Use this area to send setup details, deadlines, and event updates.</p>
+            <div className={styles.welcomeMessage}>
+              <div className={styles.messageAvatar}>P</div>
+              <div>
+                <div className={styles.messageTop}>
+                  <strong>PopUpCo</strong>
+                  <span className={styles.unreadPill}>New</span>
+                </div>
+                <p>Welcome to PopUpCo. Host messages will show venue replies, vendor questions, accepted vendor updates, and event reminders here.</p>
+              </div>
             </div>
           </section>
         </div>

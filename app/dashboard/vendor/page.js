@@ -91,6 +91,20 @@ export default function VendorDashboard() {
                 </div>
               </section>
 
+              <section id="messages" className={styles.section}>
+                <h2 className={styles.sectionTitle}>Messages</h2>
+                <div className={styles.welcomeMessage}>
+                  <div className={styles.messageAvatar}>P</div>
+                  <div>
+                    <div className={styles.messageTop}>
+                      <strong>PopUpCo</strong>
+                      <span className={styles.unreadPill}>New</span>
+                    </div>
+                    <p>Welcome to PopUpCo. Your messages will show host replies, application updates, setup notes, and reminders here.</p>
+                  </div>
+                </div>
+              </section>
+
               {/* Saved Spaces */}
               <section id="saved" className={styles.section}>
                 <h2 className={styles.sectionTitle}>Saved Opportunities</h2>

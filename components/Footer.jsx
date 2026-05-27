@@ -57,7 +57,7 @@ export default function Footer() {
       <div className={`container ${styles.inner}`}>
         <div className={styles.topContent}>
           <Link href="/" className={styles.logo}>
-            <img className={styles.logoImage} src="/images/popupco-logo.png" alt="PopUpCo" />
+            <img className={styles.logoImage} src="/images/popupco-logo-mark.png" alt="PopUpCo" />
             <span className={styles.logoText}>PopUpCo</span>
           </Link>
           <p>PopUpCo brings local vendors, venues, and hosts together to create better pop-up experiences.</p>
