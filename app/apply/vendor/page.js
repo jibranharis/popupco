@@ -154,7 +154,7 @@ function VendorApplicationForm() {
             <div className={styles.successIcon}>✓</div>
             <h1 className={styles.successTitle}>Application submitted!</h1>
             <p className={styles.successDesc}>
-              Your application has been submitted. We'll review your brand, event fit, and setup needs. If accepted, your $25 application fee may be credited toward your booth fee according to the event terms.
+              Your application has been submitted. We'll review your brand, event fit, and setup needs. If accepted, we will reach out with the next steps according to the event terms.
             </p>
             <p className={styles.successDisclaimer}>
               Submitting an application does not guarantee acceptance.
@@ -646,7 +646,7 @@ function VendorApplicationForm() {
                 </div>
 
                 <div className={`notice notice--info`}>
-                  Apply free. If accepted, a $25 deposit is credited toward your booth fee. Application policies may vary by event.
+                  Application policies may vary by event.
                 </div>
 
                 {error && <p className="form-error">{error}</p>}

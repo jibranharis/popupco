@@ -73,18 +73,18 @@ export default function VenueDashboard() {
               <div className={styles.statsGrid}>
                 <div className="card p-6">
                   <p className="text-muted text-sm font-semibold uppercase tracking-wider mb-2">This Month</p>
-                  <h2 className="text-3xl">$1,450</h2>
-                  <p className="text-sm text-green-600 mt-2">↑ 12% from last month</p>
+                  <h2 className="text-xl text-muted" style={{ fontWeight: 600 }}>Coming soon</h2>
+                  <p className="text-sm text-muted mt-2">Analytics are on the way</p>
                 </div>
                 <div className="card p-6">
                   <p className="text-muted text-sm font-semibold uppercase tracking-wider mb-2">Pending Requests</p>
-                  <h2 className="text-3xl">3</h2>
-                  <p className="text-sm text-muted mt-2">Requires your attention</p>
+                  <h2 className="text-xl text-muted" style={{ fontWeight: 600 }}>Coming soon</h2>
+                  <p className="text-sm text-muted mt-2">Inbox updates pending</p>
                 </div>
                 <div className="card p-6">
                   <p className="text-muted text-sm font-semibold uppercase tracking-wider mb-2">Upcoming</p>
-                  <h2 className="text-3xl">4</h2>
-                  <p className="text-sm text-muted mt-2">Bookings next 30 days</p>
+                  <h2 className="text-xl text-muted" style={{ fontWeight: 600 }}>Coming soon</h2>
+                  <p className="text-sm text-muted mt-2">Calendar syncing</p>
                 </div>
               </div>
 

@@ -20,6 +20,7 @@ export default function SpaceDetailPage({ params }) {
   }
 
   const [isSaved, setIsSaved] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -88,7 +89,11 @@ export default function SpaceDetailPage({ params }) {
           {/* Image Gallery */}
           <div className={styles.gallery}>
             <div className={styles.mainImage}>
-              <Image src={space.image} alt={space.name} fill className={styles.img} priority />
+              {imgError ? (
+                <div className={styles.fallbackPattern} style={{ width: '100%', height: '100%', position: 'absolute', background: 'var(--color-bg-alt)' }} />
+              ) : (
+                <Image src={space.image} alt={space.name} fill className={styles.img} priority onError={() => setImgError(true)} />
+              )}
             </div>
             <div className={styles.sideImages}>
               <div className={styles.sideImage}>

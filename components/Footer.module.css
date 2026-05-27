@@ -1,26 +1,20 @@
 .footer {
-  background: var(--color-charcoal);
+  background: #2D2A28; /* Warmer dark charcoal */
   color: var(--color-text-white);
-  padding: var(--sp-16) 0 var(--sp-8);
+  padding: var(--sp-12) 0 var(--sp-8);
 }
 
 .inner {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-12);
+  gap: var(--sp-10);
 }
 
-.topGrid {
-  display: grid;
-  grid-template-columns: 3fr 7fr;
-  gap: var(--sp-12);
-}
-
-/* Brand Col */
-.brandCol {
+.topContent {
   display: flex;
-  flex-direction: column;
-  gap: var(--sp-4);
+  justify-content: flex-start;
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .logo {
@@ -43,25 +37,7 @@
   color: #fff;
 }
 
-.tagline {
-  font-size: 0.9375rem;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.6;
-}
 
-.email {
-  font-size: 0.9375rem;
-  color: #fff;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: rgba(255,255,255,0.3);
-  transition: text-decoration-color var(--ease-fast);
-  margin-top: var(--sp-2);
-}
-
-.email:hover {
-  text-decoration-color: #fff;
-}
 
 /* Links Grid */
 .linksGrid {
@@ -174,9 +150,8 @@
 
 /* Responsive */
 @media (max-width: 900px) {
-  .topGrid {
-    grid-template-columns: 1fr;
-    gap: var(--sp-10);
+  .linksGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

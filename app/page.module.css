@@ -16,7 +16,7 @@
 }
 
 .heroContent {
-  max-width: 600px;
+  max-width: 650px;
   background: rgba(250, 248, 244, 0.95);
   backdrop-filter: blur(12px);
   padding: var(--sp-10);
@@ -25,54 +25,54 @@
   border: 1px solid rgba(255,255,255,0.5);
 }
 
-.heroBadge {
-  margin-bottom: var(--sp-6);
-}
-
 .heroTitle {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-size: clamp(3rem, 6vw, 4.5rem);
   line-height: 1.05;
   margin-bottom: var(--sp-4);
   letter-spacing: -0.04em;
+  font-weight: 800;
+  color: var(--color-charcoal);
 }
 
 .heroSub {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   color: var(--color-text-muted);
   margin-bottom: var(--sp-8);
-  max-width: 480px;
+  max-width: 520px;
+  line-height: 1.5;
 }
 
-.heroSearch {
-  margin-bottom: var(--sp-6);
-}
-
-.heroLinks {
+.heroCtas {
   display: flex;
-  align-items: center;
   gap: var(--sp-4);
-  font-size: 0.875rem;
-  font-weight: 500;
+  margin-bottom: var(--sp-6);
   flex-wrap: wrap;
 }
 
+.heroLinks {
+  margin-bottom: var(--sp-6);
+}
 .heroLinks a {
+  color: var(--color-text-muted);
+  font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 4px;
-  text-decoration-color: var(--color-border-strong);
-  transition: all var(--ease-fast);
 }
-
 .heroLinks a:hover {
   color: var(--color-accent);
-  text-decoration-color: var(--color-accent);
+}
+
+.trustChips {
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
 }
 
 .heroImageWrap {
   position: absolute;
   top: 0;
   right: 0;
-  width: 65%;
+  width: 55%;
   height: 100%;
   z-index: 1;
 }
@@ -82,7 +82,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 30%;
+  width: 40%;
   height: 100%;
   background: linear-gradient(to right, var(--color-bg) 0%, transparent 100%);
 }
@@ -90,6 +90,19 @@
 .heroImage {
   object-fit: cover;
   object-position: center;
+}
+
+.floatingCard {
+  position: absolute;
+  bottom: 20%;
+  left: 10%;
+  background: white;
+  padding: var(--sp-5);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-hover);
+  z-index: 5;
+  width: 320px;
+  border: 1px solid var(--color-border);
 }
 
 /* --- SECTION HEADER --- */
@@ -104,7 +117,7 @@
 
 /* --- INTERACTIVE CATEGORY SECTION --- */
 .categorySection {
-  background: #fff;
+  background: var(--color-bg-card);
 }
 
 .categoryTitle {
@@ -126,7 +139,7 @@
 
 .categoryBtn {
   text-align: left;
-  padding: var(--sp-5) 0;
+  padding: var(--sp-4) 0;
   border-bottom: 1px solid var(--color-border);
   position: relative;
   transition: all var(--ease-fast);
@@ -148,27 +161,16 @@
   width: 100%;
 }
 
-.categoryActive .categoryLabel {
-  color: var(--color-accent);
-}
-
-.categoryBtnInner {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
 .categoryLabel {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--color-text-light); /* Dimmed when inactive */
   transition: color var(--ease-fast);
 }
 
-.categoryDesc {
-  font-size: 0.9375rem;
-  color: var(--color-text-muted);
+.categoryActive .categoryLabel, .categoryBtn:hover .categoryLabel {
+  color: var(--color-charcoal); /* Highlight active/hover */
 }
 
 .categoryVisual {
@@ -226,39 +228,31 @@
   padding: 0;
 }
 
-.stepIcon {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-full);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border-strong);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: var(--sp-6);
-  color: var(--color-text);
+.stepNum {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--color-accent-light);
+  margin-bottom: var(--sp-4);
+  line-height: 1;
 }
 
 .stepTitle {
   font-size: 1.25rem;
   margin-bottom: var(--sp-2);
+  color: var(--color-charcoal);
 }
 
 .stepDesc {
   color: var(--color-text-muted);
 }
 
-/* --- FOR VENUES --- */
+/* --- FOR VENUES & VENDORS --- */
 .venueSplit {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--sp-16);
   align-items: center;
-  background: var(--color-bg-card);
-  border-radius: var(--radius-2xl);
-  border: 1px solid var(--color-border);
-  padding: var(--sp-12);
-  box-shadow: var(--shadow-md);
 }
 
 .venueContent h2 {
@@ -266,21 +260,25 @@
 }
 
 .venueContent p {
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   color: var(--color-text-muted);
 }
 
 .venueStats {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-6);
+  gap: var(--sp-4);
 }
 
 .statBox {
-  padding: var(--sp-5);
-  background: var(--color-bg-alt);
+  padding: var(--sp-6);
+  background: #fff;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+.statBox h4 {
+  margin: 0;
 }
 
 /* --- COMMUNITY --- */
@@ -294,40 +292,50 @@
 }
 
 .communityInner p {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.8);
   font-size: 1.125rem;
   margin-top: var(--sp-4);
 }
 
-/* --- UTILS --- */
-.bg-alt { background: var(--color-bg-alt); }
-.mt-4 { margin-top: var(--sp-4); }
-.mt-6 { margin-top: var(--sp-6); }
-.mb-6 { margin-bottom: var(--sp-6); }
-.mb-12 { margin-bottom: var(--sp-12); }
-.text-center { text-align: center; }
-.text-sm { font-size: 0.875rem; }
+.exampleBadge {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background: var(--color-accent);
+  color: white;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  z-index: 10;
+  box-shadow: var(--shadow-md);
+}
 
 /* --- RESPONSIVE --- */
 @media (max-width: 1024px) {
   .heroImageWrap {
     width: 100%;
-    opacity: 0.5;
+    opacity: 0.3;
   }
   .heroImageWrap::after { display: none; }
+  .floatingCard { display: none; }
   .heroContent {
     margin: 0 auto;
     text-align: center;
-    background: rgba(250, 248, 244, 0.85);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
   }
-  .heroLinks { justify-content: center; }
+  .heroCtas { justify-content: center; }
+  .trustChips { justify-content: center; }
+  .venueSplit { grid-template-columns: 1fr; gap: var(--sp-8); }
 }
 
 @media (max-width: 768px) {
   .categoryGrid { grid-template-columns: 1fr; }
   .categoryVisual { order: -1; margin-bottom: var(--sp-6); }
-  .venueSplit { grid-template-columns: 1fr; padding: var(--sp-6); }
   .desktopOnly { display: none; }
   .mobileOnly { display: inline-flex; }
-  .hero { padding-top: 100px; min-height: 90vh; }
+  .hero { padding-top: 100px; min-height: 80vh; }
 }

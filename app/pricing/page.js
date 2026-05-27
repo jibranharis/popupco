@@ -5,13 +5,13 @@ import styles from './page.module.css';
 
 export const metadata = {
   title: 'Pop-Up Vendor Pricing',
-  description: 'Transparent pricing for vendors, venues, and brand pop-up packages. Spots typically range from $75–$250.',
+  description: 'Transparent pricing for vendors, venues, and brand pop-up packages. Spots start at $50.',
 };
 
 const TIERS = [
   {
     title: 'Vendor Spot',
-    price: '$75–$250',
+    price: 'Starting at $50',
     priceNote: 'Depending on event size, location, and placement',
     desc: 'For vendors joining a curated multi-vendor pop-up market.',
     features: [
@@ -132,7 +132,7 @@ export default function PricingPage() {
             {/* Important notes */}
             <div className={styles.notes}>
               <div className={`notice notice--info ${styles.note}`}>
-                <strong>Application fee:</strong> A $25 application fee is collected at time of submission. If accepted, this amount is credited toward your booth fee. Application fee policy may vary by event and will be clearly stated before payment.
+                <strong>No upfront commitment:</strong> Applications are free to submit. You only pay your booth fee once you've been accepted to an event.
               </div>
               <div className={`notice notice--warning ${styles.note}`}>
                 <strong>Food & beverage vendors:</strong> Food, beverage, and food truck vendors may require additional permits and approval. Additional requirements will be communicated during the review process.

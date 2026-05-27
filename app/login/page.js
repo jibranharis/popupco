@@ -19,8 +19,8 @@ export default function LoginPage() {
 
   return (
     <div className={styles.authLayout}>
-      <Link href="/" className={styles.backHome}>
-        <span className={styles.logoMark}>◻</span> Pop Up Co.
+      <Link href="/" className={styles.backHome} style={{ fontSize: '1.5rem', letterSpacing: '-0.03em' }}>
+        Pop Up Co.
       </Link>
       
       <div className={styles.authContainer}>

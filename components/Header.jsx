@@ -1,12 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X, User } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import styles from './Header.module.css';
 
 export default function Header() {
   const { user, logout } = useAuth();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -26,12 +28,13 @@ export default function Header() {
   // Logged-out Nav
   const publicNavCenter = [
     { label: 'Browse Spaces', href: '/browse' },
+    { label: 'For Vendors', href: '/apply/vendor' },
+    { label: 'For Venues', href: '/apply/venue' },
     { label: 'How It Works', href: '/#how-it-works' },
-    { label: 'List Your Space', href: '/apply/venue' },
+    { label: 'About', href: '/about' },
   ];
   const publicNavRight = [
     { label: 'Log In', href: '/login' },
-    { label: 'Sign Up', href: '/signup' },
   ];
 
   // Vendor Nav
@@ -56,15 +59,19 @@ export default function Header() {
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
         {/* Logo (Left) */}
-        <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
-          <span className={styles.logoMark}>◻</span>
+        <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src="/images/media__1779840173203.jpg" alt="Pop Up Co. Logo" style={{ height: '32px', width: '32px', objectFit: 'contain', borderRadius: '4px' }} />
           <span className={styles.logoText}>Pop Up Co.</span>
         </Link>
 
         {/* Center Nav */}
         <nav className={styles.navCenter}>
           {currentNav.map((link) => (
-            <Link key={link.href} href={link.href} className={styles.navLink}>
+            <Link 
+              key={link.href} 
+              href={link.href} 
+              className={`${styles.navLink} ${pathname === link.href ? styles.activeNavLink : ''}`}
+            >
               {link.label}
             </Link>
           ))}
@@ -79,8 +86,8 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
-              <Link href="/browse" className="btn btn--primary btn--sm">
-                Find a Space
+              <Link href="/apply/venue" className="btn btn--primary btn--sm">
+                List Your Space
               </Link>
             </>
           ) : (
@@ -164,8 +171,8 @@ export default function Header() {
         
         {!user && (
           <div className={styles.mobileCtas}>
-            <Link href="/browse" className="btn btn--primary btn--full" onClick={() => setMenuOpen(false)}>
-              Find a Space
+            <Link href="/apply/venue" className="btn btn--primary btn--full" onClick={() => setMenuOpen(false)}>
+              List Your Space
             </Link>
           </div>
         )}

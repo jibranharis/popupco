@@ -26,8 +26,8 @@ export default function SignupPage() {
 
   return (
     <div className={styles.authLayout}>
-      <Link href="/" className={styles.backHome}>
-        <span className={styles.logoMark}>◻</span> Pop Up Co.
+      <Link href="/" className={styles.backHome} style={{ fontSize: '1.5rem', letterSpacing: '-0.03em' }}>
+        Pop Up Co.
       </Link>
       
       <div className={styles.authContainer}>
@@ -43,15 +43,36 @@ export default function SignupPage() {
                   <label className={`${styles.typeCard} ${type === 'vendor' ? styles.typeActive : ''}`}>
                     <input type="radio" checked={type === 'vendor'} onChange={() => setType('vendor')} />
                     <div>
-                      <strong>I'm a brand or vendor</strong>
+                      <strong>Vendor</strong>
                       <p className="text-muted text-sm mt-1">I want to find pop-up spaces and apply to markets.</p>
                     </div>
                   </label>
                   <label className={`${styles.typeCard} ${type === 'venue' ? styles.typeActive : ''}`}>
                     <input type="radio" checked={type === 'venue'} onChange={() => setType('venue')} />
                     <div>
-                      <strong>I'm a venue host</strong>
+                      <strong>Venue/Host</strong>
                       <p className="text-muted text-sm mt-1">I have a space and want to host brands and pop-ups.</p>
+                    </div>
+                  </label>
+                  <label className={`${styles.typeCard} ${type === 'organizer' ? styles.typeActive : ''}`}>
+                    <input type="radio" checked={type === 'organizer'} onChange={() => setType('organizer')} />
+                    <div>
+                      <strong>Event Organizer</strong>
+                      <p className="text-muted text-sm mt-1">I plan and coordinate markets and pop-up events.</p>
+                    </div>
+                  </label>
+                  <label className={`${styles.typeCard} ${type === 'nonprofit' ? styles.typeActive : ''}`}>
+                    <input type="radio" checked={type === 'nonprofit'} onChange={() => setType('nonprofit')} />
+                    <div>
+                      <strong>Community/Nonprofit</strong>
+                      <p className="text-muted text-sm mt-1">I represent a community organization or nonprofit.</p>
+                    </div>
+                  </label>
+                  <label className={`${styles.typeCard} ${type === 'visitor' ? styles.typeActive : ''}`}>
+                    <input type="radio" checked={type === 'visitor'} onChange={() => setType('visitor')} />
+                    <div>
+                      <strong>Visitor</strong>
+                      <p className="text-muted text-sm mt-1">I want to discover and attend local pop-up events.</p>
                     </div>
                   </label>
                 </div>

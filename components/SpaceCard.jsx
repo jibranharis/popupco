@@ -10,6 +10,7 @@ export default function SpaceCard({ space }) {
   const { user } = useAuth();
   const router = useRouter();
   const [isSaved, setIsSaved] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   // Load saved state from local storage based on space id
   useEffect(() => {
@@ -44,13 +45,24 @@ export default function SpaceCard({ space }) {
   return (
     <Link href={`/spaces/${space.slug}`} className={`listing-card ${styles.card}`}>
       <div className={styles.imageWrap}>
-        <Image
-          src={space.image}
-          alt={space.name}
-          fill
-          className={styles.image}
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
+        {imgError || !space.image ? (
+          <div className={styles.imageFallback}>
+            <span>No Image</span>
+          </div>
+        ) : (
+          <Image
+            src={space.image}
+            alt={space.name}
+            fill
+            className={styles.image}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            onError={() => setImgError(true)}
+          />
+        )}
+        
+        {space.availability && (
+          <div className={styles.badge}>{space.availability}</div>
+        )}
         <button
           onClick={toggleSave}
           className={`heart-btn ${isSaved ? 'saved' : ''}`}
@@ -66,7 +78,6 @@ export default function SpaceCard({ space }) {
           <span className={styles.type}>{space.type}</span>
         </div>
         <h3 className={styles.title}>{space.name}</h3>
-        <p className={styles.availability}>{space.availability}</p>
         <p className={styles.price}>{space.price}</p>
       </div>
     </Link>

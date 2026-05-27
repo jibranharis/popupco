@@ -26,55 +26,44 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.inner}`}>
         {/* Top Content */}
-        <div className={styles.topGrid}>
-          {/* Brand Column */}
-          <div className={styles.brandCol}>
-            <Link href="/" className={styles.logo}>
-              <span className={styles.logoMark}>◻</span>
-              <span className={styles.logoText}>Pop Up Co.</span>
-            </Link>
-            <p className={styles.tagline}>
-              Find space for your next pop-up.<br />
-              Launching in the Bay Area.
-            </p>
-            <a href="mailto:hello@popupco.com" className={styles.email}>
-              hello@popupco.com
-            </a>
-          </div>
+        <div className={styles.topContent}>
+          <Link href="/" className={styles.logo}>
+            <span className={styles.logoMark}>◻</span>
+            <span className={styles.logoText}>Pop Up Co.</span>
+          </Link>
+        </div>
 
-          {/* Links Columns */}
-          <div className={styles.linksGrid}>
-            <div className={styles.linkGroup}>
-              <h4 className={styles.linkTitle}>Discover</h4>
-              {footerLinks.discover.map((link) => (
-                <Link key={link.label} href={link.href} className={styles.link}>
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-            <div className={styles.linkGroup}>
-              <h4 className={styles.linkTitle}>Hosting</h4>
-              {footerLinks.host.map((link) => (
-                <Link key={link.label} href={link.href} className={styles.link}>
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-            <div className={styles.linkGroup}>
-              <h4 className={styles.linkTitle}>Company</h4>
-              {footerLinks.company.map((link) => (
-                <Link key={link.label} href={link.href} className={styles.link}>
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+        <div className={styles.linksGrid}>
+          <div className={styles.linkGroup}>
+            <h4 className={styles.linkTitle}>Discover</h4>
+            {footerLinks.discover.map((link) => (
+              <Link key={link.label} href={link.href} className={styles.link}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <div className={styles.linkGroup}>
+            <h4 className={styles.linkTitle}>Host</h4>
+            {footerLinks.host.map((link) => (
+              <Link key={link.label} href={link.href} className={styles.link}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <div className={styles.linkGroup}>
+            <h4 className={styles.linkTitle}>Company</h4>
+            {footerLinks.company.map((link) => (
+              <Link key={link.label} href={link.href} className={styles.link}>
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
 
         {/* Disclaimer / Notice */}
         <div className={styles.disclaimer}>
           <p>
-            Pop Up Co. helps connect vendors, events, and spaces. Food, beverage, and food truck vendors may require additional permits and approval. Vendors and venues are responsible for confirming and maintaining any permits, licenses, insurance, approvals, or documents required for their products, services, city, venue, and event type.
+            Pop Up Co. connects vendors, events, and spaces. Users are responsible for confirming all required permits and documents.
           </p>
         </div>
 
@@ -85,15 +74,10 @@ export default function Footer() {
             <div className={styles.legalLinks}>
               <Link href="#">Terms</Link>
               <Link href="#">Privacy</Link>
-              <Link href="#">Sitemap</Link>
             </div>
           </div>
           
           <div className={styles.bottomRight}>
-            <div className={styles.region}>
-              <MapPin size={16} />
-              <span>United States (EN)</span>
-            </div>
             <div className={styles.socials}>
               <a href="#" aria-label="Instagram"><Instagram size={20} /></a>
               <a href="#" aria-label="Twitter"><Twitter size={20} /></a>

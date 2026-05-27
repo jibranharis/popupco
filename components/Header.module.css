@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 72px;
-  background: #fff;
+  background: #FCFAf8; /* Warm white surface */
   border-bottom: 1px solid var(--color-border);
   z-index: 100;
   transition: all var(--ease-base);
@@ -12,7 +12,7 @@
 
 .scrolled {
   box-shadow: var(--shadow-sm);
-  background: rgba(255,255,255,0.95);
+  background: rgba(252, 250, 248, 0.95);
   backdrop-filter: blur(10px);
 }
 
@@ -40,9 +40,9 @@
 
 .logoText {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.125rem;
-  letter-spacing: -0.03em;
+  font-weight: 700; /* Bold typography wordmark */
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
   color: var(--color-text);
 }
 
@@ -63,12 +63,27 @@
 .navLink {
   font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--color-text);
+  color: var(--color-text-muted);
   transition: color var(--ease-fast);
+  position: relative;
 }
 
 .navLink:hover {
-  color: var(--color-accent);
+  color: var(--color-text);
+}
+
+.activeNavLink {
+  color: var(--color-text);
+}
+
+.activeNavLink::after {
+  content: '';
+  position: absolute;
+  bottom: -24px; /* Align with bottom border of header */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-accent);
 }
 
 /* Profile Menu */

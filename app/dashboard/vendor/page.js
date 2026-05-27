@@ -83,24 +83,11 @@ export default function VendorDashboard() {
               {/* Applications Status */}
               <section className={styles.section}>
                 <h2 className={styles.sectionTitle}>Active Applications</h2>
-                <div className="card">
-                  <div className={styles.appRow}>
-                    <div>
-                      <div className="badge badge--orange mb-2">Under Review</div>
-                      <h4>Bay Area Brand Market</h4>
-                      <p className="text-sm text-muted">Submitted on May 15, 2026</p>
-                    </div>
-                    <Link href="#" className={styles.viewLink}>View Details <ChevronRight size={16}/></Link>
-                  </div>
-                  <hr className={styles.rowDivider} />
-                  <div className={styles.appRow}>
-                    <div>
-                      <div className="badge badge--green mb-2">Accepted</div>
-                      <h4>East Bay Local Makers Pop-Up</h4>
-                      <p className="text-sm text-muted">Event Date: Fall 2026</p>
-                    </div>
-                    <Link href="#" className={styles.viewLink}>Manage Booking <ChevronRight size={16}/></Link>
-                  </div>
+                <div className={styles.emptyState} style={{ background: '#fff', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-xl)', padding: 'var(--sp-10)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <FileText size={32} className="text-muted mb-4" />
+                  <h4>No active applications</h4>
+                  <p className="text-muted mt-2 mb-4">You haven't applied to any upcoming events yet.</p>
+                  <Link href="/apply/vendor" className="btn btn--secondary">Apply to an Event</Link>
                 </div>
               </section>
 

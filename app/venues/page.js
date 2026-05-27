@@ -7,17 +7,17 @@ import { CheckCircle, ArrowRight } from 'lucide-react';
 import styles from './page.module.css';
 
 const VENUE_TYPES = [
-  { icon: '🏪', label: 'Empty storefronts' },
-  { icon: '🛍️', label: 'Retail shops' },
-  { icon: '☕', label: 'Cafes' },
-  { icon: '🖼️', label: 'Galleries' },
-  { icon: '🎨', label: 'Studios' },
-  { icon: '🏛️', label: 'Community centers' },
-  { icon: '🅿️', label: 'Parking lots' },
-  { icon: '📦', label: 'Warehouses' },
-  { icon: '🎪', label: 'Event spaces' },
-  { icon: '🏫', label: 'Schools & community orgs' },
-  { icon: '🤲', label: 'Nonprofit spaces' },
+  'Empty storefronts',
+  'Retail shops',
+  'Cafes',
+  'Galleries',
+  'Studios',
+  'Community centers',
+  'Parking lots',
+  'Warehouses',
+  'Event spaces',
+  'Schools & community orgs',
+  'Nonprofit spaces',
 ];
 
 const BENEFITS = [
@@ -57,7 +57,7 @@ export default function VenuesPage() {
           <div className="container">
             <div className={`badge badge--sage ${styles.badge}`}>For venues</div>
             <h1 className={styles.headline}>
-              Turn your space into<br />a curated local pop-up.
+              Your space, their brand.<br />A natural fit.
             </h1>
             <p className={styles.sub}>
               Pop Up Co. partners with Bay Area venues, storefronts, galleries, studios, cafes, parking lots, and community spaces to host local pop-up events.
@@ -73,12 +73,11 @@ export default function VenuesPage() {
           <div className="container">
             <p className="fade-in section-label">Space types</p>
             <h2 className={`fade-in ${styles.sectionH2}`}>All kinds of spaces work.</h2>
-            <div className={styles.typesGrid}>
+            <div className={styles.typesGrid} style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-sm)' }}>
               {VENUE_TYPES.map((type, i) => (
-                <div key={type.label} className={`card fade-in fade-in--delay-${(i % 4) + 1} ${styles.typeCard}`}>
-                  <span className={styles.typeIcon}>{type.icon}</span>
-                  <span className={styles.typeLabel}>{type.label}</span>
-                </div>
+                <span key={type} className={`badge fade-in fade-in--delay-${(i % 4) + 1}`} style={{ fontSize: '1rem', padding: 'var(--spacing-sm) var(--spacing-md)', backgroundColor: 'var(--color-bg-alt)', border: '1px solid var(--color-border)', color: 'var(--color-text)', borderRadius: '2rem' }}>
+                  {type}
+                </span>
               ))}
             </div>
           </div>
@@ -120,7 +119,7 @@ export default function VenuesPage() {
         {/* How it works */}
         <section className="section">
           <div className="container">
-            <p className="fade-in section-label">How it works</p>
+            <p className="fade-in section-label">What happens next</p>
             <h2 className={`fade-in ${styles.sectionH2}`}>From submission to pop-up.</h2>
             <div className={styles.stepsGrid}>
               {HOW_IT_WORKS.map((step, i) => (
