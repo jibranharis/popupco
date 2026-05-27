@@ -57,11 +57,18 @@ export default function Header() {
 
   const nav = user ? roleNav[user.type] || roleNav.vendor : publicNav;
   const dashboardHref = user ? `/dashboard/${user.type}` : '/signup';
+  const handleLogoClick = () => {
+    setMenuOpen(false);
+    setProfileOpen(false);
+    if (pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
-        <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
+        <Link href="/" className={styles.logo} onClick={handleLogoClick}>
           <img className={styles.logoImage} src="/images/popupco-logo-mark.png" alt="PopUpCo" />
           <span className={styles.logoText}>PopUpCo</span>
         </Link>
