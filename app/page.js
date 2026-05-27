@@ -200,8 +200,6 @@ export default function HomePage() {
 
             <div className={`fade-in fade-in--d2 ${styles.heroMedia}`}>
               <Image src="/hero-market.png" alt="Local vendors selling at a warm market" fill priority className={styles.heroImage} />
-              <div className={styles.mediaOverlay} />
-              <div className={styles.marketCard}>Applications open · Booths from $50</div>
             </div>
 
             <div className={`fade-in fade-in--d3 ${styles.searchPanel}`} aria-label="PopUpCo search">
