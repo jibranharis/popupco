@@ -3,14 +3,14 @@ import './globals.css';
 export const metadata = {
   metadataBase: new URL('https://popupco.com'),
   title: {
-    default: 'Pop Up Co. | Find space for your next pop-up',
-    template: '%s | Pop Up Co.',
+    default: 'PopUpCo | Find your next pop-up opportunity',
+    template: '%s | PopUpCo',
   },
-  description: 'Launch your brand in person. Pop Up Co. helps vendors access curated pop-up events and short-term retail spaces across the Bay Area.',
-  keywords: ['pop up market', 'retail space', 'short term rental', 'bay area vendors', 'pop up events', 'local brands'],
+  description: 'PopUpCo connects vendors, hosts, and venues so local markets, pop-ups, and community events can come to life.',
+  keywords: ['pop up market', 'vendor marketplace', 'retail space', 'bay area vendors', 'pop up events', 'local brands'],
   openGraph: {
-    title: 'Pop Up Co. | Find space for your next pop-up',
-    description: 'Launch your brand in person. Browse curated retail spaces and markets.',
+    title: 'PopUpCo | Find your next pop-up opportunity',
+    description: 'Find vendor markets, booth opportunities, retail spaces, and local pop-up events.',
     type: 'website',
   },
 };

@@ -1,257 +1,319 @@
 .main {
-  padding-top: 100px;
-  padding-bottom: var(--sp-24);
+  padding: 108px 0 var(--sp-24);
   background: var(--color-bg);
-}
-
-.topNav {
-  margin-bottom: var(--sp-6);
 }
 
 .backBtn {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  margin-bottom: var(--sp-8);
   color: var(--color-text-muted);
-  transition: color var(--ease-fast);
+  font-weight: 750;
 }
 
-.backBtn:hover {
-  color: var(--color-text);
-}
-
-/* Title */
 .titleArea {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-8);
   margin-bottom: var(--sp-6);
 }
 
-.title {
+.kicker {
   margin-bottom: var(--sp-2);
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  font-weight: 800;
 }
 
-.metaRow {
+.titleArea h1 {
+  max-width: 900px;
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  letter-spacing: 0;
+}
+
+.metaLine {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   flex-wrap: wrap;
   gap: var(--sp-4);
-}
-
-.metaLeft {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.location {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  text-decoration: underline;
-}
-
-.metaRight {
-  display: flex;
-  gap: var(--sp-4);
-}
-
-.actionBtn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--color-text);
-}
-
-.actionBtn:hover {
-  text-decoration: underline;
-}
-
-/* Gallery */
-.gallery {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--sp-2);
-  height: 480px;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  margin-bottom: var(--sp-12);
-}
-
-.mainImage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.sideImages {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
-}
-
-.sideImage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: var(--color-border);
-}
-
-.img {
-  object-fit: cover;
-}
-
-.fallbackPattern {
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, var(--color-border-strong) 1px, transparent 1px);
-  background-size: 20px 20px;
-  opacity: 0.3;
-}
-
-/* Content */
-.contentSplit {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--sp-16);
-}
-
-.mainContent {
-  padding-bottom: var(--sp-12);
-}
-
-.hostSection {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--sp-6);
-}
-
-.hostTitle {
-  font-size: 1.375rem;
-  margin-bottom: 4px;
-}
-
-.hostAvatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
+  margin-top: var(--sp-4);
+  color: var(--color-text-muted);
   font-weight: 700;
 }
 
+.metaLine span,
+.actions button,
+.hostProfile span,
+.bookingFact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.actions {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: flex-start;
+}
+
+.actions button {
+  padding: 10px 13px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: #fff;
+  font-weight: 800;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--sp-2);
+  height: 470px;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--sp-12);
+}
+
+.galleryMain,
+.gallerySide {
+  position: relative;
+  background: var(--color-bg-alt);
+}
+
+.galleryImg {
+  object-fit: cover;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: var(--sp-14);
+  align-items: start;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-10);
+}
+
+.summaryGrid div {
+  padding: var(--sp-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+
+.summaryGrid span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.summaryGrid strong {
+  display: block;
+  line-height: 1.35;
+}
+
 .section {
-  margin: var(--sp-8) 0;
+  padding: var(--sp-8) 0;
+  border-top: 1px solid var(--color-border);
 }
 
-.section h3 {
+.section h2 {
   margin-bottom: var(--sp-4);
+  font-size: 1.55rem;
 }
 
-.description {
-  font-size: 1.0625rem;
-  color: var(--color-charcoal-soft);
+.section p {
+  color: var(--color-text-muted);
+  font-size: 1.04rem;
 }
 
 .tagList {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--sp-2);
+}
+
+.tagList span {
+  padding: 7px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: #fff;
+  font-weight: 750;
 }
 
 .listGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--sp-3);
 }
 
-.listCol {
-  display: flex;
-  flex-direction: column;
+.listGrid li,
+.twoLists li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--color-text-muted);
+}
+
+.listGrid li::before,
+.twoLists li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}
+
+.twoLists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-8);
+}
+
+.twoLists h3 {
+  margin-bottom: var(--sp-3);
+}
+
+.twoLists ul {
+  display: grid;
   gap: var(--sp-2);
 }
 
-/* Sidebar */
+.hostProfile {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--sp-4);
+  padding: var(--sp-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: #fff;
+}
+
+.hostAvatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-sage);
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 850;
+}
+
+.hostProfile span {
+  color: #4a7a4e;
+  font-weight: 800;
+}
+
+.hostProfile p {
+  color: var(--color-text-muted);
+  margin-top: var(--sp-1);
+}
+
 .sidebar {
   position: relative;
 }
 
 .bookingCard {
   position: sticky;
-  top: 100px;
-  background: #fff;
+  top: 96px;
+  display: grid;
+  gap: var(--sp-4);
+  padding: var(--sp-6);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  padding: var(--sp-6);
+  background: #fff;
   box-shadow: var(--shadow-lg);
 }
 
-.bookingHeader {
+.bookingTop {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  align-items: flex-start;
+}
+
+.bookingTop strong {
+  font-size: 1.35rem;
+}
+
+.bookingTop span,
+.bookingFact {
+  color: var(--color-text-muted);
+  font-weight: 750;
+  font-size: 0.9rem;
+}
+
+.bookingCard p {
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+}
+
+.similar {
+  margin-top: var(--sp-16);
+  padding-top: var(--sp-10);
+  border-top: 1px solid var(--color-border);
+}
+
+.similar h2 {
   margin-bottom: var(--sp-6);
 }
 
-.price {
-  font-size: 1.375rem;
-  font-weight: 600;
-  font-family: var(--font-display);
-}
-
-.datePicker {
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--sp-4);
-  padding: var(--sp-3);
-  cursor: pointer;
-}
-
-.dateField label {
-  display: block;
-  font-size: 0.625rem;
-  font-weight: 700;
-  margin-bottom: 2px;
-}
-
-.dateField span {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-}
-
-@media (max-width: 900px) {
-  .contentSplit {
+@media (max-width: 980px) {
+  .titleArea,
+  .contentGrid {
     grid-template-columns: 1fr;
-    gap: var(--sp-10);
+    flex-direction: column;
   }
+
+  .contentGrid {
+    display: block;
+  }
+
+  .sidebar {
+    margin-top: var(--sp-8);
+  }
+
   .bookingCard {
     position: static;
   }
+
+  .summaryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 680px) {
   .gallery {
     grid-template-columns: 1fr;
-    height: 320px;
+    height: 340px;
   }
-  .sideImages {
+
+  .gallerySide {
     display: none;
   }
-  .metaRow {
-    flex-direction: column;
-    align-items: flex-start;
+
+  .summaryGrid,
+  .listGrid,
+  .twoLists {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions button {
+    flex: 1;
   }
 }

@@ -1,267 +1,339 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceCard from '@/components/SpaceCard';
-import ComingSoonCard from '@/components/ComingSoonCard';
 import { SPACES_DATA } from '@/lib/spaces';
-import { Package, MapPin, Users, Heart, Search, Calendar } from 'lucide-react';
+import {
+  CalendarDays,
+  CheckCircle2,
+  ClipboardList,
+  Heart,
+  MapPin,
+  MessageSquare,
+  Search,
+  ShieldCheck,
+  Store,
+  Users,
+} from 'lucide-react';
 import styles from './page.module.css';
 
-const VENDOR_CATEGORIES = [
-  { label: 'Clothing brands', image: '/cat-fashion.png' },
-  { label: 'Vintage sellers', image: '/cat-vintage.png' },
-  { label: 'Food trucks', image: '/cat-food.png' },
-  { label: 'Jewelry & accessories', image: '/cat-jewelry.png' },
-  { label: 'Artists & makers', image: '/cat-beauty.png' },
-  { label: 'Student businesses', image: null },
-  { label: 'Nonprofits', image: null },
-  { label: 'Community events', image: null },
-  { label: 'Retail storefronts', image: null },
-  { label: 'Outdoor markets', image: null },
+const useCases = [
+  ['Sell at a local market', 'Find booth opportunities with fees, deadlines, and host details up front.', '/hero-market.png'],
+  ['Launch a new product', 'Book a boutique takeover or curated event for a sharper first impression.', '/images/media__1779838728727.jpg'],
+  ['Host a vendor fair', 'Recruit the right mix of vendors and keep applications organized.', '/event-1.png'],
+  ['Book a community hall', 'Compare local venues with capacity, setup, and rule details.', '/images/media__1779838851661.jpg'],
+  ['Find food pop-up space', 'See permit notes, food rules, electricity, and load-in details before applying.', '/cat-food.png'],
+  ['Curate an art market', 'Balance vendor categories and promote a local creative lineup.', '/cat-jewelry.png'],
+  ['Bring vendors to your venue', 'Turn quiet space into a reason for neighbors to stop by.', '/images/media__1779840173203.jpg'],
+  ['Turn an empty space into an event', 'Connect with hosts and vendors who can activate underused space.', '/cat-fashion.png'],
+  ['Discover weekend pop-ups', 'Browse local markets, retail moments, and community experiences.', '/event-2.png'],
+  ['Run a school fundraiser', 'Organize vendors, rules, deadlines, and community participation.', '/cat-beauty.png'],
+  ['Create a holiday market', 'Plan seasonal vendor mixes with clear applications and booth details.', '/hero-market.png'],
+  ['Host a boutique takeover', 'Invite brands into your retail environment for a focused pop-up.', '/images/media__1779838728727.jpg'],
 ];
+
+const roleCards = [
+  {
+    title: "I'm a vendor",
+    copy: 'Find markets, booths, spaces, and pop-up opportunities that match what you sell.',
+    cta: 'Find opportunities',
+    href: '/browse',
+    featured: true,
+  },
+  {
+    title: "I'm a venue",
+    copy: 'List your space, set rules and availability, and connect with hosts or vendors.',
+    cta: 'List your space',
+    href: '/apply/venue',
+  },
+  {
+    title: "I'm a host",
+    copy: 'Create pop-up events, recruit vendors, manage applications, and bring local experiences to life.',
+    cta: 'Host a pop-up',
+    href: '/hosts',
+  },
+  {
+    title: "I'm exploring events",
+    copy: 'Discover local markets, food pop-ups, art shows, and community events near you.',
+    cta: 'Explore events',
+    href: '/browse',
+  },
+];
+
+const trustItems = [
+  'Clear booth fees',
+  'Application deadlines',
+  'Expected attendance ranges',
+  'Host and venue profiles',
+  'Setup requirements',
+  'Food permit notes',
+  'Indoor/outdoor details',
+  'Category limits',
+  'Cancellation policy',
+  'Verified hosts and venues',
+  'Reviews and past event history, future feature',
+];
+
+const dashboardData = {
+  Vendor: ['Recommended opportunities', '5 saved opportunities', '3 applications pending', '2 new messages', 'Profile 70% complete', 'Upcoming event checklist'],
+  Venue: ['Active listings', 'Booking requests', 'Availability calendar', 'Listing performance', 'Messages', 'Profile 82% complete'],
+  Host: ['My events', 'Vendor applications', 'Venue searches', 'Event checklist', 'Saved vendors', 'Promotion status'],
+};
 
 function useFadeInObserver(ref) {
   useEffect(() => {
     if (!ref.current) return;
     const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      (entries) => entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      }),
       { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     );
     ref.current.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [ref]);
 }
 
 export default function HomePage() {
-  const router = useRouter();
   const pageRef = useRef(null);
+  const [activeUseCase, setActiveUseCase] = useState(0);
+  const [activeDash, setActiveDash] = useState('Vendor');
   useFadeInObserver(pageRef);
-
-  const [activeCategory, setActiveCategory] = useState(0);
 
   return (
     <>
       <Header />
       <main ref={pageRef}>
-
-        {/* ─── HERO MARKETPLACE ─── */}
         <section className={styles.hero}>
-          <div className={`container ${styles.heroContainer}`}>
+          <div className={`container ${styles.heroGrid}`}>
             <div className={`fade-in ${styles.heroContent}`}>
-              <h1 className={styles.heroTitle}>Find your next place to sell.</h1>
+              <div className={styles.rolePills}>
+                {['Vendor', 'Venue', 'Host', 'Local Events'].map((item) => <span key={item}>{item}</span>)}
+              </div>
+              <h1 className={styles.heroTitle}>Find your next pop-up opportunity.</h1>
               <p className={styles.heroSub}>
-                Browse curated pop-up markets, short-term spaces, and community events built for local vendors, small businesses, and creators.
+                PopUpCo connects vendors, hosts, and venues so local markets, pop-ups, and community events can come to life.
               </p>
-              
               <div className={styles.heroCtas}>
-                <Link href="/browse" className="btn btn--primary btn--lg">Find a Space</Link>
-                <Link href="/apply/vendor" className="btn btn--secondary btn--lg">Apply as a Vendor</Link>
+                <Link href="/browse" className="btn btn--primary btn--lg">Find a place to sell</Link>
+                <Link href="/apply/venue" className="btn btn--secondary btn--lg">List your space</Link>
+                <Link href="/hosts" className="btn btn--ghost btn--lg">Host a pop-up</Link>
               </div>
-              <div className={styles.heroLinks}>
-                <Link href="/apply/venue">List Your Space</Link>
+              <p className={styles.supportText}>Starting in the Bay Area.</p>
+            </div>
+
+            <div className={`fade-in fade-in--d2 ${styles.heroVisual}`}>
+              <Image src="/hero-market.png" alt="Local vendors selling at a warm Bay Area market" fill priority className={styles.heroImage} />
+              <div className={`${styles.floatCard} ${styles.floatTop}`}>
+                <span>Vendor Market</span>
+                <strong>Booth from $95</strong>
               </div>
-              
-              <div className={styles.trustChips}>
-                <span className="badge badge--neutral"><MapPin size={14}/> Bay Area focused</span>
-                <span className="badge badge--neutral"><Package size={14}/> Vendor-friendly</span>
-                <span className="badge badge--neutral"><Heart size={14}/> Community-first</span>
+              <div className={`${styles.floatCard} ${styles.floatMid}`}>
+                <span>Applications open</span>
+                <strong>Expected attendance: 400+</strong>
+              </div>
+              <div className={`${styles.floatCard} ${styles.floatBottom}`}>
+                <span><ShieldCheck size={14} /> Verified host</span>
+                <strong>Deadline: June 12</strong>
               </div>
             </div>
-          </div>
-          <div className={styles.heroImageWrap}>
-            <Image
-              src="/hero-market.png"
-              alt="Curated Pop Up Market in the Bay Area"
-              fill
-              priority
-              className={styles.heroImage}
-            />
-            <div className={styles.floatingCard}>
-              <div className="badge badge--accent mb-2">Example Opportunity</div>
-              <h4>Weekend Market Opportunity</h4>
-              <p className="text-sm text-muted">Vendor applications opening soon</p>
-            </div>
+
+            <form className={`fade-in fade-in--d3 search-bar ${styles.searchBar}`}>
+              <label className="search-bar__field">
+                <span className="search-bar__label">Where</span>
+                <input className="search-bar__input" placeholder="Where do you want to sell?" />
+              </label>
+              <label className="search-bar__field">
+                <span className="search-bar__label">Category</span>
+                <input className="search-bar__input" placeholder="What do you sell?" />
+              </label>
+              <label className="search-bar__field">
+                <span className="search-bar__label">Date</span>
+                <input className="search-bar__input" placeholder="Any weekend" />
+              </label>
+              <label className="search-bar__field">
+                <span className="search-bar__label">Budget</span>
+                <input className="search-bar__input" placeholder="$75-$250" />
+              </label>
+              <Link href="/browse" className="search-bar__btn"><Search size={18} /> Search opportunities</Link>
+            </form>
           </div>
         </section>
 
-        {/* ─── INTERACTIVE CATEGORIES ─── */}
-        <section className={`section ${styles.categorySection}`}>
+        <section className={`section ${styles.ideaSection}`}>
           <div className="container">
-            <h2 className={`fade-in ${styles.categoryTitle}`}>A pop-up for every kind of vendor.</h2>
-            
-            <div className={styles.categoryGrid}>
-              <div className={styles.categoryList}>
-                {VENDOR_CATEGORIES.map((cat, i) => (
+            <div className={styles.sectionIntro}>
+              <span className="label">Browse by moment</span>
+              <h2>A pop-up for every idea.</h2>
+            </div>
+            <div className={styles.ideaGrid}>
+              <div className={styles.useList}>
+                {useCases.map(([title], index) => (
                   <button
-                    key={cat.label}
-                    className={`${styles.categoryBtn} ${activeCategory === i ? styles.categoryActive : ''} fade-in fade-in--d${(i%5)+1}`}
-                    onMouseEnter={() => setActiveCategory(i)}
-                    onClick={() => setActiveCategory(i)}
+                    key={title}
+                    className={activeUseCase === index ? styles.useActive : ''}
+                    onMouseEnter={() => setActiveUseCase(index)}
+                    onClick={() => setActiveUseCase(index)}
                   >
-                    <span className={styles.categoryLabel}>{cat.label}</span>
+                    {title}
                   </button>
                 ))}
               </div>
-              
-              <div className={`fade-in ${styles.categoryVisual}`}>
-                <div className={styles.categoryImageWrap}>
-                  {VENDOR_CATEGORIES.map((cat, i) => (
-                    <div 
-                      key={cat.label} 
-                      className={`${styles.categoryImageLayer} ${activeCategory === i ? styles.categoryImageActive : ''}`}
-                    >
-                      {cat.image ? (
-                        <Image src={cat.image} alt={cat.label} fill className={styles.catImg} />
-                      ) : (
-                        <div className={styles.catFallback}>
-                          {cat.label} Image Coming Soon
-                        </div>
-                      )}
-                    </div>
-                  ))}
+              <div className={styles.useVisual}>
+                <Image src={useCases[activeUseCase][2]} alt={useCases[activeUseCase][0]} fill className={styles.useImage} />
+                <div className={styles.useCaption}>
+                  <h3>{useCases[activeUseCase][0]}</h3>
+                  <p>{useCases[activeUseCase][1]}</p>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ─── FEATURED SPACES ─── */}
-        <section className="section bg-alt">
+        <section className="section" id="how-it-works">
           <div className="container">
-            <div className={styles.sectionHeader}>
-              <h2 className="fade-in">What an opportunity looks like</h2>
-              <Link href="/browse" className={`btn btn--secondary fade-in ${styles.desktopOnly}`}>
-                Browse all spaces
-              </Link>
+            <div className={styles.sectionIntro}>
+              <span className="label">Role-based paths</span>
+              <h2>Choose how you want to use PopUpCo.</h2>
             </div>
-            
-            <div className="grid-3">
-              {/* Honest 1 real space */}
-              <div className="fade-in fade-in--d1 relative">
-                <div className={styles.exampleBadge}>Preview Listing</div>
-                <SpaceCard space={SPACES_DATA.find(s => s.slug === 'walnut-creek-weekend-market')} />
-              </div>
-              {/* Coming soon cards */}
-              <div className="fade-in fade-in--d2">
-                <ComingSoonCard title="More spaces coming soon" desc="We are adding new retail and market spaces across the Bay Area." cta="Get Notified" />
-              </div>
-              <div className="fade-in fade-in--d3">
-                <ComingSoonCard title="Be the first to list" desc="Have an empty storefront or event space? List it for pop-ups." cta="List a Space" href="/apply/venue" />
-              </div>
+            <div className={styles.roleGrid}>
+              {roleCards.map((role) => (
+                <Link key={role.title} href={role.href} className={`${styles.roleCard} ${role.featured ? styles.roleFeatured : ''}`}>
+                  <h3>{role.title}</h3>
+                  <p>{role.copy}</p>
+                  <span>{role.cta}</span>
+                </Link>
+              ))}
             </div>
-            
-            <Link href="/browse" className={`btn btn--secondary btn--full fade-in ${styles.mobileOnly} mt-6`}>
-              Browse all spaces
-            </Link>
           </div>
         </section>
 
-        {/* ─── HOW IT WORKS ─── */}
-        <section className="section" id="how-it-works">
+        <section className="section bg-alt">
           <div className="container">
-            <h2 className="fade-in text-center mb-12">How it works</h2>
-            <div className="grid-4">
+            <div className={styles.featuredHeader}>
+              <div>
+                <span className="label">Marketplace</span>
+                <h2>Featured pop-up opportunities</h2>
+              </div>
+              <Link href="/browse" className="btn btn--secondary">Discover opportunities</Link>
+            </div>
+            <div className="grid-3">
+              {SPACES_DATA.slice(0, 6).map((space) => <SpaceCard key={space.id} space={space} />)}
+            </div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className={`container ${styles.valueSplit}`}>
+            <div className={styles.valueCopy}>
+              <span className="label">For vendors</span>
+              <h2>Find places to sell, grow, and get discovered.</h2>
+              <p>No more chasing Instagram posts, random forms, and scattered DMs. PopUpCo brings pop-up opportunities, booth details, applications, messages, and saved listings into one place.</p>
+              <ul>
+                {['Search by location, date, category, and budget', 'Understand fees, rules, setup needs, and deadlines', 'Save spaces and markets you like', 'Track applications in one dashboard', 'Message hosts directly', 'Build a vendor profile that looks credible'].map((item) => (
+                  <li key={item}><CheckCircle2 size={17} /> {item}</li>
+                ))}
+              </ul>
+              <Link href="/signup" className="btn btn--primary">Create your vendor profile</Link>
+            </div>
+            <div className={styles.dashboardMock}>
+              <div className={styles.mockHeader}>
+                <strong>Vendor dashboard</strong>
+                <span>Profile 70% complete</span>
+              </div>
               {[
-                { step: '01', title: 'Browse opportunities', desc: 'Find curated markets and retail spaces that fit your brand.', icon: <Search size={24}/> },
-                { step: '02', title: 'Apply or save spaces', desc: 'Submit a simple application or save spaces for later.', icon: <Heart size={24}/> },
-                { step: '03', title: 'Get approved', desc: 'Connect directly with the host or market organizer.', icon: <Users size={24}/> },
-                { step: '04', title: 'Show up and sell', desc: 'Set up your shop and connect with local customers in person.', icon: <Package size={24}/> }
-              ].map((s, i) => (
-                <div key={s.step} className={`fade-in fade-in--d${i+1} ${styles.stepCard}`}>
-                  <div className={styles.stepNum}>{s.step}</div>
-                  <h3 className={styles.stepTitle}>{s.title}</h3>
-                  <p className={styles.stepDesc}>{s.desc}</p>
+                ['3', 'applications pending', ClipboardList],
+                ['5', 'saved opportunities', Heart],
+                ['2', 'new markets near you', MapPin],
+                ['1', 'message from host', MessageSquare],
+              ].map(([num, label, Icon]) => (
+                <div className={styles.mockRow} key={label}>
+                  <Icon size={18} />
+                  <strong>{num}</strong>
+                  <span>{label}</span>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ─── FOR VENDORS ─── */}
         <section className="section bg-cream">
-          <div className="container">
-            <div className={styles.venueSplit}>
-              <div className={`fade-in ${styles.venueContent}`}>
-                <span className="label">For Vendors</span>
-                <h2>Built for small businesses, creators, and community vendors.</h2>
-                <p>Less intimidating than big platforms. Easier than figuring it out alone. Real spaces. Real vendors. Local events.</p>
-                <Link href="/apply/vendor" className="btn btn--primary mt-4">
-                  Apply as a Vendor
-                </Link>
-              </div>
-              <div className={`fade-in ${styles.venueStats}`}>
-                <div className={styles.statBox}>
-                  <h4>Find affordable places to sell</h4>
-                </div>
-                <div className={styles.statBox}>
-                  <h4>Apply to opportunities easily</h4>
-                </div>
-                <div className={styles.statBox}>
-                  <h4>Build your offline presence</h4>
-                </div>
-              </div>
+          <div className={`container ${styles.twoBand}`}>
+            <div>
+              <span className="label">For venues</span>
+              <h2>Turn your space into a pop-up destination.</h2>
+              <p>List a storefront, cafe, studio, gallery, school, parking lot, or community center with photos, amenities, capacity, rules, pricing, and availability.</p>
+              <Link href="/apply/venue" className="btn btn--secondary">List your space</Link>
+            </div>
+            <div>
+              <span className="label">For hosts</span>
+              <h2>Create better pop-up events without the chaos.</h2>
+              <p>Create an event page, find venues, recruit vendors, balance categories, message accepted sellers, and promote your market from one place.</p>
+              <Link href="/hosts" className="btn btn--secondary">Host a pop-up</Link>
             </div>
           </div>
         </section>
 
-        {/* ─── FOR VENUES ─── */}
-        <section className="section bg-tan">
+        <section className={`section ${styles.trustSection}`}>
           <div className="container">
-            <div className={styles.venueSplit} style={{ flexDirection: 'row-reverse' }}>
-              <div className={`fade-in ${styles.venueContent}`}>
-                <span className="label">For Venues & Hosts</span>
-                <h2>List your space and bring local vendors in.</h2>
-                <p>Activate your underused space, drive foot traffic, and support local small businesses by hosting pop-up events.</p>
-                <Link href="/apply/venue" className="btn btn--secondary mt-4">
-                  List Your Space
-                </Link>
-              </div>
-              <div className={`fade-in ${styles.venueStats}`}>
-                <div className={styles.statBox}>
-                  <h4>Create new revenue opportunities</h4>
-                </div>
-                <div className={styles.statBox}>
-                  <h4>Host community events</h4>
-                </div>
-                <div className={styles.statBox}>
-                  <h4>Review interested vendors easily</h4>
-                </div>
-              </div>
+            <div className={styles.sectionIntro}>
+              <span className="label">Trust and safety</span>
+              <h2>Built for vendors who want clarity before they commit.</h2>
+              <p>Vendors should not have to guess whether an event is legitimate, what it costs, what to bring, or whether the audience fits their business.</p>
+            </div>
+            <div className={styles.trustGrid}>
+              {trustItems.map((item) => <div key={item} className={styles.trustCard}><ShieldCheck size={18} /> {item}</div>)}
             </div>
           </div>
         </section>
 
-        {/* ─── COMMUNITY ─── */}
         <section className={`section--dark ${styles.communitySection}`}>
           <div className="container">
             <div className={styles.communityInner}>
-              <h2 className="fade-in">Commerce that builds community.</h2>
-              <p className="fade-in">
-                We believe in supporting the communities we operate in. Nonprofits, mutual aid groups, and local community organizations often qualify for discounted or free space at Pop Up Co. markets.
-              </p>
-              <div className="fade-in mt-8">
-                <Link href="/contact" className="btn btn--outline-white">
-                  Contact About Community Partnerships
-                </Link>
+              <span className="label">Bay Area first</span>
+              <h2>Local commerce should feel local.</h2>
+              <p>PopUpCo starts in the Bay Area with markets, makers, venues, food vendors, artists, nonprofits, and community spaces. The goal is not just to rent space. The goal is to help local businesses show up in real life.</p>
+              <Link href="/browse" className="btn btn--outline-white">Explore Bay Area opportunities</Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="section bg-alt">
+          <div className={`container ${styles.appPreview}`}>
+            <div>
+              <span className="label">After signup</span>
+              <h2>Everything organized after you sign up.</h2>
+              <p>Role-specific dashboards make PopUpCo feel like a working marketplace, not a brochure.</p>
+            </div>
+            <div className={styles.previewPanel}>
+              <div className={styles.previewTabs}>
+                {Object.keys(dashboardData).map((tab) => (
+                  <button key={tab} className={activeDash === tab ? styles.previewActive : ''} onClick={() => setActiveDash(tab)}>
+                    {tab}
+                  </button>
+                ))}
+              </div>
+              <div className={styles.previewList}>
+                {dashboardData[activeDash].map((item, index) => (
+                  <div key={item}><span>{index + 1}</span>{item}</div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* ─── FINAL CTA ─── */}
-        <section className={`section bg-cream ${styles.finalCta}`}>
-          <div className="container text-center">
-            <h2 className="fade-in mb-6">Ready to find your next place to sell?</h2>
-            <Link href="/browse" className="btn btn--primary btn--xl fade-in">
-              Find a Space
-            </Link>
+        <section className={`section ${styles.finalCta}`}>
+          <div className="container">
+            <h2>Ready to find your next pop-up opportunity?</h2>
+            <div className={styles.heroCtas}>
+              <Link href="/browse" className="btn btn--primary btn--xl">Find a place to sell</Link>
+              <Link href="/signup" className="btn btn--secondary btn--xl">Create account</Link>
+            </div>
           </div>
         </section>
-
       </main>
       <Footer />
     </>

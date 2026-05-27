@@ -21,11 +21,16 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = (type, userData = {}) => {
-    // type should be 'vendor' or 'venue'
+    const defaults = {
+      vendor: 'Jane Vendor',
+      venue: 'John Venue',
+      host: 'Taylor Host',
+      attendee: 'Alex Explorer',
+    };
     const newUser = {
       id: Math.random().toString(36).substring(7),
       type,
-      name: userData.name || (type === 'vendor' ? 'Jane Vendor' : 'John Venue'),
+      name: userData.name || defaults[type] || 'PopUpCo User',
       email: userData.email || 'user@example.com',
       ...userData
     };

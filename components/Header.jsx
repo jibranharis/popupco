@@ -1,10 +1,51 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, User } from 'lucide-react';
+import { Menu, Store, User, X } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import styles from './Header.module.css';
+
+const publicNav = [
+  { label: 'Discover', href: '/browse' },
+  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'For Vendors', href: '/vendors' },
+  { label: 'For Venues', href: '/venues' },
+  { label: 'For Hosts', href: '/hosts' },
+];
+
+const roleNav = {
+  vendor: [
+    { label: 'Opportunities', href: '/browse' },
+    { label: 'Applications', href: '/dashboard/vendor#applications' },
+    { label: 'Saved', href: '/dashboard/vendor#saved' },
+    { label: 'Messages', href: '/dashboard/vendor#messages' },
+    { label: 'Dashboard', href: '/dashboard/vendor' },
+    { label: 'Profile', href: '/dashboard/vendor#profile' },
+  ],
+  venue: [
+    { label: 'Listings', href: '/dashboard/venue#listings' },
+    { label: 'Requests', href: '/dashboard/venue#requests' },
+    { label: 'Calendar', href: '/dashboard/venue#calendar' },
+    { label: 'Messages', href: '/dashboard/venue#messages' },
+    { label: 'Dashboard', href: '/dashboard/venue' },
+    { label: 'Profile', href: '/dashboard/venue#profile' },
+  ],
+  host: [
+    { label: 'My Events', href: '/dashboard/host#events' },
+    { label: 'Vendor Applications', href: '/dashboard/host#applications' },
+    { label: 'Spaces', href: '/browse' },
+    { label: 'Messages', href: '/dashboard/host#messages' },
+    { label: 'Dashboard', href: '/dashboard/host' },
+    { label: 'Profile', href: '/dashboard/host#profile' },
+  ],
+  attendee: [
+    { label: 'Discover', href: '/browse' },
+    { label: 'Saved Events', href: '/dashboard/attendee#saved' },
+    { label: 'Messages', href: '/dashboard/attendee#messages' },
+    { label: 'Profile', href: '/dashboard/attendee#profile' },
+  ],
+};
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -14,62 +55,32 @@ export default function Header() {
   const [profileOpen, setProfileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 18);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
-    if (menuOpen) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = '';
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  // Logged-out Nav
-  const publicNavCenter = [
-    { label: 'Browse Spaces', href: '/browse' },
-    { label: 'For Vendors', href: '/apply/vendor' },
-    { label: 'For Venues', href: '/apply/venue' },
-    { label: 'How It Works', href: '/#how-it-works' },
-    { label: 'About', href: '/about' },
-  ];
-  const publicNavRight = [
-    { label: 'Log In', href: '/login' },
-  ];
-
-  // Vendor Nav
-  const vendorNav = [
-    { label: 'Browse Spaces', href: '/browse' },
-    { label: 'Dashboard', href: '/dashboard/vendor' },
-    { label: 'Saved Spaces', href: '/dashboard/vendor#saved' },
-    { label: 'Messages', href: '/dashboard/vendor#messages' },
-  ];
-
-  // Venue Nav
-  const venueNav = [
-    { label: 'Dashboard', href: '/dashboard/venue' },
-    { label: 'My Spaces', href: '/dashboard/venue#spaces' },
-    { label: 'Booking Requests', href: '/dashboard/venue#requests' },
-    { label: 'Messages', href: '/dashboard/venue#messages' },
-  ];
-
-  const currentNav = !user ? publicNavCenter : (user.type === 'vendor' ? vendorNav : venueNav);
+  const nav = user ? roleNav[user.type] || roleNav.vendor : publicNav;
+  const dashboardHref = user ? `/dashboard/${user.type}` : '/signup';
 
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
-        {/* Logo (Left) */}
-        <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <img src="/images/media__1779840173203.jpg" alt="Pop Up Co. Logo" style={{ height: '32px', width: '32px', objectFit: 'contain', borderRadius: '4px' }} />
-          <span className={styles.logoText}>Pop Up Co.</span>
+        <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
+          <span className={styles.logoMark}><Store size={17} /></span>
+          <span className={styles.logoText}>PopUpCo</span>
         </Link>
 
-        {/* Center Nav */}
-        <nav className={styles.navCenter}>
-          {currentNav.map((link) => (
-            <Link 
-              key={link.href} 
-              href={link.href} 
+        <nav className={styles.navCenter} aria-label="Primary">
+          {nav.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
               className={`${styles.navLink} ${pathname === link.href ? styles.activeNavLink : ''}`}
             >
               {link.label}
@@ -77,30 +88,18 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Right Area */}
         <div className={styles.navRight}>
           {!user ? (
             <>
-              {publicNavRight.map((link) => (
-                <Link key={link.href} href={link.href} className={styles.navLink}>
-                  {link.label}
-                </Link>
-              ))}
-              <Link href="/apply/venue" className="btn btn--primary btn--sm">
-                List Your Space
-              </Link>
+              <Link href="/login" className={styles.navLink}>Log in</Link>
+              <Link href="/signup" className={styles.navLink}>Sign up</Link>
+              <Link href="/browse" className="btn btn--primary btn--sm">Get Started</Link>
             </>
           ) : (
             <div className={styles.profileMenuContainer}>
-              <button 
-                className={styles.profileBtn}
-                onClick={() => setProfileOpen(!profileOpen)}
-              >
-                <div className={styles.avatar}>
-                  {user.name ? user.name.charAt(0).toUpperCase() : <User size={16} />}
-                </div>
+              <button className={styles.profileBtn} onClick={() => setProfileOpen(!profileOpen)} aria-label="Open profile menu">
+                <div className={styles.avatar}>{user.name ? user.name.charAt(0).toUpperCase() : <User size={16} />}</div>
               </button>
-              
               {profileOpen && (
                 <div className={styles.profileDropdown}>
                   <div className={styles.profileHeader}>
@@ -108,9 +107,9 @@ export default function Header() {
                     <p className={styles.profileEmail}>{user.email}</p>
                   </div>
                   <div className={styles.dropdownLinks}>
-                    <Link href={`/dashboard/${user.type}`} onClick={() => setProfileOpen(false)}>Dashboard</Link>
-                    <Link href="#" onClick={() => setProfileOpen(false)}>Settings</Link>
-                    <button onClick={() => { logout(); setProfileOpen(false); }}>Log Out</button>
+                    <Link href={dashboardHref} onClick={() => setProfileOpen(false)}>Dashboard</Link>
+                    <Link href={`${dashboardHref}#profile`} onClick={() => setProfileOpen(false)}>Profile</Link>
+                    <button onClick={() => { logout(); setProfileOpen(false); }}>Log out</button>
                   </div>
                 </div>
               )}
@@ -118,7 +117,6 @@ export default function Header() {
           )}
         </div>
 
-        {/* Hamburger (Mobile) */}
         <button
           className={styles.hamburger}
           onClick={() => setMenuOpen(!menuOpen)}
@@ -128,57 +126,30 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       <div className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ''}`}>
-        <nav className={styles.mobileNav}>
-          {currentNav.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={styles.mobileNavLink}
-              onClick={() => setMenuOpen(false)}
-            >
+        <nav className={styles.mobileNav} aria-label="Mobile primary">
+          {nav.map((link) => (
+            <Link key={link.href} href={link.href} className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>
               {link.label}
             </Link>
           ))}
-          
-          {!user && <hr className={styles.mobileDivider} />}
-          
+          <hr className={styles.mobileDivider} />
           {!user ? (
-            publicNavRight.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={styles.mobileNavLink}
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))
-          ) : (
             <>
-              <hr className={styles.mobileDivider} />
-              <button 
-                className={styles.mobileNavLink} 
-                style={{textAlign: 'left', width: '100%'}}
-                onClick={() => { logout(); setMenuOpen(false); }}
-              >
-                Log Out
-              </button>
+              <Link href="/login" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Log in</Link>
+              <Link href="/signup" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Sign up</Link>
             </>
+          ) : (
+            <button className={styles.mobileNavLink} onClick={() => { logout(); setMenuOpen(false); }}>Log out</button>
           )}
         </nav>
-        
         {!user && (
           <div className={styles.mobileCtas}>
-            <Link href="/apply/venue" className="btn btn--primary btn--full" onClick={() => setMenuOpen(false)}>
-              List Your Space
-            </Link>
+            <Link href="/browse" className="btn btn--primary btn--full" onClick={() => setMenuOpen(false)}>Get Started</Link>
           </div>
         )}
       </div>
 
-      {/* Mobile overlay */}
       {menuOpen && <div className={styles.overlay} onClick={() => setMenuOpen(false)} />}
     </header>
   );

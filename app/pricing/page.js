@@ -4,16 +4,16 @@ import Footer from '@/components/Footer';
 import styles from './page.module.css';
 
 export const metadata = {
-  title: 'Pop-Up Vendor Pricing',
-  description: 'Transparent pricing for vendors, venues, and brand pop-up packages. Spots start at $50.',
+  title: 'Simple pricing for pop-up opportunities',
+  description: 'Transparent pricing for vendors, venues, host tools, featured placement, and dedicated pop-up packages.',
 };
 
 const TIERS = [
   {
-    title: 'Vendor Spot',
-    price: 'Starting at $50',
-    priceNote: 'Depending on event size, location, and placement',
-    desc: 'For vendors joining a curated multi-vendor pop-up market.',
+    title: 'Vendor spots',
+    price: '$75-$250',
+    priceNote: 'Varies by location, attendance, booth size, amenities, and event type',
+    desc: 'For vendors joining curated markets, booth opportunities, and community pop-ups.',
     features: [
       'Selling space / booth area',
       'Event listing on Pop Up Co.',
@@ -25,7 +25,7 @@ const TIERS = [
     highlighted: false,
   },
   {
-    title: 'Featured Vendor',
+    title: 'Featured vendor placement',
     price: 'Custom',
     priceNote: 'Inquire for pricing',
     desc: 'For vendors who want more visibility at an event.',
@@ -39,7 +39,7 @@ const TIERS = [
     highlighted: true,
   },
   {
-    title: 'Brand Pop-Up Package',
+    title: 'Dedicated brand pop-up',
     price: 'Custom',
     priceNote: 'Dedicated pop-up experience',
     desc: 'For brands that want a dedicated retail pop-up rather than a shared vendor market.',
@@ -57,14 +57,14 @@ const TIERS = [
 
 const ADDONS = [
   {
-    title: 'Table / Tent / Chair Rentals',
-    price: 'Optional add-on',
-    desc: 'Vendors may bring their own setup or request tables, tents, and chairs for an additional fee when available. Availability depends on event location and inventory.',
+    title: 'Venue listing',
+    price: 'Launch pricing',
+    desc: 'Venues can list space details, availability, amenities, rules, and pricing so hosts and vendors can evaluate fit.',
   },
   {
-    title: 'Nonprofit / Community Rate',
-    price: 'Discounted',
-    desc: 'Nonprofits and community organizations may qualify for discounted vendor spots depending on the event. Eligibility is reviewed during the application process.',
+    title: 'Host tools',
+    price: 'Included during MVP',
+    desc: 'Event pages, vendor applications, saved venues, messaging, and event checklists are being shaped with early hosts.',
   },
 ];
 
@@ -77,9 +77,9 @@ export default function PricingPage() {
         <section className={styles.hero}>
           <div className="container">
             <div className="badge badge--accent" style={{marginBottom: '16px'}}>Pricing</div>
-            <h1 className={styles.headline}>Flexible pricing for different pop-up formats.</h1>
+            <h1 className={styles.headline}>Simple pricing for pop-up opportunities.</h1>
             <p className={styles.sub}>
-              Every event is different, so pricing depends on location, event size, setup needs, and placement.
+              Pricing varies by location, expected attendance, booth size, amenities, and event type. Every opportunity should show the cost before you apply or request.
             </p>
           </div>
         </section>
@@ -132,7 +132,7 @@ export default function PricingPage() {
             {/* Important notes */}
             <div className={styles.notes}>
               <div className={`notice notice--info ${styles.note}`}>
-                <strong>No upfront commitment:</strong> Applications are free to submit. You only pay your booth fee once you've been accepted to an event.
+                <strong>Application fees are not the default:</strong> A $25 application fee may apply for select events. If accepted, it is credited toward the booth fee, and events with a fee will clearly show that before submission.
               </div>
               <div className={`notice notice--warning ${styles.note}`}>
                 <strong>Food & beverage vendors:</strong> Food, beverage, and food truck vendors may require additional permits and approval. Additional requirements will be communicated during the review process.

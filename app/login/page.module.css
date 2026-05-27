@@ -35,6 +35,10 @@
   box-shadow: var(--shadow-lg);
 }
 
+.signupWide {
+  max-width: 720px;
+}
+
 .title {
   font-size: 1.75rem;
   margin-bottom: var(--sp-2);
@@ -120,6 +124,57 @@
   margin-top: 4px;
 }
 
+.roleCards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-3);
+}
+
+.onboardingPreview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-6);
+}
+
+.onboardingPreview span {
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-alt);
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-alt);
+}
+
+.segmented button {
+  padding: 8px 10px;
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  font-weight: 800;
+}
+
+.segmented .segmentActive {
+  background: #fff;
+  color: var(--color-text);
+  box-shadow: var(--shadow-xs);
+}
+
+.textRight {
+  margin-top: 5px;
+  text-align: right;
+}
+
 @media (max-width: 640px) {
   .backHome {
     top: 24px;
@@ -127,5 +182,11 @@
   }
   .authContainer {
     padding: var(--sp-6);
+  }
+
+  .roleCards,
+  .segmented {
+    grid-template-columns: 1fr;
+    border-radius: var(--radius-lg);
   }
 }

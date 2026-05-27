@@ -1,152 +1,44 @@
-'use client';
-import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { CheckCircle, ArrowRight } from 'lucide-react';
-import styles from './page.module.css';
+import { CheckCircle2 } from 'lucide-react';
+import styles from '../hosts/page.module.css';
 
-const VENUE_TYPES = [
-  'Empty storefronts',
-  'Retail shops',
-  'Cafes',
-  'Galleries',
-  'Studios',
-  'Community centers',
-  'Parking lots',
-  'Warehouses',
-  'Event spaces',
-  'Schools & community orgs',
-  'Nonprofit spaces',
-];
-
-const BENEFITS = [
-  'Generate rental income from underused space',
-  'Bring real foot traffic to your location',
-  'Support local small businesses and creators',
-  'Activate underused or vacant square footage',
-  'Choose what types of events fit your space',
-  'We review vendor fit and event needs before moving forward',
-];
-
-const HOW_IT_WORKS = [
-  { num: '01', title: 'Submit your space', desc: 'Tell us about your venue, capacity, availability, and what types of events you\'d consider.' },
-  { num: '02', title: 'We review fit', desc: 'We assess capacity, location, logistics, city requirements, and overall event suitability.' },
-  { num: '03', title: 'Get matched', desc: 'We connect your space with the right event concept or vendor group when the fit is right.' },
-  { num: '04', title: 'Coordinate next steps', desc: 'We work with you directly on details, contracts, setup needs, and event planning.' },
+const features = [
+  'List your space with photos, amenities, capacity, and rules',
+  'Set availability and pricing',
+  'Receive booking or event requests',
+  'Approve the right hosts and vendors',
+  'Bring foot traffic to your location',
+  'Support local businesses',
 ];
 
 export default function VenuesPage() {
-  const pageRef = useRef(null);
-
-  useEffect(() => {
-    if (!pageRef.current) return;
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-    );
-    pageRef.current.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
       <Header />
-      <main ref={pageRef}>
+      <main className={styles.main}>
         <section className={styles.hero}>
           <div className="container">
-            <div className={`badge badge--sage ${styles.badge}`}>For venues</div>
-            <h1 className={styles.headline}>
-              Your space, their brand.<br />A natural fit.
-            </h1>
-            <p className={styles.sub}>
-              Pop Up Co. partners with Bay Area venues, storefronts, galleries, studios, cafes, parking lots, and community spaces to host local pop-up events.
-            </p>
-            <Link href="/apply/venue" className="btn btn--primary btn--lg">
-              List Your Space
-            </Link>
+            <span className="label">For venues</span>
+            <h1>Turn your space into a pop-up destination.</h1>
+            <p>Have a storefront, event hall, cafe, studio, parking lot, gallery, school, community center, or unused retail space? PopUpCo helps you show it beautifully, set rules, and connect with hosts or vendors who want to bring people in.</p>
+            <div className={styles.ctas}>
+              <Link href="/apply/venue" className="btn btn--primary btn--lg">List your space</Link>
+              <Link href="/browse" className="btn btn--secondary btn--lg">See marketplace</Link>
+            </div>
           </div>
         </section>
-
-        {/* Venue types */}
         <section className="section">
-          <div className="container">
-            <p className="fade-in section-label">Space types</p>
-            <h2 className={`fade-in ${styles.sectionH2}`}>All kinds of spaces work.</h2>
-            <div className={styles.typesGrid} style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-sm)' }}>
-              {VENUE_TYPES.map((type, i) => (
-                <span key={type} className={`badge fade-in fade-in--delay-${(i % 4) + 1}`} style={{ fontSize: '1rem', padding: 'var(--spacing-sm) var(--spacing-md)', backgroundColor: 'var(--color-bg-alt)', border: '1px solid var(--color-border)', color: 'var(--color-text)', borderRadius: '2rem' }}>
-                  {type}
-                </span>
+          <div className={`container ${styles.grid}`}>
+            <div className={styles.copy}>
+              <h2>A clearer way to activate underused space.</h2>
+              <ul>{features.map((feature) => <li key={feature}><CheckCircle2 size={18} /> {feature}</li>)}</ul>
+            </div>
+            <div className={styles.panel}>
+              {['Active listings', 'Booking requests', 'Calendar', 'Messages'].map((item) => (
+                <div key={item}><CheckCircle2 size={20} /><strong>{item}</strong><span>Managed from your venue dashboard.</span></div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Benefits */}
-        <section className={`section ${styles.benefitsSection}`}>
-          <div className="container">
-            <div className={styles.benefitsInner}>
-              <div className={styles.benefitsContent}>
-                <p className="fade-in section-label">Why partner</p>
-                <h2 className={`fade-in ${styles.sectionH2}`}>Your space, better utilized.</h2>
-                <ul className={styles.benefitsList}>
-                  {BENEFITS.map((benefit) => (
-                    <li key={benefit} className={`fade-in ${styles.benefitItem}`}>
-                      <CheckCircle size={18} className={styles.checkIcon} />
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/apply/venue" className={`btn btn--primary fade-in`}>
-                  List Your Space <ArrowRight size={16} />
-                </Link>
-              </div>
-              <div className={`fade-in ${styles.trustCard}`}>
-                <h3 className={styles.trustTitle}>Before we move forward</h3>
-                <p className={styles.trustText}>
-                  We review every event concept before moving forward and do not guarantee that every submitted space will be used. Final event details depend on vendor fit, safety, availability, city requirements, and venue approval.
-                </p>
-                <div className={styles.trustDivider} />
-                <p className={styles.trustText}>
-                  Pop Up Co. does not provide legal, insurance, or permitting advice. Venue owners are responsible for confirming any permits or approvals required.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* How it works */}
-        <section className="section">
-          <div className="container">
-            <p className="fade-in section-label">What happens next</p>
-            <h2 className={`fade-in ${styles.sectionH2}`}>From submission to pop-up.</h2>
-            <div className={styles.stepsGrid}>
-              {HOW_IT_WORKS.map((step, i) => (
-                <div key={step.num} className={`card fade-in fade-in--delay-${i + 1} ${styles.stepCard}`}>
-                  <div className={styles.stepNum}>{step.num}</div>
-                  <h3 className={styles.stepTitle}>{step.title}</h3>
-                  <p className={styles.stepDesc}>{step.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className={`section--dark ${styles.ctaSection}`}>
-          <div className="container">
-            <div className={styles.ctaInner}>
-              <h2 className={`fade-in ${styles.ctaH2}`}>Have a space that could host a pop-up?</h2>
-              <p className={`fade-in ${styles.ctaSub}`}>
-                Submit your space and we'll review fit, capacity, and event suitability. No commitment required.
-              </p>
-              <Link href="/apply/venue" className={`btn btn--primary btn--lg fade-in`}>
-                Submit Your Space
-              </Link>
-              <p className={`fade-in ${styles.ctaDisclaimer}`}>
-                Submitting a space does not guarantee Pop Up Co. will host an event there.
-              </p>
             </div>
           </div>
         </section>

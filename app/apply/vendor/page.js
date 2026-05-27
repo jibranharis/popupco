@@ -1,6 +1,5 @@
 'use client';
-import { useState, useEffect, useRef, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ChevronRight, CheckCircle } from 'lucide-react';
@@ -47,7 +46,6 @@ const LOCATIONS = [
 const FOOD_CATEGORIES = ['Packaged food', 'Beverage', 'Food truck'];
 
 function VendorApplicationForm() {
-  const searchParams = useSearchParams();
   const [section, setSection] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -65,7 +63,7 @@ function VendorApplicationForm() {
     // Section 4
     product_description: '', avg_price_range: '', photo_links: '', sold_before: '', sold_before_where: '', brand_fit: '',
     // Section 5
-    event_preference: searchParams.get('event') || '', preferred_locations: [], available_dates: '', events_per_month: '',
+    event_preference: '', preferred_locations: [], available_dates: '', events_per_month: '',
     // Section 6
     needs_table: '', needs_chairs: '', needs_tent: '', needs_electricity: '', booth_size: '', own_setup: '', special_setup: '',
     // Food conditional
@@ -80,6 +78,11 @@ function VendorApplicationForm() {
   });
 
   const isFoodVendor = form.categories.some((c) => FOOD_CATEGORIES.includes(c));
+
+  useEffect(() => {
+    const eventSlug = new URLSearchParams(window.location.search).get('event');
+    if (eventSlug) setField('event_preference', eventSlug);
+  }, []);
 
   function scrollTop() {
     topRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -364,10 +367,10 @@ function VendorApplicationForm() {
                   <label className="form-label" htmlFor="v-event-pref">Which upcoming event are you applying for?</label>
                   <select id="v-event-pref" className="form-select" value={form.event_preference} onChange={(e) => setField('event_preference', e.target.value)}>
                     <option value="">All / open to any upcoming event</option>
-                    <option value="bay-area-brand-market">Bay Area Brand Market</option>
-                    <option value="east-bay-local-makers">East Bay Local Makers Pop-Up</option>
-                    <option value="community-retail-weekend">Community Retail Weekend</option>
-                    <option value="food-truck-local-goods">Food Truck & Local Goods Market</option>
+                    <option value="walnut-creek-weekend-market">Walnut Creek Weekend Market</option>
+                    <option value="oakland-makers-night-market">Oakland Makers Night Market</option>
+                    <option value="berkeley-art-market-booth">Berkeley Art Market Booth</option>
+                    <option value="san-jose-community-market">San Jose Community Market</option>
                   </select>
                 </div>
                 <div className="form-group">
@@ -684,14 +687,5 @@ function VendorApplicationForm() {
 }
 
 export default function VendorApplicationPage() {
-  return (
-    <Suspense fallback={
-      <div style={{ textAlign: 'center', padding: '100px 20px', minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-text-dark)', marginBottom: '10px' }}>Loading Application...</h2>
-        <p style={{ color: 'var(--color-text-muted)' }}>Preparing the Pop Up Co. vendor application form.</p>
-      </div>
-    }>
-      <VendorApplicationForm />
-    </Suspense>
-  );
+  return <VendorApplicationForm />;
 }

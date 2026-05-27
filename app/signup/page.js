@@ -1,9 +1,23 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthContext';
 import styles from '../login/page.module.css';
+
+const roles = [
+  ['vendor', "I'm a vendor", 'Find pop-up opportunities, apply to markets, save spaces, and manage applications.'],
+  ['venue', "I'm a venue", 'List a space, receive requests, and bring vendors or events into your location.'],
+  ['host', "I'm a host", 'Create pop-up events, recruit vendors, manage applications, and find venues.'],
+  ['attendee', "I'm exploring events", 'Discover local pop-ups, markets, food events, and community experiences.'],
+];
+
+const onboarding = {
+  vendor: ['Business name', 'Category', 'Products sold', 'Location', 'Photos', 'Social links', 'Bio', 'Opportunities wanted', 'Budget', 'Availability', 'Setup needs'],
+  venue: ['Space name', 'Location', 'Capacity', 'Space type', 'Photos', 'Amenities', 'Rules', 'Pricing', 'Availability', 'Indoor/outdoor', 'Food allowed'],
+  host: ['Organization name', 'Event types', 'Vendor categories needed', 'Preferred locations', 'Past event experience', 'Expected attendance', 'Dates', 'Venue needed'],
+  attendee: ['Location', 'Event interests', 'Saved event preferences', 'Weekend availability'],
+};
 
 export default function SignupPage() {
   const router = useRouter();
@@ -13,119 +27,60 @@ export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
 
-  const handleNext = (e) => {
-    e.preventDefault();
-    setStep(2);
-  };
+  const fields = useMemo(() => onboarding[type] || onboarding.vendor, [type]);
 
-  const handleSignup = (e) => {
-    e.preventDefault();
+  const handleSignup = (event) => {
+    event.preventDefault();
     login(type, { email, name });
-    router.push(`/dashboard/${type}`);
+    router.push(type === 'attendee' ? '/browse' : `/dashboard/${type}`);
   };
 
   return (
     <div className={styles.authLayout}>
-      <Link href="/" className={styles.backHome} style={{ fontSize: '1.5rem', letterSpacing: '-0.03em' }}>
-        Pop Up Co.
-      </Link>
-      
-      <div className={styles.authContainer}>
+      <Link href="/" className={styles.backHome}>PopUpCo</Link>
+      <div className={`${styles.authContainer} ${styles.signupWide}`}>
         {step === 1 ? (
           <>
-            <h1 className={styles.title}>Create an account</h1>
-            <p className="text-muted mb-6">Join the Pop Up Co. community to find space or host brands.</p>
-            
-            <form onSubmit={handleNext} className={styles.form}>
-              <div className="form-group">
-                <label className="form-label">How will you use Pop Up Co.?</label>
-                <div style={{display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '12px'}}>
-                  <label className={`${styles.typeCard} ${type === 'vendor' ? styles.typeActive : ''}`}>
-                    <input type="radio" checked={type === 'vendor'} onChange={() => setType('vendor')} />
-                    <div>
-                      <strong>Vendor</strong>
-                      <p className="text-muted text-sm mt-1">I want to find pop-up spaces and apply to markets.</p>
-                    </div>
-                  </label>
-                  <label className={`${styles.typeCard} ${type === 'venue' ? styles.typeActive : ''}`}>
-                    <input type="radio" checked={type === 'venue'} onChange={() => setType('venue')} />
-                    <div>
-                      <strong>Venue/Host</strong>
-                      <p className="text-muted text-sm mt-1">I have a space and want to host brands and pop-ups.</p>
-                    </div>
-                  </label>
-                  <label className={`${styles.typeCard} ${type === 'organizer' ? styles.typeActive : ''}`}>
-                    <input type="radio" checked={type === 'organizer'} onChange={() => setType('organizer')} />
-                    <div>
-                      <strong>Event Organizer</strong>
-                      <p className="text-muted text-sm mt-1">I plan and coordinate markets and pop-up events.</p>
-                    </div>
-                  </label>
-                  <label className={`${styles.typeCard} ${type === 'nonprofit' ? styles.typeActive : ''}`}>
-                    <input type="radio" checked={type === 'nonprofit'} onChange={() => setType('nonprofit')} />
-                    <div>
-                      <strong>Community/Nonprofit</strong>
-                      <p className="text-muted text-sm mt-1">I represent a community organization or nonprofit.</p>
-                    </div>
-                  </label>
-                  <label className={`${styles.typeCard} ${type === 'visitor' ? styles.typeActive : ''}`}>
-                    <input type="radio" checked={type === 'visitor'} onChange={() => setType('visitor')} />
-                    <div>
-                      <strong>Visitor</strong>
-                      <p className="text-muted text-sm mt-1">I want to discover and attend local pop-up events.</p>
-                    </div>
-                  </label>
-                </div>
-              </div>
-              <button type="submit" className="btn btn--primary btn--full mt-4">
-                Continue
-              </button>
-            </form>
+            <h1 className={styles.title}>How will you use PopUpCo?</h1>
+            <p className="text-muted mb-6">Choose a role so your account starts with the right tools.</p>
+            <div className={styles.roleCards}>
+              {roles.map(([value, title, copy]) => (
+                <label key={value} className={`${styles.typeCard} ${type === value ? styles.typeActive : ''}`}>
+                  <input type="radio" checked={type === value} onChange={() => setType(value)} />
+                  <div>
+                    <strong>{title}</strong>
+                    <p className="text-muted text-sm mt-1">{copy}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
+            <button type="button" onClick={() => setStep(2)} className="btn btn--primary btn--full mt-4">Continue</button>
+            <p className={styles.footer}>Already have an account? <Link href="/login">Log in</Link></p>
           </>
         ) : (
           <>
-            <h1 className={styles.title}>Almost done</h1>
-            <p className="text-muted mb-6">Tell us a bit about yourself.</p>
-            
+            <h1 className={styles.title}>Build your {type} account</h1>
+            <p className="text-muted mb-6">We will ask for these details as your profile grows.</p>
+            <div className={styles.onboardingPreview}>
+              {fields.map((field) => <span key={field}>{field}</span>)}
+            </div>
             <form onSubmit={handleSignup} className={styles.form}>
               <div className="form-group">
-                <label className="form-label">{type === 'vendor' ? 'Brand Name' : 'Company Name'}</label>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  required 
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
+                <label className="form-label">{type === 'vendor' ? 'Business name' : type === 'venue' ? 'Space or venue name' : type === 'host' ? 'Organization name' : 'Name'}</label>
+                <input className="form-input" required value={name} onChange={(event) => setName(event.target.value)} />
               </div>
               <div className="form-group">
                 <label className="form-label">Email</label>
-                <input 
-                  type="email" 
-                  className="form-input" 
-                  required 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+                <input type="email" className="form-input" required value={email} onChange={(event) => setEmail(event.target.value)} />
               </div>
               <div className="form-group">
                 <label className="form-label">Password</label>
                 <input type="password" className="form-input" required />
               </div>
-              <button type="submit" className="btn btn--primary btn--full mt-4">
-                Create Account
-              </button>
-              <button type="button" onClick={() => setStep(1)} className="btn btn--ghost btn--full mt-2">
-                Back
-              </button>
+              <button type="submit" className="btn btn--primary btn--full mt-4">Create account</button>
+              <button type="button" onClick={() => setStep(1)} className="btn btn--ghost btn--full mt-2">Back</button>
             </form>
           </>
-        )}
-
-        {step === 1 && (
-          <p className={styles.footer}>
-            Already have an account? <Link href="/login">Log in</Link>
-          </p>
         )}
       </div>
     </div>

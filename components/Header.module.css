@@ -33,9 +33,15 @@
 }
 
 .logoMark {
-  color: var(--color-accent);
-  font-size: 1.25rem;
-  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px 10px 14px 14px;
+  background: var(--color-accent);
+  color: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .logoText {
@@ -50,7 +56,7 @@
 .navCenter {
   display: flex;
   align-items: center;
-  gap: var(--sp-6);
+  gap: var(--sp-5);
 }
 
 .navRight {
@@ -213,6 +219,7 @@
   font-weight: 500;
   color: var(--color-text);
   text-decoration: none;
+  text-align: left;
 }
 
 .mobileDivider {

@@ -33,9 +33,9 @@ export default function VendorDashboard() {
           <div className={styles.dashboardHeader}>
             <div className={styles.headerLeft}>
               <h1>Welcome back, {user.name}</h1>
-              <p className="text-muted">Manage your pop-up applications, saved spaces, and brand profile.</p>
+              <p className="text-muted">Manage your pop-up applications, saved opportunities, messages, and vendor profile.</p>
             </div>
-            <Link href="/browse" className="btn btn--primary">Find Spaces</Link>
+            <Link href="/browse" className="btn btn--primary">Find Opportunities</Link>
           </div>
 
           <div className={styles.grid}>
@@ -66,7 +66,7 @@ export default function VendorDashboard() {
                   <FileText size={18} /> Overview
                 </Link>
                 <Link href="#saved" className={styles.navItem}>
-                  <Heart size={18} /> Saved Spaces ({savedSpaces.length})
+                  <Heart size={18} /> Saved ({savedSpaces.length})
                 </Link>
                 <Link href="#messages" className={styles.navItem}>
                   <MessageSquare size={18} /> Messages
@@ -93,7 +93,7 @@ export default function VendorDashboard() {
 
               {/* Saved Spaces */}
               <section id="saved" className={styles.section}>
-                <h2 className={styles.sectionTitle}>Saved Spaces</h2>
+                <h2 className={styles.sectionTitle}>Saved Opportunities</h2>
                 {savedSpaces.length > 0 ? (
                   <div className="grid-2">
                     {savedSpaces.map(space => (
@@ -103,9 +103,9 @@ export default function VendorDashboard() {
                 ) : (
                   <div className={styles.emptyState}>
                     <Heart size={32} className="text-muted mb-4" />
-                    <h4>No saved spaces yet</h4>
-                    <p className="text-muted mt-2 mb-4">Keep track of spaces you like by clicking the heart icon.</p>
-                    <Link href="/browse" className="btn btn--secondary">Browse Spaces</Link>
+                    <h4>No saved opportunities yet</h4>
+                    <p className="text-muted mt-2 mb-4">Keep track of markets, spaces, and events you like by clicking the heart icon.</p>
+                    <Link href="/browse" className="btn btn--secondary">Browse Opportunities</Link>
                   </div>
                 )}
               </section>

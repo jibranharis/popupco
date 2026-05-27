@@ -27,7 +27,7 @@ export default function VenueDashboard() {
         <div className="container">
           <div className={styles.dashboardHeader}>
             <div className={styles.headerLeft}>
-              <h1>Venue Host Dashboard</h1>
+              <h1>Venue Dashboard</h1>
               <p className="text-muted">Manage your spaces, bookings, and incoming requests.</p>
             </div>
             <Link href="/apply/venue" className="btn btn--primary">List Another Space</Link>
@@ -73,18 +73,18 @@ export default function VenueDashboard() {
               <div className={styles.statsGrid}>
                 <div className="card p-6">
                   <p className="text-muted text-sm font-semibold uppercase tracking-wider mb-2">This Month</p>
-                  <h2 className="text-xl text-muted" style={{ fontWeight: 600 }}>Coming soon</h2>
-                  <p className="text-sm text-muted mt-2">Analytics are on the way</p>
+                  <h2 className="text-xl" style={{ fontWeight: 600 }}>1 active listing</h2>
+                  <p className="text-sm text-muted mt-2">Downtown San Jose market space</p>
                 </div>
                 <div className="card p-6">
                   <p className="text-muted text-sm font-semibold uppercase tracking-wider mb-2">Pending Requests</p>
-                  <h2 className="text-xl text-muted" style={{ fontWeight: 600 }}>Coming soon</h2>
-                  <p className="text-sm text-muted mt-2">Inbox updates pending</p>
+                  <h2 className="text-xl" style={{ fontWeight: 600 }}>3 pending</h2>
+                  <p className="text-sm text-muted mt-2">Hosts and vendors waiting for review</p>
                 </div>
                 <div className="card p-6">
                   <p className="text-muted text-sm font-semibold uppercase tracking-wider mb-2">Upcoming</p>
-                  <h2 className="text-xl text-muted" style={{ fontWeight: 600 }}>Coming soon</h2>
-                  <p className="text-sm text-muted mt-2">Calendar syncing</p>
+                  <h2 className="text-xl" style={{ fontWeight: 600 }}>4 open dates</h2>
+                  <p className="text-sm text-muted mt-2">Weekends available this month</p>
                 </div>
               </div>
 
@@ -124,7 +124,7 @@ export default function VenueDashboard() {
                 <div className="card p-5 flex items-center justify-between" style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                   <div style={{display: 'flex', alignItems: 'center', gap: '16px'}}>
                     <div style={{width: '80px', height: '60px', background: 'var(--color-bg-alt)', borderRadius: '8px', overflow: 'hidden'}}>
-                      <img src="/space_sanjose.png" alt="Space" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                      <img src="/event-1.png" alt="San Jose Community Market" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
                     </div>
                     <div>
                       <h4 style={{marginBottom: '4px'}}>San Jose Community Market</h4>

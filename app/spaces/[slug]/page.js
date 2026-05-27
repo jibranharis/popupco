@@ -1,32 +1,39 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { use, useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound, useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { SPACES_DATA } from '@/lib/spaces';
+import SpaceCard from '@/components/SpaceCard';
+import { getOpportunityBySlug, SPACES_DATA } from '@/lib/spaces';
 import { useAuth } from '@/components/AuthContext';
-import { Heart, Share, Star, MapPin, ChevronLeft } from 'lucide-react';
+import {
+  CalendarDays,
+  ChevronLeft,
+  Clock,
+  Heart,
+  MapPin,
+  MessageSquare,
+  Share,
+  ShieldCheck,
+  Users,
+} from 'lucide-react';
 import styles from './page.module.css';
-import Link from 'next/link';
 
 export default function SpaceDetailPage({ params }) {
+  const { slug } = use(params);
   const router = useRouter();
   const { user } = useAuth();
-  const space = SPACES_DATA.find(s => s.slug === params.slug);
-  
-  if (!space) {
-    notFound();
-  }
-
+  const space = getOpportunityBySlug(slug);
   const [isSaved, setIsSaved] = useState(false);
-  const [imgError, setImgError] = useState(false);
+
+  if (!space) notFound();
 
   useEffect(() => {
-    if (user) {
-      const savedSpaces = JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]');
-      setIsSaved(savedSpaces.includes(space.id));
-    }
+    if (!user) return;
+    const saved = JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]');
+    setIsSaved(saved.includes(space.id));
   }, [user, space.id]);
 
   const toggleSave = () => {
@@ -34,153 +41,132 @@ export default function SpaceDetailPage({ params }) {
       router.push('/login');
       return;
     }
-    const savedSpaces = JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]');
-    let newSavedSpaces;
-    if (isSaved) {
-      newSavedSpaces = savedSpaces.filter((id) => id !== space.id);
-    } else {
-      newSavedSpaces = [...savedSpaces, space.id];
-    }
-    localStorage.setItem(`saved_spaces_${user.id}`, JSON.stringify(newSavedSpaces));
+    const saved = JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]');
+    const nextSaved = isSaved ? saved.filter((id) => id !== space.id) : [...saved, space.id];
+    localStorage.setItem(`saved_spaces_${user.id}`, JSON.stringify(nextSaved));
     setIsSaved(!isSaved);
   };
 
-  const handleRequest = () => {
-    if (!user) {
-      router.push('/login');
-    } else {
-      alert("Booking request submitted! (Simulated)");
-    }
+  const handlePrimary = () => {
+    if (space.cta === 'Apply') router.push(`/apply/vendor?event=${space.slug}`);
+    else if (!user) router.push('/login');
+    else alert('Request sent. The host will receive your message in this demo.');
   };
+
+  const similar = SPACES_DATA.filter((item) => item.id !== space.id).slice(0, 3);
 
   return (
     <>
       <Header />
       <main className={styles.main}>
         <div className="container">
-          
-          <div className={styles.topNav}>
-            <Link href="/browse" className={styles.backBtn}>
-              <ChevronLeft size={20} /> Back to spaces
-            </Link>
-          </div>
+          <Link href="/browse" className={styles.backBtn}><ChevronLeft size={19} /> Back to opportunities</Link>
 
-          {/* Title Area */}
           <div className={styles.titleArea}>
-            <h1 className={styles.title}>{space.name}</h1>
-            <div className={styles.metaRow}>
-              <div className={styles.metaLeft}>
-                <span className={styles.rating}><Star size={16} fill="currentColor" /> 4.95</span>
-                <span className="text-muted">·</span>
-                <span className={styles.location}><MapPin size={16} /> {space.location}</span>
-                <span className="text-muted">·</span>
-                <span>{space.type}</span>
+            <div>
+              <div className={styles.kicker}>{space.type} · {space.trust}</div>
+              <h1>{space.name}</h1>
+              <div className={styles.metaLine}>
+                <span><MapPin size={16} /> {space.location}</span>
+                <span><CalendarDays size={16} /> {space.date}</span>
+                <span><Users size={16} /> {space.expectedAttendance}</span>
               </div>
-              <div className={styles.metaRight}>
-                <button className={styles.actionBtn}><Share size={16} /> Share</button>
-                <button className={styles.actionBtn} onClick={toggleSave}>
-                  <Heart size={16} fill={isSaved ? '#E53E3E' : 'none'} color={isSaved ? '#E53E3E' : 'currentColor'} /> 
-                  {isSaved ? 'Saved' : 'Save'}
-                </button>
-              </div>
+            </div>
+            <div className={styles.actions}>
+              <button><Share size={16} /> Share</button>
+              <button onClick={toggleSave}><Heart size={16} fill={isSaved ? '#E53E3E' : 'none'} color={isSaved ? '#E53E3E' : 'currentColor'} /> {isSaved ? 'Saved' : 'Save'}</button>
             </div>
           </div>
 
-          {/* Image Gallery */}
           <div className={styles.gallery}>
-            <div className={styles.mainImage}>
-              {imgError ? (
-                <div className={styles.fallbackPattern} style={{ width: '100%', height: '100%', position: 'absolute', background: 'var(--color-bg-alt)' }} />
-              ) : (
-                <Image src={space.image} alt={space.name} fill className={styles.img} priority onError={() => setImgError(true)} />
-              )}
-            </div>
-            <div className={styles.sideImages}>
-              <div className={styles.sideImage}>
-                {/* Fallback pattern for now since we only generated one image per space */}
-                <div className={styles.fallbackPattern} />
+            {space.gallery.map((image, index) => (
+              <div key={image} className={index === 0 ? styles.galleryMain : styles.gallerySide}>
+                <Image src={image} alt={`${space.name} photo ${index + 1}`} fill className={styles.galleryImg} priority={index === 0} />
               </div>
-              <div className={styles.sideImage}>
-                <div className={styles.fallbackPattern} />
-              </div>
-            </div>
+            ))}
           </div>
 
-          {/* Content Split */}
-          <div className={styles.contentSplit}>
-            <div className={styles.mainContent}>
-              <div className={styles.hostSection}>
-                <div>
-                  <h2 className={styles.hostTitle}>Hosted by {space.host}</h2>
-                  <p className="text-muted">Available: {space.availability}</p>
-                </div>
-                <div className={styles.hostAvatar}>{space.host.charAt(0)}</div>
-              </div>
-              
-              <hr />
-              
-              <div className={styles.section}>
-                <h3>About this space</h3>
-                <p className={styles.description}>{space.description}</p>
-              </div>
-
-              <hr />
-
-              <div className={styles.section}>
-                <h3>Best for</h3>
-                <div className={styles.tagList}>
-                  {space.bestFor.map(tag => (
-                    <span key={tag} className="badge badge--neutral">{tag}</span>
-                  ))}
-                </div>
-              </div>
-
-              <hr />
-
-              <div className={styles.section}>
-                <h3>Amenities</h3>
-                <ul className={styles.listGrid}>
-                  {space.amenities.map(item => (
-                    <li key={item}>✓ {item}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <hr />
-
-              <div className={styles.section}>
-                <h3>Host Rules</h3>
-                <ul className={styles.listCol}>
-                  {space.rules.map(item => (
-                    <li key={item}>• {item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Sidebar Sticky */}
-            <div className={styles.sidebar}>
-              <div className={styles.bookingCard}>
-                <div className={styles.bookingHeader}>
-                  <div className={styles.price}>{space.price}</div>
-                </div>
-                
-                <div className={styles.bookingForm}>
-                  <div className={styles.datePicker}>
-                    <div className={styles.dateField}>
-                      <label>DATES</label>
-                      <span>Add dates</span>
-                    </div>
+          <div className={styles.contentGrid}>
+            <article className={styles.content}>
+              <section className={styles.summaryGrid}>
+                {[
+                  ['Price or vendor fee', space.price],
+                  ['Application deadline', space.deadline],
+                  ['Indoor/outdoor', space.indoorOutdoor],
+                  ['Food allowed', space.foodAllowed],
+                  ['Capacity', space.capacity],
+                  ['Setup time', space.setupTime],
+                ].map(([label, value]) => (
+                  <div key={label}>
+                    <span>{label}</span>
+                    <strong>{value}</strong>
                   </div>
-                  <button className="btn btn--primary btn--full" onClick={handleRequest}>
-                    Request to Book
-                  </button>
-                  <p className="text-center text-muted text-sm mt-4">You won't be charged yet.</p>
+                ))}
+              </section>
+
+              <section className={styles.section}>
+                <h2>Description</h2>
+                <p>{space.description}</p>
+              </section>
+
+              <section className={styles.section}>
+                <h2>Best for</h2>
+                <div className={styles.tagList}>{space.bestFor.map((item) => <span key={item}>{item}</span>)}</div>
+              </section>
+
+              <section className={styles.section}>
+                <h2>Amenities</h2>
+                <ul className={styles.listGrid}>{space.amenities.map((item) => <li key={item}>{item}</li>)}</ul>
+              </section>
+
+              <section className={styles.section}>
+                <h2>Rules and requirements</h2>
+                <div className={styles.twoLists}>
+                  <div>
+                    <h3>Rules</h3>
+                    <ul>{space.rules.map((item) => <li key={item}>{item}</li>)}</ul>
+                  </div>
+                  <div>
+                    <h3>Vendor requirements</h3>
+                    <ul>{space.vendorRequirements.map((item) => <li key={item}>{item}</li>)}</ul>
+                  </div>
                 </div>
+              </section>
+
+              <section className={styles.section}>
+                <h2>Parking and load-in</h2>
+                <p>{space.parking}</p>
+              </section>
+
+              <section className={styles.hostProfile}>
+                <div className={styles.hostAvatar}>{space.host.name.charAt(0)}</div>
+                <div>
+                  <span><ShieldCheck size={16} /> {space.host.type}</span>
+                  <h2>{space.host.name}</h2>
+                  <p>{space.host.response}. {space.host.history}.</p>
+                </div>
+              </section>
+            </article>
+
+            <aside className={styles.sidebar}>
+              <div className={styles.bookingCard}>
+                <div className={styles.bookingTop}>
+                  <strong>{space.price}</strong>
+                  <span>{space.status}</span>
+                </div>
+                <div className={styles.bookingFact}><Clock size={16} /> Deadline: {space.deadline}</div>
+                <div className={styles.bookingFact}><ShieldCheck size={16} /> {space.trust}</div>
+                <button className="btn btn--primary btn--full" onClick={handlePrimary}>{space.cta === 'Apply' ? 'Apply to sell' : space.cta}</button>
+                <button className="btn btn--secondary btn--full"><MessageSquare size={16} /> Message host</button>
+                <p>You will see fees, rules, and requirements before making a paid commitment.</p>
               </div>
-            </div>
+            </aside>
           </div>
-          
+
+          <section className={styles.similar}>
+            <h2>Similar listings</h2>
+            <div className="grid-3">{similar.map((item) => <SpaceCard key={item.id} space={item} />)}</div>
+          </section>
         </div>
       </main>
       <Footer />
