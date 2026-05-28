@@ -198,9 +198,6 @@ export default function HomePage() {
                   <span>Pop-Up</span>
                   <span>Opportunity.</span>
                 </h1>
-                <p>
-                  PopUpCo connects vendors, hosts, and venues so local markets, pop-ups, and community events can come to life.
-                </p>
               </div>
 
               <div className={`fade-in fade-in--d2 ${styles.heroMedia}`}>
