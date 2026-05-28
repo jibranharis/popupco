@@ -143,6 +143,7 @@ const messages = [
   ['Host', 'We expect 400–600 visitors based on last month\'s market.'],
   ['Vendor', 'Perfect. Can I apply for the Saturday slot?'],
   ['Host', 'Yes, applications are open until Friday.'],
+  ['Vendor', 'Thank you.'],
 ];
 
 const opportunityRows = [
