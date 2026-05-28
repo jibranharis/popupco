@@ -505,10 +505,27 @@
   line-height: 1.48;
 }
 
+.rolesSection {
+  padding: clamp(7rem, 9vw, 8.75rem) 0 clamp(7.25rem, 9vw, 9rem);
+}
+
+.roleIntro {
+  max-width: 1060px;
+  margin-bottom: clamp(3rem, 5vw, 4.5rem);
+}
+
+.roleIntro h2 {
+  margin-top: var(--sp-4);
+  max-width: none;
+  font-size: clamp(2.1rem, 3vw, 3rem);
+  line-height: 1.04;
+  white-space: nowrap;
+}
+
 .roleGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--sp-4);
+  gap: var(--sp-5);
 }
 
 .roleCard {
@@ -828,6 +845,18 @@
 
   .messageSection {
     padding: var(--sp-20) 0;
+  }
+
+  .rolesSection {
+    padding: var(--sp-20) 0;
+  }
+
+  .roleIntro {
+    margin-bottom: var(--sp-10);
+  }
+
+  .roleIntro h2 {
+    white-space: normal;
   }
 
   .momentsSection {

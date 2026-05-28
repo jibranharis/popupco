@@ -348,7 +348,7 @@ export default function HomePage() {
 
         <section className={styles.rolesSection} id="how-it-works">
           <div className="container">
-            <div className={`fade-in ${styles.sectionIntro}`}>
+            <div className={`fade-in ${styles.sectionIntro} ${styles.roleIntro}`}>
               <span className="label">Start where you are</span>
               <h2>Choose how you want to use PopUpCo.</h2>
             </div>
