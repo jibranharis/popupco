@@ -353,8 +353,13 @@ export default function HomePage() {
               <h2>Choose how you want to use PopUpCo.</h2>
             </div>
             <div className={styles.roleGrid}>
-              {roles.map((role) => (
-                <Link key={role.title} href={role.href} className={`fade-in ${styles.roleCard}`}>
+              {roles.map((role, index) => (
+                <Link
+                  key={role.title}
+                  href={role.href}
+                  className={`fade-in ${styles.roleCard}`}
+                  style={{ '--role-index': index }}
+                >
                   <h3>{role.title}</h3>
                   <p>{role.copy}</p>
                   <span>{role.cta} <ArrowRight size={16} /></span>

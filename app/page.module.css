@@ -536,7 +536,30 @@
   border-radius: 22px;
   background: #fffbf5;
   box-shadow: 0 8px 24px rgba(38, 34, 30, 0.055);
-  transition: transform 200ms ease, box-shadow 200ms ease, background 200ms ease, border-color 200ms ease;
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 520ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 200ms ease,
+    background 200ms ease,
+    border-color 200ms ease;
+  transition-delay:
+    calc(var(--role-index, 0) * 130ms),
+    calc(var(--role-index, 0) * 130ms),
+    0ms,
+    0ms,
+    0ms;
+}
+
+.roleCard:global(.visible) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.roleGrid:hover .roleCard,
+.roleGrid:focus-within .roleCard {
+  transition-delay: 0ms, 0ms, 0ms, 0ms, 0ms;
 }
 
 .roleCard p {
@@ -549,8 +572,8 @@
   margin-top: auto;
 }
 
-.roleCard:hover,
-.roleCard:focus-visible {
+.roleCard:global(.visible):hover,
+.roleCard:global(.visible):focus-visible {
   transform: translateY(-6px) scale(1.01);
   border-color: #c85f2c;
   background: #c85f2c;
@@ -955,6 +978,14 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .roleCard,
+  .roleCard:global(.visible) {
+    opacity: 1;
+    transform: none;
+    transition: box-shadow 200ms ease, background 200ms ease, border-color 200ms ease;
+    transition-delay: 0ms;
   }
 
   .roleCard:hover,
