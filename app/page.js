@@ -50,52 +50,52 @@ const searchModes = [
 const moments = [
   {
     title: 'Sell at a local market',
-    copy: 'Find weekend markets, community fairs, and vendor events where your products can meet real local customers.',
+    copy: 'Find weekend markets, vendor fairs, and community events where your products can meet real local customers.',
     cta: 'Find markets',
-    href: '/browse',
+    href: '/browse?type=vendor-markets',
     image: '/hero-market.png',
   },
   {
-    title: 'Launch a new product',
-    copy: 'Test a product in person before committing to a long-term retail space.',
-    cta: 'Explore pop-up spaces',
-    href: '/browse',
+    title: 'Launch a product in person',
+    copy: 'Test a new product with real shoppers before committing to a storefront, lease, or long-term retail plan.',
+    cta: 'Find launch spaces',
+    href: '/browse?type=retail-spaces',
     image: '/images/media__1779838728727.jpg',
   },
   {
-    title: 'Host a vendor fair',
-    copy: 'Bring local makers, food vendors, artists, and shoppers together in one place.',
-    cta: 'Start hosting',
-    href: '/hosts',
-    image: '/event-1.png',
-  },
-  {
-    title: 'Book a community hall',
-    copy: 'Compare halls, schools, studios, and community spaces with rules and setup details up front.',
-    cta: 'See venues',
-    href: '/venues',
-    image: '/images/media__1779838851661.jpg',
-  },
-  {
-    title: 'Find food pop-up space',
-    copy: 'Find food-friendly opportunities with permit notes, electricity, load-in, and outdoor details.',
-    cta: 'Find food spaces',
-    href: '/browse',
-    image: '/cat-food.png',
-  },
-  {
-    title: 'Run an art market',
-    copy: 'Curate artists, print sellers, jewelry makers, and local shoppers into one warm market night.',
-    cta: 'Plan an art market',
-    href: '/hosts',
+    title: 'Sell art or handmade goods',
+    copy: 'Discover art markets, maker fairs, gallery nights, and local events built for creative sellers.',
+    cta: 'Find creative markets',
+    href: '/browse?category=artists-makers',
     image: '/cat-jewelry.png',
   },
   {
-    title: 'Plan a holiday market',
-    copy: 'Create a seasonal market with a balanced vendor mix, clear deadlines, and space that fits.',
-    cta: 'Host a holiday market',
-    href: '/hosts',
-    image: '/event-2.png',
+    title: 'Find food pop-up space',
+    copy: 'Find markets, halls, patios, and event spaces that welcome food vendors, tastings, and small food concepts.',
+    cta: 'Find food spaces',
+    href: '/browse?category=food',
+    image: '/cat-food.png',
+  },
+  {
+    title: 'Book a community space',
+    copy: 'Reserve halls, courtyards, storefronts, and local venues for pop-ups, workshops, and community events.',
+    cta: 'Browse spaces',
+    href: '/browse?type=event-venues',
+    image: '/images/media__1779838851661.jpg',
+  },
+  {
+    title: 'Host a vendor market',
+    copy: 'Bring vendors, artists, food sellers, and shoppers together with tools to collect applications and manage interest.',
+    cta: 'Start hosting',
+    href: '/hosts?intent=create-event',
+    image: '/event-1.png',
+  },
+  {
+    title: 'List your venue',
+    copy: 'Turn empty space into local activity by making your venue available for pop-ups, markets, and community events.',
+    cta: 'List your space',
+    href: '/apply/venue',
+    image: '/images/media__1779840173203.jpg',
   },
 ];
 
@@ -127,12 +127,13 @@ const roles = [
 ];
 
 const filmstrip = [
-  ['Local market booth', 'Weekend market', '/hero-market.png'],
-  ['Product launch table', 'Retail pop-up', '/images/media__1779838728727.jpg'],
-  ['Community hall event', 'Vendor fair', '/images/media__1779838851661.jpg'],
-  ['Food vendor setup', 'Food pop-up', '/cat-food.png'],
-  ['Art market', 'Gallery night', '/cat-jewelry.png'],
-  ['Holiday market', 'Seasonal event', '/event-2.png'],
+  ['Weekend vendor fair', 'Local makers selling in person', '/hero-market.png'],
+  ['Product launch table', 'A new brand testing demand', '/images/media__1779838728727.jpg'],
+  ['Artist market', 'Original work, prints, and handmade goods', '/cat-jewelry.png'],
+  ['Food vendor setup', 'Pop-up food, tastings, and prepared goods', '/cat-food.png'],
+  ['Community hall', 'A flexible space for local events', '/images/media__1779838851661.jpg'],
+  ['Host-led market', 'Applications, vendors, and foot traffic', '/event-1.png'],
+  ['Available venue', 'Empty space turned into opportunity', '/images/media__1779840173203.jpg'],
 ];
 
 const messages = [
@@ -280,7 +281,7 @@ export default function HomePage() {
                   <div className={styles.filmstripWrap} aria-label="Local commerce examples">
                     <div className={styles.filmstrip}>
                       {[...filmstrip, ...filmstrip].map(([label, type, image], index) => (
-                        <div key={`${label}-${index}`} className={index % 4 === activeMoment % 4 ? styles.filmCardActive : styles.filmCard}>
+                        <div key={`${label}-${index}`} className={index % filmstrip.length === activeMoment ? styles.filmCardActive : styles.filmCard}>
                           <Image src={image} alt={`${label} for ${type}`} width={150} height={104} className={styles.filmImage} />
                           <span>{label}</span>
                           <strong>{type}</strong>

@@ -16,9 +16,9 @@
 }
 
 .scrolled {
-  background: rgba(247, 241, 232, 0.94);
-  border-bottom-color: rgba(90, 70, 55, 0.12);
-  box-shadow: 0 8px 24px rgba(70, 45, 25, 0.06);
+  background: rgba(255, 242, 227, 0.96);
+  border-bottom-color: rgba(38, 34, 30, 0.18);
+  box-shadow: none;
   backdrop-filter: blur(10px);
 }
 
@@ -299,8 +299,8 @@
 
 @media (max-width: 768px) {
   .header {
-    background: rgba(247, 241, 232, 0.94);
-    border-bottom-color: rgba(90, 70, 55, 0.12);
+    background: rgba(255, 242, 227, 0.96);
+    border-bottom-color: rgba(38, 34, 30, 0.18);
     backdrop-filter: blur(10px);
   }
 
