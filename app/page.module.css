@@ -418,9 +418,9 @@
   display: grid;
   gap: var(--sp-3);
   translate: 0 340px;
-  transition: translate 820ms cubic-bezier(0.2, 0.8, 0.2, 1) 780ms;
+  transition: translate 1500ms cubic-bezier(0.16, 1, 0.3, 1) 780ms;
   animation: filmMove 28s linear infinite;
-  animation-delay: 1680ms;
+  animation-delay: 2380ms;
 }
 
 .momentStage:global(.visible) .momentVisual,
