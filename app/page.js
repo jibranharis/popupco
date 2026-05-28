@@ -186,117 +186,116 @@ export default function HomePage() {
     <>
       <Header />
       <main ref={pageRef} className={styles.page}>
-        <section className={styles.hero}>
-          <div className={`container ${styles.heroGrid}`}>
-            <div className={`fade-in ${styles.heroCopy}`}>
-              <div className={styles.rolePills}>
-                {['Vendors', 'Venues', 'Hosts', 'Bay Area first'].map((item) => <span key={item}>{item}</span>)}
-              </div>
-              <h1>
-                <span>Find your next</span>
-                <span>Pop-Up</span>
-                <span>Opportunity.</span>
-              </h1>
-            </div>
-
-            <div className={`fade-in fade-in--d2 ${styles.heroMedia}`}>
-              <Image src="/hero-market.png" alt="Local vendors selling at a warm market" fill priority className={styles.heroImage} />
-              <div className={`${styles.heroTag} ${styles.heroTagPrimary}`}>
-                <span>Vendor Market</span>
-                <strong>Booth from $50+</strong>
-              </div>
-              <div className={`${styles.heroTag} ${styles.heroTagSecondary}`}>
-                <span>Applications open</span>
-                <strong>Expected attendance: 400+</strong>
-              </div>
-              <div className={`${styles.heroTag} ${styles.heroTagSmall}`}>Bay Area</div>
-            </div>
-
-            <div className={`fade-in fade-in--d3 ${styles.searchPanel}`} aria-label="PopUpCo search">
-              <div className={styles.modeTabs} role="tablist" aria-label="Search intent">
-                {searchModes.map((mode) => (
-                  <button
-                    key={mode.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={activeMode.id === mode.id}
-                    className={activeMode.id === mode.id ? styles.activeMode : ''}
-                    onClick={() => setActiveMode(mode)}
-                  >
-                    {mode.label}
-                  </button>
-                ))}
-              </div>
-              <form className={styles.searchFields}>
-                {activeMode.fields.map(([label, placeholder]) => (
-                  <label key={label}>
-                    <span>{label}</span>
-                    <input placeholder={placeholder} />
-                  </label>
-                ))}
-                <Link href={activeMode.href}><Search size={18} /> {activeMode.button}</Link>
-              </form>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.momentsSection}>
-          <div className={`container ${styles.momentsShell}`}>
-            <div className={`fade-in ${styles.sectionIntro}`}>
-              <span className="label">Browse by moment</span>
-              <h2>A pop-up for every idea.</h2>
-              <p>Explore the different ways vendors, venues, and hosts can bring local commerce to life.</p>
-            </div>
-
-            <div className={styles.momentsGrid}>
-              <div className={`fade-in ${styles.momentTabs}`}>
-                {moments.map((moment, index) => (
-                  <Link
-                    key={moment.title}
-                    href={moment.href}
-                    className={activeMoment === index ? styles.activeMoment : ''}
-                    onMouseEnter={() => setActiveMoment(index)}
-                    onFocus={() => setActiveMoment(index)}
-                    onClick={() => setActiveMoment(index)}
-                  >
-                    <span>{String(index + 1).padStart(2, '0')}</span>
-                    {moment.title}
-                  </Link>
-                ))}
-              </div>
-
-              <div className={`fade-in fade-in--d2 ${styles.momentStage}`}>
-                <div className={styles.momentVisual}>
-                  <Image
-                    key={moments[activeMoment].image}
-                    src={moments[activeMoment].image}
-                    alt={moments[activeMoment].title}
-                    fill
-                    className={styles.momentImage}
-                    sizes="(max-width: 900px) 100vw, 54vw"
-                  />
-                  <div className={styles.momentShade} />
+        <div className={styles.introScroll}>
+          <section className={styles.hero}>
+            <div className={`container ${styles.heroGrid}`}>
+              <div className={`fade-in ${styles.heroCopy}`}>
+                <div className={styles.rolePills}>
+                  {['Vendors', 'Venues', 'Hosts', 'Bay Area first'].map((item) => <span key={item}>{item}</span>)}
                 </div>
-                <div className={styles.momentContent}>
-                  <h3>{moments[activeMoment].title}</h3>
-                  <p>{moments[activeMoment].copy}</p>
-                  <Link href={moments[activeMoment].href}>{moments[activeMoment].cta} <ArrowRight size={17} /></Link>
+                <h1>
+                  <span>Find your next</span>
+                  <span>Pop-Up</span>
+                  <span>Opportunity.</span>
+                </h1>
+                <p>
+                  PopUpCo connects vendors, hosts, and venues so local markets, pop-ups, and community events can come to life.
+                </p>
+              </div>
+
+              <div className={`fade-in fade-in--d2 ${styles.heroMedia}`}>
+                <Image src="/hero-market.png" alt="Local vendors selling at a warm market" fill priority className={styles.heroImage} />
+                <div className={styles.heroTag}>
+                  <strong>Booth from $50+</strong>
                 </div>
-                <div className={styles.filmstripWrap} aria-label="Local commerce examples">
-                  <div className={styles.filmstrip}>
-                    {[...filmstrip, ...filmstrip].map(([label, type, image], index) => (
-                      <div key={`${label}-${index}`} className={index % 4 === activeMoment % 4 ? styles.filmCardActive : styles.filmCard}>
-                        <Image src={image} alt={`${label} for ${type}`} width={150} height={104} className={styles.filmImage} />
-                        <span>{label}</span>
-                        <strong>{type}</strong>
-                      </div>
-                    ))}
+              </div>
+
+              <div className={`fade-in fade-in--d3 ${styles.searchPanel}`} aria-label="PopUpCo search">
+                <div className={styles.modeTabs} role="tablist" aria-label="Search intent">
+                  {searchModes.map((mode) => (
+                    <button
+                      key={mode.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={activeMode.id === mode.id}
+                      className={activeMode.id === mode.id ? styles.activeMode : ''}
+                      onClick={() => setActiveMode(mode)}
+                    >
+                      {mode.label}
+                    </button>
+                  ))}
+                </div>
+                <form className={styles.searchFields}>
+                  {activeMode.fields.map(([label, placeholder]) => (
+                    <label key={label}>
+                      <span>{label}</span>
+                      <input placeholder={placeholder} />
+                    </label>
+                  ))}
+                  <Link href={activeMode.href}><Search size={18} /> {activeMode.button}</Link>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <section className={styles.momentsSection}>
+            <div className={`container ${styles.momentsShell}`}>
+              <div className={`fade-in ${styles.sectionIntro}`}>
+                <span className="label">Browse by moment</span>
+                <h2>A pop-up for every idea.</h2>
+                <p>Explore the different ways vendors, venues, and hosts can bring local commerce to life.</p>
+              </div>
+
+              <div className={styles.momentsGrid}>
+                <div className={`fade-in ${styles.momentTabs}`}>
+                  {moments.map((moment, index) => (
+                    <Link
+                      key={moment.title}
+                      href={moment.href}
+                      className={activeMoment === index ? styles.activeMoment : ''}
+                      onMouseEnter={() => setActiveMoment(index)}
+                      onFocus={() => setActiveMoment(index)}
+                      onClick={() => setActiveMoment(index)}
+                    >
+                      <span>{String(index + 1).padStart(2, '0')}</span>
+                      {moment.title}
+                    </Link>
+                  ))}
+                </div>
+
+                <div className={`fade-in fade-in--d2 ${styles.momentStage}`}>
+                  <div className={styles.momentVisual}>
+                    <Image
+                      key={moments[activeMoment].image}
+                      src={moments[activeMoment].image}
+                      alt={moments[activeMoment].title}
+                      fill
+                      className={styles.momentImage}
+                      sizes="(max-width: 900px) 100vw, 54vw"
+                    />
+                    <div className={styles.momentShade} />
+                  </div>
+                  <div className={styles.momentContent}>
+                    <h3>{moments[activeMoment].title}</h3>
+                    <p>{moments[activeMoment].copy}</p>
+                    <Link href={moments[activeMoment].href}>{moments[activeMoment].cta} <ArrowRight size={17} /></Link>
+                  </div>
+                  <div className={styles.filmstripWrap} aria-label="Local commerce examples">
+                    <div className={styles.filmstrip}>
+                      {[...filmstrip, ...filmstrip].map(([label, type, image], index) => (
+                        <div key={`${label}-${index}`} className={index % 4 === activeMoment % 4 ? styles.filmCardActive : styles.filmCard}>
+                          <Image src={image} alt={`${label} for ${type}`} width={150} height={104} className={styles.filmImage} />
+                          <span>{label}</span>
+                          <strong>{type}</strong>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
 
         <section className={styles.messageSection}>
           <div className={`container ${styles.messageGrid}`}>
