@@ -420,58 +420,89 @@
 }
 
 .messageSection {
-  background: linear-gradient(180deg, #f7f1e8 0%, #fff8ef 100%);
+  min-height: 94vh;
+  display: flex;
+  align-items: center;
+  padding: clamp(7rem, 10vw, 9.5rem) 0;
+  background:
+    linear-gradient(180deg, #fff 0%, #f7f1e8 14%, #fff8ef 100%);
 }
 
 .messageGrid {
   display: grid;
-  grid-template-columns: 0.82fr 1.18fr;
-  gap: var(--sp-10);
+  grid-template-columns: minmax(280px, 0.72fr) minmax(520px, 1.28fr);
+  gap: clamp(3rem, 6vw, 5.5rem);
   align-items: center;
+  max-width: 1180px;
+}
+
+.messageCopy {
+  max-width: 420px;
 }
 
 .messageChain {
   display: grid;
-  gap: var(--sp-3);
+  gap: 14px;
+  width: 100%;
   max-width: 680px;
+  justify-self: end;
+  padding: 20px 0;
 }
 
-.vendorMessage,
-.hostMessage {
-  width: min(82%, 520px);
-  padding: 13px 16px;
+.messageBubble {
+  width: min(76%, 500px);
+  padding: 11px 15px 12px;
   border: 1px solid #e5d8ca;
-  border-radius: 20px;
+  border-radius: 18px;
   background: #fffbf5;
-  box-shadow: 0 12px 32px rgba(38, 34, 30, 0.07);
+  box-shadow: 0 10px 28px rgba(38, 34, 30, 0.06);
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 260ms ease,
+    transform 260ms ease,
+    box-shadow 180ms ease;
+  transition-delay: calc(var(--message-index) * 130ms);
+}
+
+.messageChain:global(.visible) .messageBubble {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.messageBubble:hover {
+  box-shadow: 0 14px 34px rgba(38, 34, 30, 0.09);
+}
+
+.vendorMessage {
+  justify-self: start;
 }
 
 .hostMessage {
   justify-self: end;
-  border-color: rgba(200, 95, 44, 0.28);
+  border-color: rgba(200, 95, 44, 0.18);
   background: #c85f2c;
   color: #fff8ef;
+  box-shadow: 0 12px 30px rgba(200, 95, 44, 0.16);
 }
 
-.vendorMessage span,
-.hostMessage span {
+.messageBubble span {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   color: #c85f2c;
-  font-size: 0.76rem;
+  font-size: 0.68rem;
   font-weight: 900;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  letter-spacing: 0.09em;
 }
 
 .hostMessage span {
   color: rgba(255, 248, 239, 0.82);
 }
 
-.vendorMessage p,
-.hostMessage p {
+.messageBubble p {
   color: inherit;
-  line-height: 1.45;
+  font-size: 0.96rem;
+  line-height: 1.48;
 }
 
 .roleGrid {
@@ -701,6 +732,19 @@
     min-height: 520px;
   }
 
+  .messageSection {
+    min-height: auto;
+  }
+
+  .messageCopy,
+  .messageChain {
+    max-width: 720px;
+  }
+
+  .messageChain {
+    justify-self: stretch;
+  }
+
   .roleGrid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -782,6 +826,10 @@
     padding: var(--sp-14) 0;
   }
 
+  .messageSection {
+    padding: var(--sp-20) 0;
+  }
+
   .momentsSection {
     padding: var(--sp-20) 0 var(--sp-16);
   }
@@ -844,9 +892,8 @@
     gap: var(--sp-6);
   }
 
-  .vendorMessage,
-  .hostMessage {
-    width: 92%;
+  .messageBubble {
+    width: 94%;
   }
 
   .roleGrid {
@@ -869,6 +916,12 @@
   .momentImage,
   .filmstrip {
     animation: none;
+  }
+
+  .messageBubble {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   .roleCard:hover,

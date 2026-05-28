@@ -140,7 +140,7 @@ const messages = [
   ['Vendor', 'Is the booth fee fixed, or does it depend on category?'],
   ['Host', 'Booths start at $75. Food vendors need a permit, but handmade goods are ready to apply.'],
   ['Vendor', 'How many people usually attend?'],
-  ['Host', 'We expect 400-600 visitors based on last month\'s market.'],
+  ['Host', 'We expect 400–600 visitors based on last month\'s market.'],
   ['Vendor', 'Perfect. Can I apply for the Saturday slot?'],
   ['Host', 'Yes, applications are open until Friday.'],
 ];
@@ -332,8 +332,12 @@ export default function HomePage() {
             </div>
             <div className={`fade-in fade-in--d2 ${styles.messageChain}`}>
               {messages.map(([sender, text], index) => (
-                <div key={`${sender}-${index}`} className={sender === 'Vendor' ? styles.vendorMessage : styles.hostMessage}>
-                  <span>{sender}</span>
+                <div
+                  key={`${sender}-${index}`}
+                  className={`${styles.messageBubble} ${sender === 'Vendor' ? styles.vendorMessage : styles.hostMessage}`}
+                  style={{ '--message-index': index }}
+                >
+                  <span>{sender.toUpperCase()}</span>
                   <p>{text}</p>
                 </div>
               ))}
