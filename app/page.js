@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { ArrowRight, MessageSquare, Search, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Search, ShieldCheck } from 'lucide-react';
 import styles from './page.module.css';
 
 const searchModes = [
@@ -398,9 +398,7 @@ export default function HomePage() {
 
         <section className={styles.finalCta}>
           <div className={`container fade-in ${styles.finalInner}`}>
-            <MessageSquare size={26} />
             <h2>Ready to find your next pop-up opportunity?</h2>
-            <p>Search local markets, spaces, and events built for vendors, venues, and hosts.</p>
             <div className={styles.finalButtons}>
               <Link href="/browse" className="btn btn--primary btn--lg">Find a place to sell</Link>
               <Link href="/signup" className="btn btn--secondary btn--lg">Create account</Link>

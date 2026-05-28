@@ -255,8 +255,7 @@
 
 .sectionIntro p,
 .messageCopy p,
-.trustCopy p,
-.finalInner p {
+.trustCopy p {
   margin-top: var(--sp-3);
   color: #6f665f;
   font-size: 1rem;
@@ -665,28 +664,21 @@
 }
 
 .finalCta {
-  background: #f7f1e8;
+  padding: clamp(7.5rem, 10vw, 9rem) 0;
+  background: #fff;
 }
 
 .finalInner {
-  max-width: 850px;
+  max-width: 1040px;
   margin: 0 auto;
-  padding: var(--sp-9);
   text-align: center;
-  border: 1px solid #e5d8ca;
-  border-radius: 30px;
-  background: #fffbf5;
-  box-shadow: 0 18px 56px rgba(38, 34, 30, 0.08);
 }
 
-.finalInner svg {
-  color: #c85f2c;
-}
-
-.finalInner p {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 560px;
+.finalInner h2 {
+  max-width: none;
+  font-size: clamp(2.15rem, 3.2vw, 2.75rem);
+  line-height: 1.08;
+  white-space: nowrap;
 }
 
 .finalButtons {
@@ -694,7 +686,7 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: var(--sp-3);
-  margin-top: var(--sp-5);
+  margin-top: var(--sp-6);
 }
 
 @keyframes imageIn {
@@ -794,8 +786,7 @@
     border-radius: 24px;
   }
 
-  .searchPanel,
-  .finalInner {
+  .searchPanel {
     border-radius: 24px;
   }
 
@@ -842,6 +833,14 @@
   .trustSection,
   .finalCta {
     padding: var(--sp-14) 0;
+  }
+
+  .finalCta {
+    padding: var(--sp-20) 0;
+  }
+
+  .finalInner h2 {
+    white-space: normal;
   }
 
   .messageSection {
