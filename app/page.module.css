@@ -12,7 +12,7 @@
   position: sticky;
   top: 0;
   z-index: 1;
-  min-height: 620px;
+  min-height: 650px;
   display: flex;
   align-items: flex-start;
   padding: 104px 0 14px;
@@ -25,7 +25,7 @@
 .heroGrid {
   position: relative;
   display: grid;
-  grid-template-columns: 500px 636px;
+  grid-template-columns: 520px 636px;
   gap: 0;
   align-items: center;
   max-width: 1200px;
@@ -34,11 +34,11 @@
 .heroCopy {
   position: relative;
   z-index: 3;
-  width: 552px;
-  max-width: 552px;
-  margin-right: -52px;
-  transform: translateY(-58px);
-  padding: 28px 32px;
+  width: 580px;
+  max-width: 580px;
+  margin-right: -60px;
+  transform: translateY(-98px);
+  padding: 28px 34px;
   border: 1px solid rgba(229, 216, 202, 0.8);
   border-radius: 28px;
   background: rgba(255, 248, 239, 0.92);
@@ -66,7 +66,7 @@
 .hero h1 {
   display: grid;
   gap: 0.05em;
-  max-width: 500px;
+  max-width: 520px;
   font-size: 3.64rem;
   line-height: 1.08;
   letter-spacing: -0.04em;
@@ -117,7 +117,7 @@
   justify-self: center;
   width: 1072px;
   max-width: 1072px;
-  margin: -86px auto 0;
+  margin: -28px auto 0;
   padding: var(--sp-3);
   border: 1px solid #e5d8ca;
   border-radius: 24px;
@@ -723,10 +723,6 @@
   .hero h1 {
     font-size: clamp(2.45rem, 12vw, 3.7rem);
     line-height: 1.06;
-  }
-
-  .hero p {
-    font-size: 0.94rem;
   }
 
   .heroMedia {
