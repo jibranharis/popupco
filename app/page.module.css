@@ -38,7 +38,7 @@
   max-width: 580px;
   margin-right: -60px;
   min-height: 380px;
-  transform: translateY(-126px);
+  transform: none;
   padding: 28px 34px;
   border: 1px solid rgba(229, 216, 202, 0.8);
   border-radius: 28px;
@@ -124,6 +124,9 @@
   border-radius: 24px;
   background: #fffbf5;
   box-shadow: 0 18px 54px rgba(38, 34, 30, 0.13);
+  opacity: 0;
+  transform: translateY(18px);
+  animation: searchIslandIn 620ms cubic-bezier(0.2, 0.8, 0.2, 1) 180ms forwards;
 }
 
 .modeTabs {
@@ -767,6 +770,17 @@
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes searchIslandIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes filmMove {
   from { transform: translateY(0); }
   to { transform: translateY(-50%); }
@@ -1023,8 +1037,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .momentImage,
-  .filmstrip {
+  .filmstrip,
+  .searchPanel {
     animation: none;
+  }
+
+  .searchPanel {
+    opacity: 1;
+    transform: none;
   }
 
   .messageBubble {
