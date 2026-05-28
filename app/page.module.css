@@ -664,7 +664,7 @@
 }
 
 .finalCta {
-  padding: clamp(7.5rem, 10vw, 9rem) 0;
+  padding: clamp(4.75rem, 6.5vw, 6rem) 0;
   background: #fff;
 }
 
@@ -836,7 +836,7 @@
   }
 
   .finalCta {
-    padding: var(--sp-20) 0;
+    padding: var(--sp-16) 0;
   }
 
   .finalInner h2 {
