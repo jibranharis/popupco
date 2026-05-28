@@ -277,7 +277,8 @@ export default function HomePage() {
                     <Link
                       key={moment.title}
                       href={moment.href}
-                      className={activeMoment === index ? styles.activeMoment : ''}
+                      className={`${styles.momentOption} ${activeMoment === index ? styles.activeMoment : ''}`}
+                      style={{ '--moment-index': index }}
                       onMouseEnter={() => setActiveMoment(index)}
                       onFocus={() => setActiveMoment(index)}
                       onClick={() => setActiveMoment(index)}
