@@ -506,7 +506,7 @@
 }
 
 .rolesSection {
-  padding: clamp(7rem, 9vw, 8.75rem) 0 clamp(7.25rem, 9vw, 9rem);
+  padding: clamp(7rem, 9vw, 8.75rem) 0 clamp(9.5rem, 12vw, 12rem);
 }
 
 .roleIntro {
@@ -568,6 +568,7 @@
 }
 
 .trustSection {
+  padding: clamp(8.5rem, 10vw, 10.5rem) 0 clamp(7.5rem, 9vw, 9rem);
   background: #fffbf5;
 }
 
@@ -848,7 +849,11 @@
   }
 
   .rolesSection {
-    padding: var(--sp-20) 0;
+    padding: var(--sp-20) 0 var(--sp-24);
+  }
+
+  .trustSection {
+    padding: var(--sp-20) 0 var(--sp-16);
   }
 
   .roleIntro {

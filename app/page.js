@@ -368,7 +368,7 @@ export default function HomePage() {
           <div className={`container ${styles.trustGrid}`}>
             <div className={`fade-in ${styles.trustCopy}`}>
               <span className="label">Marketplace clarity</span>
-              <h2>Know before you apply.</h2>
+              <h2>Know Before You Apply.</h2>
               <p>Vendors should not have to guess what an event costs, what to bring, or whether the audience fits their business.</p>
               <div className={styles.trustPoints}>
                 {['Clear booth fees', 'Attendance ranges', 'Setup requirements'].map((point) => (
