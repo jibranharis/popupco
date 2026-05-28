@@ -20,9 +20,6 @@
   background:
     radial-gradient(circle at 76% 12%, rgba(200, 95, 44, 0.1), transparent 28%),
     linear-gradient(180deg, #fff4e6 0%, #f7f1e8 88%);
-  filter: blur(var(--hero-blur, 0));
-  transition: filter 160ms ease-out;
-  will-change: filter;
 }
 
 .heroGrid {
@@ -418,9 +415,9 @@
   display: grid;
   gap: var(--sp-3);
   translate: 0 340px;
-  transition: translate 1500ms cubic-bezier(0.16, 1, 0.3, 1) 780ms;
+  transition: translate 8400ms linear 780ms;
   animation: filmMove 28s linear infinite;
-  animation-delay: 2380ms;
+  animation-delay: 9200ms;
 }
 
 .momentStage:global(.visible) .momentVisual,

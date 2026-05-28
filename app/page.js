@@ -171,35 +171,9 @@ function useFadeInObserver(ref) {
 
 export default function HomePage() {
   const pageRef = useRef(null);
-  const heroRef = useRef(null);
   const [activeMode, setActiveMode] = useState(searchModes[0]);
   const [activeMoment, setActiveMoment] = useState(0);
   useFadeInObserver(pageRef);
-
-  useEffect(() => {
-    const hero = heroRef.current;
-    if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
-
-    let frame = 0;
-    const updateBlur = () => {
-      const progress = Math.min(Math.max((window.scrollY - 24) / 190, 0), 1);
-      hero.style.setProperty('--hero-blur', `${(progress * 1.6).toFixed(2)}px`);
-      frame = 0;
-    };
-    const queueBlurUpdate = () => {
-      if (!frame) frame = window.requestAnimationFrame(updateBlur);
-    };
-
-    updateBlur();
-    window.addEventListener('scroll', queueBlurUpdate, { passive: true });
-    window.addEventListener('resize', queueBlurUpdate);
-    return () => {
-      window.removeEventListener('scroll', queueBlurUpdate);
-      window.removeEventListener('resize', queueBlurUpdate);
-      if (frame) window.cancelAnimationFrame(frame);
-      hero.style.removeProperty('--hero-blur');
-    };
-  }, []);
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -215,7 +189,7 @@ export default function HomePage() {
       <Header />
       <main ref={pageRef} className={styles.page}>
         <div className={styles.introScroll}>
-          <section ref={heroRef} className={styles.hero}>
+          <section className={styles.hero}>
             <div className={`container ${styles.heroGrid}`}>
               <div className={`fade-in ${styles.heroCopy}`}>
                 <div className={styles.rolePills}>
