@@ -392,43 +392,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className={`fade-in fade-in--d1 ${styles.marketBooth}`} aria-label="Illustration of a local market booth">
-              <div className={styles.boothPlatform}>
-                <div className={styles.boothBack} />
-                <div className={styles.boothSign}>POPUPCO<br />MARKETPLACE</div>
-                <div className={styles.boothAwning}>
-                  {Array.from({ length: 7 }).map((_, index) => <span key={index} />)}
-                </div>
-                <div className={styles.stringLights}>
-                  {Array.from({ length: 6 }).map((_, index) => <i key={index} />)}
-                </div>
-                <div className={styles.boothShelf}>
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <div className={styles.boothCounter}>
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <div className={styles.plantLeft}>
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <div className={styles.plantRight}>
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <div className={styles.chalkboard}>MADE<br />LOCAL</div>
-                <div className={styles.aframe}>GREAT<br />EVENTS<br />START<br />CLEAR</div>
-              </div>
-            </div>
-
             <div className={`fade-in fade-in--d2 ${styles.opportunityStack}`}>
               <div className={styles.attendanceCard}>
                 <span><LineChart size={16} /> Attendance snapshot</span>
@@ -463,7 +426,7 @@ export default function HomePage() {
               <div className={styles.detailsCard}>
                 <div className={styles.detailsHeader}>
                   <div>
-                    <span>Featured opportunity</span>
+                    <span>Opportunity details</span>
                     <h3>Walnut Creek Weekend Market</h3>
                   </div>
                   <strong><ShieldCheck size={15} /> Verified host</strong>
@@ -477,9 +440,6 @@ export default function HomePage() {
                     </div>
                   ))}
                 </div>
-                <Link href="/spaces/walnut-creek-weekend-market" className={styles.detailsCta}>
-                  View event details <ArrowRight size={22} />
-                </Link>
               </div>
             </div>
           </div>
