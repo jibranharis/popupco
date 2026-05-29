@@ -78,8 +78,8 @@ export default function Header() {
         <div className={styles.navRight}>
           {!user ? (
             <>
-              <Link href="/login" className={styles.navLink}>Log in</Link>
-              <Link href="/signup" className={styles.navLink}>Sign up</Link>
+              <Link href="/login" className={`${styles.navLink} ${styles.loginLink}`}>Log in</Link>
+              <Link href="/signup" className={`${styles.navLink} ${styles.signupLink}`}>Sign up</Link>
             </>
           ) : (
             <>
