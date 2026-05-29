@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -27,17 +27,23 @@ const paths = [
     id: 'host',
     title: 'Host or organizer',
     copy: 'Plan a vendor market, school fundraiser, boutique takeover, food pop-up, or local event.',
-    href: '/hosts',
+    href: '/apply/host',
     cta: 'Host a pop-up',
     icon: Users,
   },
 ];
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: '', email: '', type: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', type: '', subject: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const subject = params.get('subject');
+    if (subject) setForm((prev) => ({ ...prev, subject }));
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -138,8 +144,13 @@ export default function ContactPage() {
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label" htmlFor="contact-type">I am a</label>
-                    <select id="contact-type" className="form-select" value={form.type} onChange={(event) => setForm({ ...form, type: event.target.value })}>
+                    <label className="form-label" htmlFor="contact-phone">Phone, optional</label>
+                    <input id="contact-phone" className="form-input" type="tel" value={form.phone} onChange={(event) => setForm({ ...form, phone: event.target.value })} placeholder="(555) 000-0000" />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="contact-type">I am a <span className="req">*</span></label>
+                    <select id="contact-type" className="form-select" required value={form.type} onChange={(event) => setForm({ ...form, type: event.target.value })}>
                       <option value="">Select one...</option>
                       <option value="vendor">Vendor</option>
                       <option value="venue">Venue owner</option>
@@ -149,6 +160,11 @@ export default function ContactPage() {
                       <option value="partner">Potential partner</option>
                       <option value="other">Other</option>
                     </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="contact-subject">Subject <span className="req">*</span></label>
+                    <input id="contact-subject" className="form-input" required value={form.subject} onChange={(event) => setForm({ ...form, subject: event.target.value })} placeholder="What is this about?" />
                   </div>
 
                   <div className="form-group">

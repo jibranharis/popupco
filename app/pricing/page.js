@@ -12,7 +12,7 @@ export const metadata = {
 const plans = [
   {
     title: 'Vendor spots',
-    price: '$75-$250',
+    price: 'Varies by event',
     eyebrow: 'For markets and booth opportunities',
     copy: 'For vendors joining curated markets, community events, food pop-ups, and shared selling opportunities.',
     features: ['Booth or table space', 'Event details before applying', 'Application review', 'Setup instructions', 'Host messaging when accepted'],
@@ -43,10 +43,11 @@ const plans = [
 const variables = ['Location', 'Expected attendance', 'Booth size', 'Indoor or outdoor setup', 'Tables, chairs, or electricity', 'Food permit needs', 'Event type', 'Promotion level'];
 
 const faqs = [
-    ['Do vendors always pay to apply?', 'No. Application fees are not the default. A $25 application fee may apply for select events, and if accepted it is credited toward the booth fee.'],
-    ['When does a vendor pay?', 'Vendors should see the fee before submitting a paid commitment. For accepted applications, payment timing depends on the host and event terms.'],
+    ['Do vendors always pay to apply?', 'No. Applying to PopUpCo is free unless a specific event clearly lists an application or booth fee.'],
+    ['When does a vendor pay?', 'Any required booth fee or application fee should be shown before a vendor confirms participation. Payment timing depends on the host and event terms.'],
     ['Can nonprofits get discounted spots?', 'Yes, community organizations and nonprofits may qualify for reduced pricing depending on the event and available space.'],
-    ['Are venue listings free?', 'During the early marketplace phase, venue listing and host tools are launch-priced while we learn what partners need most.'],
+    ['What do hosts and venues pay?', 'Host support and venue pricing vary by event scope, space, services, and logistics. Contact PopUpCo for custom support while the marketplace is in beta.'],
+    ['Do attendees pay?', 'Events may be free, ticketed, or RSVP-based depending on the organizer and venue. Public event pages should show the access type.'],
 ];
 
 export default function PricingPage() {
@@ -106,7 +107,7 @@ export default function PricingPage() {
               <div>
                 <h2>Application fees are not the default.</h2>
                 <p>
-                  A $25 application fee may apply for select events. If accepted, it is credited toward the booth fee. Any event with an application fee should clearly show that before submission so vendors are never surprised.
+                Applying to PopUpCo is free unless a specific event clearly lists an application or booth fee. Booth fees vary by event, location, size, category, and host requirements. Any required fee will be shown before a vendor confirms participation.
                 </p>
               </div>
             </div>

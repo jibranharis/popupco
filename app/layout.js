@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  metadataBase: new URL('https://popupco.com'),
+  metadataBase: new URL('https://popupco.vercel.app'),
   title: {
     default: 'PopUpCo | Find your next pop-up opportunity',
     template: '%s | PopUpCo',

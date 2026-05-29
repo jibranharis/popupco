@@ -23,6 +23,7 @@ export default function VenuesPage() {
             <span className="label">For venues</span>
             <h1>Turn your space into a pop-up destination.</h1>
             <p>Have a storefront, event hall, cafe, studio, parking lot, gallery, school, community center, or unused retail space? PopUpCo helps you show it beautifully, set rules, and connect with hosts or vendors who want to bring people in.</p>
+            <p>Submitting a venue does not guarantee a booking, but it helps PopUpCo understand what types of pop-ups could fit your space.</p>
             <div className={styles.ctas}>
               <Link href="/apply/venue" className="btn btn--primary btn--lg">List your space</Link>
               <Link href="/browse" className="btn btn--secondary btn--lg">See marketplace</Link>

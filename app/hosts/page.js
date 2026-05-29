@@ -25,8 +25,8 @@ export default function HostsPage() {
             <h1>Create better pop-up events without the chaos.</h1>
             <p>PopUpCo helps organizers find venues, recruit vendors, manage applications, communicate event details, and create markets that feel curated instead of chaotic.</p>
             <div className={styles.ctas}>
-              <Link href="/signup" className="btn btn--primary btn--lg">Host a pop-up</Link>
-              <Link href="/browse" className="btn btn--secondary btn--lg">Find venues</Link>
+              <Link href="/apply/host" className="btn btn--primary btn--lg">Host a pop-up</Link>
+              <Link href="/apply/host" className="btn btn--secondary btn--lg">Need a venue</Link>
             </div>
           </div>
         </section>

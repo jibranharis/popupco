@@ -2,54 +2,71 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { PLACEHOLDER_EVENTS } from '@/lib/data';
-import { MapPin, Calendar, Users, DollarSign, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
-import styles from './page.module.css';
+import { PLACEHOLDER_EVENTS, getPublicEventBySlug } from '@/lib/data';
+import { MapPin, Calendar, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import styles from './page.module.css';
 
 export async function generateStaticParams() {
-  return PLACEHOLDER_EVENTS.map((e) => ({ slug: e.slug }));
+  return PLACEHOLDER_EVENTS.map((event) => ({ slug: event.slug }));
 }
 
 export async function generateMetadata({ params }) {
-  const event = PLACEHOLDER_EVENTS.find((e) => e.slug === params.slug);
+  const { slug } = await params;
+  const event = getPublicEventBySlug(slug);
   if (!event) return {};
   return {
     title: event.event_name,
-    description: event.description,
+    description: event.publicDescription || event.description,
   };
 }
 
 const statusConfig = {
-  accepting: { label: 'Accepting Vendors', cls: styles.statusGreen },
-  coming_soon: { label: 'Coming Soon', cls: styles.statusOrange },
-  venue_needed: { label: 'Venue Needed', cls: styles.statusSage },
+  accepting: { label: 'Vendor Applications Open', cls: styles.statusGreen },
+  coming_soon: { label: 'Public Details Coming Soon', cls: styles.statusOrange },
+  venue_needed: { label: 'Venue Partner Needed', cls: styles.statusSage },
+  closed: { label: 'Applications Closed', cls: styles.statusNeutral },
 };
 
-export default function EventDetailPage({ params }) {
-  const event = PLACEHOLDER_EVENTS.find((e) => e.slug === params.slug);
+export default async function EventDetailPage({ params }) {
+  const { slug } = await params;
+  const event = getPublicEventBySlug(slug);
   if (!event) notFound();
 
   const status = statusConfig[event.status] || statusConfig.coming_soon;
-  const ctaHref = event.status === 'accepting'
-    ? `/apply/vendor?event=${event.slug}`
-    : event.status === 'venue_needed'
-    ? '/apply/venue'
-    : null;
+  const vendorHref = `/apply/vendor?event=${event.slug}`;
 
   const faqs = [
-    { q: 'What does the booth fee include?', a: 'Your selling area, event listing, basic promotion, and vendor setup guide.' },
-    { q: 'Do I need to bring my own setup?', a: 'Vendors are expected to bring their own display. Tables, tents, and chairs may be available for an additional fee depending on availability.' },
-    { q: 'What if I sell food or beverages?', a: 'Food, beverage, and food truck vendors may require additional permits and approval. These will be verified before acceptance.' },
-    { q: 'Do nonprofits get a discount?', a: event.nonprofit_discount ? 'Yes — nonprofits and community organizations may qualify for a discounted vendor spot at this event.' : 'Nonprofit discounts are not available for this event.' },
-    { q: 'When will I hear back after applying?', a: 'We review applications on a rolling basis and will follow up via email. Submitting an application does not guarantee acceptance.' },
+    {
+      q: 'Is this page for attendees or vendors?',
+      a: 'This is the public event page for attendees. Vendors can use the separate application CTA when vendor applications are open.',
+    },
+    {
+      q: 'Where is the event located?',
+      a: event.location_name,
+    },
+    {
+      q: 'Is the event free?',
+      a: event.accessType,
+    },
+    {
+      q: 'Can vendors apply?',
+      a: event.vendorApplicationsOpen
+        ? `Yes. Vendor applications are open. Booth fees are currently listed as $${event.booth_price_min}-$${event.booth_price_max}, and any required fee will be shown before a vendor confirms participation.`
+        : 'Vendor applications are not open for this event yet. You can contact PopUpCo or browse vendor opportunities for current openings.',
+    },
+    {
+      q: 'What should food vendors know?',
+      a: event.food_allowed
+        ? 'Food, beverage, and food truck vendors may need city, county, or venue approvals before participating.'
+        : 'Food participation is limited for this event unless a specific approved category is listed.',
+    },
   ];
 
   return (
     <>
       <Header />
       <main className={styles.main}>
-        {/* Hero */}
         <div className={styles.heroWrap}>
           <Image
             src={event.image_url}
@@ -67,7 +84,7 @@ export default function EventDetailPage({ params }) {
             <span className={`${status.cls} ${styles.statusPill}`}>{status.label}</span>
             <h1 className={styles.heroTitle}>{event.event_name}</h1>
             <div className={styles.heroMeta}>
-              <span><Calendar size={15} /> {event.date}</span>
+              <span><Calendar size={15} /> {event.date} · {event.startTime}-{event.endTime}</span>
               <span><MapPin size={15} /> {event.city}</span>
             </div>
           </div>
@@ -75,20 +92,24 @@ export default function EventDetailPage({ params }) {
 
         <div className={`container ${styles.body}`}>
           <div className={styles.left}>
-            {/* About */}
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>About this event</h2>
-              <p className={styles.sectionText}>{event.description}</p>
-              <p className={styles.sectionText}>
-                This is a curated, application-based pop-up — not every applicant will be accepted. We review brand fit, category mix, setup needs, and event capacity.
-              </p>
+              <p className={styles.sectionText}>{event.publicDescription || event.description}</p>
+              <p className={styles.sectionText}>{event.attendeeInfo}</p>
             </section>
 
-            {/* What to expect */}
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>What's included</h2>
+              <h2 className={styles.sectionTitle}>Attendee details</h2>
               <ul className={styles.checkList}>
-                {['Your selling area / booth space', 'Event listing on Pop Up Co.', 'Basic event promotion', 'Vendor setup guide', 'Event-day coordination (when available)'].map((item) => (
+                {[
+                  `Access: ${event.accessType}`,
+                  `Event type: ${event.eventType}`,
+                  `Expected vendors: ${event.expectedVendors}`,
+                  `Family-friendly: ${event.familyFriendly}`,
+                  `Pets: ${event.petsAllowed}`,
+                  `Food: ${event.foodAvailable}`,
+                  `Accessibility: ${event.accessibility}`,
+                ].map((item) => (
                   <li key={item} className={styles.checkItem}>
                     <CheckCircle size={16} className={styles.checkIcon} /> {item}
                   </li>
@@ -96,11 +117,11 @@ export default function EventDetailPage({ params }) {
               </ul>
             </section>
 
-            {/* Rental note */}
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Setup & rentals</h2>
+              <h2 className={styles.sectionTitle}>Organizer</h2>
+              <p className={styles.sectionText}>{event.organizerName}</p>
               <p className={styles.sectionText}>
-                Vendors are expected to bring their own display setup. Tables, tents, and chairs may be available for an additional fee depending on the event. Select this option in your application.
+                PopUpCo is currently developing its marketplace experience. Some event details may require direct follow-up from the PopUpCo team before they are final.
               </p>
             </section>
 
@@ -109,14 +130,13 @@ export default function EventDetailPage({ params }) {
                 <div className={`notice notice--warning ${styles.foodNotice}`}>
                   <AlertCircle size={16} />
                   <div>
-                    <strong>Food & beverage vendors welcome.</strong><br />
-                    Food, beverage, and food truck vendors may require additional permits and approval before being accepted. Details will be provided during the review process.
+                    <strong>Food may be part of this event.</strong><br />
+                    Food vendors may need additional permits, insurance, and venue approval before participating.
                   </div>
                 </div>
               </section>
             )}
 
-            {/* FAQ */}
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>Common questions</h2>
               <div className={styles.faqs}>
@@ -130,7 +150,6 @@ export default function EventDetailPage({ params }) {
             </section>
           </div>
 
-          {/* Sidebar */}
           <aside className={styles.sidebar}>
             <div className={`card ${styles.sideCard}`}>
               <div className={styles.sideDetail}>
@@ -141,54 +160,63 @@ export default function EventDetailPage({ params }) {
                 <span className={styles.sideLabel}>Date</span>
                 <span className={styles.sideVal}>{event.date}</span>
               </div>
-              {event.vendor_spots_total > 0 && (
-                <div className={styles.sideDetail}>
-                  <span className={styles.sideLabel}>Vendor spots</span>
-                  <span className={styles.sideVal}>Up to {event.vendor_spots_total}</span>
-                </div>
-              )}
-              {event.booth_price_min && (
-                <div className={styles.sideDetail}>
-                  <span className={styles.sideLabel}>Booth fee range</span>
-                  <span className={styles.sideVal}>${event.booth_price_min}–${event.booth_price_max}</span>
-                </div>
-              )}
               <div className={styles.sideDetail}>
-                <span className={styles.sideLabel}>Application fee</span>
-                <span className={styles.sideVal}>$25 (credited if accepted)</span>
+                <span className={styles.sideLabel}>Time</span>
+                <span className={styles.sideVal}>{event.startTime}-{event.endTime}</span>
               </div>
-              {event.application_deadline && (
-                <div className={styles.sideDetail}>
-                  <span className={styles.sideLabel}>Applications</span>
-                  <span className={styles.sideVal}>{event.application_deadline}</span>
-                </div>
-              )}
+              <div className={styles.sideDetail}>
+                <span className={styles.sideLabel}>Access</span>
+                <span className={styles.sideVal}>{event.accessType}</span>
+              </div>
+              <div className={styles.sideDetail}>
+                <span className={styles.sideLabel}>Parking</span>
+                <span className={styles.sideVal}>{event.parking}</span>
+              </div>
               <div className={styles.sideDetail}>
                 <span className={styles.sideLabel}>Categories</span>
                 <span className={styles.sideVal}>{event.categories}</span>
               </div>
-              {event.nonprofit_discount === 1 && (
-                <div className={`notice notice--info ${styles.nonprofitNote}`}>
-                  Nonprofit and community discounts may be available for this event.
-                </div>
+              {event.vendorApplicationsOpen && (
+                <>
+                  <div className={styles.sideDetail}>
+                    <span className={styles.sideLabel}>Vendor spots</span>
+                    <span className={styles.sideVal}>Up to {event.vendor_spots_total}</span>
+                  </div>
+                  <div className={styles.sideDetail}>
+                    <span className={styles.sideLabel}>Vendor booth range</span>
+                    <span className={styles.sideVal}>${event.booth_price_min}-${event.booth_price_max}</span>
+                  </div>
+                  <div className={styles.sideDetail}>
+                    <span className={styles.sideLabel}>Applications</span>
+                    <span className={styles.sideVal}>{event.application_deadline}</span>
+                  </div>
+                </>
               )}
 
-              {ctaHref ? (
-                <Link href={ctaHref} className={`btn btn--primary ${styles.applyBtn}`}>
-                  {event.cta_text}
+              <Link href="/contact" className={`btn btn--secondary ${styles.applyBtn}`}>
+                Save / share event
+              </Link>
+
+              {event.vendorApplicationsOpen ? (
+                <Link href={vendorHref} className={`btn btn--primary ${styles.applyBtn}`}>
+                  Apply to sell at this event
+                </Link>
+              ) : event.status === 'venue_needed' ? (
+                <Link href="/apply/venue" className={`btn btn--primary ${styles.applyBtn}`}>
+                  Offer a venue
                 </Link>
               ) : (
                 <div className={styles.comingSoonNote}>
-                  Applications opening soon. <Link href="/contact" className={styles.notifyLink}>Get notified →</Link>
+                  Vendor applications are not open yet. <Link href="/contact" className={styles.notifyLink}>Ask about this event</Link>
                 </div>
               )}
-              <p className={styles.disclaimer}>Submitting an application does not guarantee acceptance.</p>
+              <p className={styles.disclaimer}>Event details may change while PopUpCo finalizes venue and host logistics.</p>
             </div>
 
             <div className={`card ${styles.feeCard}`}>
-              <h3 className={styles.feeTitle}>Application fee</h3>
+              <h3 className={styles.feeTitle}>Vendor applications</h3>
               <p className={styles.feeText}>
-                A $25 application fee is collected at time of submission. If accepted, this amount is credited toward your booth fee. Application fee policy may vary by event and will be clearly stated before payment.
+                Applying to PopUpCo is free unless a specific event clearly lists an application or booth fee. Any required fee will be shown before a vendor confirms participation.
               </p>
             </div>
           </aside>

@@ -7,34 +7,19 @@ import { useAuth } from './AuthContext';
 import styles from './Header.module.css';
 
 const publicNav = [
-  { label: 'Discover', href: '/browse' },
-  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'Discover', href: '/discover' },
   { label: 'For Vendors', href: '/vendors' },
   { label: 'For Venues', href: '/venues' },
   { label: 'For Hosts', href: '/hosts' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'FAQ', href: '/faq' },
 ];
 
 const roleNav = {
-  vendor: [
-    { label: 'Discover', href: '/browse' },
-    { label: 'How It Works', href: '/#how-it-works' },
-    { label: 'For Vendors', href: '/vendors' },
-  ],
-  venue: [
-    { label: 'Discover', href: '/browse' },
-    { label: 'How It Works', href: '/#how-it-works' },
-    { label: 'For Venues', href: '/venues' },
-  ],
-  host: [
-    { label: 'Discover', href: '/browse' },
-    { label: 'How It Works', href: '/#how-it-works' },
-    { label: 'For Hosts', href: '/hosts' },
-  ],
-  attendee: [
-    { label: 'Discover', href: '/browse' },
-    { label: 'How It Works', href: '/#how-it-works' },
-    { label: 'For Events', href: '/browse' },
-  ],
+  vendor: publicNav,
+  venue: publicNav,
+  host: publicNav,
+  attendee: publicNav,
 };
 
 export default function Header() {
@@ -93,7 +78,6 @@ export default function Header() {
             <>
               <Link href="/login" className={styles.navLink}>Log in</Link>
               <Link href="/signup" className={styles.navLink}>Sign up</Link>
-              <Link href="/browse" className="btn btn--primary btn--sm">Get Started</Link>
             </>
           ) : (
             <>
@@ -153,11 +137,6 @@ export default function Header() {
             </>
           )}
         </nav>
-        {!user && (
-          <div className={styles.mobileCtas}>
-            <Link href="/browse" className="btn btn--primary btn--full" onClick={() => setMenuOpen(false)}>Get Started</Link>
-          </div>
-        )}
       </div>
 
       {menuOpen && <div className={styles.overlay} onClick={() => setMenuOpen(false)} />}

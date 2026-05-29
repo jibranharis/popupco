@@ -21,7 +21,7 @@ export default function LoginPage() {
   const handleLogin = (event) => {
     event.preventDefault();
     login(type, { email, name: email.split('@')[0] });
-    router.push(type === 'attendee' ? '/browse' : `/dashboard/${type}`);
+    router.push(type === 'attendee' ? '/upcoming' : `/dashboard/${type}`);
   };
 
   return (
@@ -29,7 +29,7 @@ export default function LoginPage() {
       <Link href="/" className={styles.backHome}>PopUpCo</Link>
       <div className={styles.authContainer}>
         <h1 className={styles.title}>Welcome back</h1>
-        <p className="text-muted mb-6">Log in to manage opportunities, messages, listings, and applications.</p>
+        <p className="text-muted mb-6">Account login is in beta. You can use this demo login, or go directly to the marketplace flows below.</p>
         <form onSubmit={handleLogin} className={styles.form}>
           <div className="form-group">
             <label className="form-label">Account type</label>
@@ -51,12 +51,18 @@ export default function LoginPage() {
             <label className="form-label">Password</label>
             <input type="password" className="form-input" placeholder="Password" required />
             <div className={styles.textRight}>
-              <Link href="#" className={styles.forgot}>Forgot password?</Link>
+              <Link href="/contact?subject=Forgot%20password" className={styles.forgot}>Forgot password?</Link>
             </div>
           </div>
 
           <button type="submit" className="btn btn--primary btn--full mt-4">Log in</button>
         </form>
+        <div className={styles.onboardingPreview} style={{ marginTop: '20px' }}>
+          <Link href="/apply/vendor">Apply as vendor</Link>
+          <Link href="/apply/venue">Submit venue</Link>
+          <Link href="/apply/host">Host an event</Link>
+          <Link href="/upcoming">Browse events</Link>
+        </div>
         <p className={styles.footer}>Don't have an account? <Link href="/signup">Sign up</Link></p>
       </div>
     </div>

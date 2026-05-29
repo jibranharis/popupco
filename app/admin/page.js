@@ -115,7 +115,7 @@ export default function AdminDashboard() {
     <div className={styles.layout}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarTop}>
-          <Link href="/" className={styles.logo}>Pop Up Co.</Link>
+          <Link href="/" className={styles.logo}>PopUpCo</Link>
           <span className="badge badge--neutral">Admin</span>
         </div>
 

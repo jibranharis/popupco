@@ -1,44 +1,24 @@
 import Link from 'next/link';
-import { Instagram, Linkedin, Twitter } from 'lucide-react';
 import styles from './Footer.module.css';
 
 const footerLinks = [
   {
-    title: 'Discover',
+    title: 'Marketplace',
     links: [
-      ['Browse Opportunities', '/browse'],
-      ['Upcoming Pop-Ups', '/upcoming'],
-      ['Vendor Markets', '/browse'],
-      ['Retail Spaces', '/browse'],
-      ['Food Pop-Ups', '/browse'],
-    ],
-  },
-  {
-    title: 'For Users',
-    links: [
+      ['Discover', '/discover'],
       ['For Vendors', '/vendors'],
       ['For Venues', '/venues'],
       ['For Hosts', '/hosts'],
-      ['For Attendees', '/browse'],
+      ['Upcoming Events', '/upcoming'],
     ],
   },
   {
-    title: 'Hosting',
+    title: 'Support',
     links: [
-      ['List Your Space', '/apply/venue'],
-      ['Host an Event', '/hosts'],
-      ['Host Guidelines', '/faq'],
-      ['Community Standards', '/faq'],
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      ['About Us', '/about'],
-      ['FAQ', '/faq'],
       ['Pricing', '/pricing'],
+      ['FAQ', '/faq'],
+      ['Help', '/help'],
       ['Contact', '/contact'],
-      ['Help Center', '/help'],
     ],
   },
   {
@@ -82,12 +62,7 @@ export default function Footer() {
 
         <div className={styles.bottomBar}>
           <div className={styles.bottomLeft}>
-            <span className={styles.copyright}>© {new Date().getFullYear()} PopUpCo</span>
-          </div>
-          <div className={styles.socials}>
-            <a href="#" aria-label="Instagram"><Instagram size={20} /></a>
-            <a href="#" aria-label="Twitter"><Twitter size={20} /></a>
-            <a href="#" aria-label="LinkedIn"><Linkedin size={20} /></a>
+            <span className={styles.copyright}>&copy; {new Date().getFullYear()} PopUpCo</span>
           </div>
         </div>
       </div>

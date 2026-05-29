@@ -64,9 +64,9 @@ export default function BrowsePage() {
         <section className={styles.hero}>
           <div className="container">
             <div className={styles.heroCopy}>
-              <span className="label">Discover</span>
-              <h1>Discover pop-up opportunities near you.</h1>
-              <p>Browse pop-up opportunities, vendor markets, event spaces, and local selling experiences near you.</p>
+              <span className="label">Vendor opportunities</span>
+              <h1>Vendor Opportunities</h1>
+              <p>Find pop-ups, markets, and local events currently accepting vendor applications.</p>
             </div>
             <div className={styles.searchPanel}>
               <div className={styles.searchBox}>
@@ -95,7 +95,7 @@ export default function BrowsePage() {
 
           <div className={styles.resultsHeader}>
             <div>
-              <h2>{opportunities.length} opportunities</h2>
+              <h2>{opportunities.length} vendor opportunities</h2>
               <p>Clear fees, deadlines, host details, and setup notes before you apply.</p>
             </div>
             <select className={styles.sortSelect} defaultValue="recommended" aria-label="Sort opportunities">
@@ -106,9 +106,19 @@ export default function BrowsePage() {
             </select>
           </div>
 
-          <div className="grid-3">
-            {opportunities.map((space) => <SpaceCard key={space.id} space={space} />)}
-          </div>
+          {opportunities.length === 0 ? (
+            <div className={styles.emptyState}>
+              <h2>No matches yet.</h2>
+              <p>Try changing your filters or check back soon.</p>
+              <button type="button" onClick={() => { setActiveTab('All'); setQuery(''); }} className="btn btn--secondary">
+                Clear filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid-3">
+              {opportunities.map((space) => <SpaceCard key={space.id} space={space} />)}
+            </div>
+          )}
         </div>
       </main>
       <Footer />

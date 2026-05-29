@@ -112,6 +112,10 @@ export default function VenueApplicationPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (!form.first_name || !form.last_name || !form.email || !form.venue_name) {
+      setError('Please complete the required contact and venue name fields before submitting.');
+      return;
+    }
     if (!form.consent) {
       setError('Please check the consent box before submitting.');
       return;
@@ -446,7 +450,7 @@ export default function VenueApplicationPage() {
                       checked={form.consent}
                       onChange={(e) => setField('consent', e.target.checked)}
                     />
-                    <span>Submitting your space does not commit you to hosting, and does not guarantee Pop Up Co. will host an event there.</span>
+                    <span>Submitting your space does not commit you to hosting, and does not guarantee PopUpCo will host an event there.</span>
                   </label>
                 </div>
                 {error && <p className="form-error">{error}</p>}

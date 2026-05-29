@@ -7,10 +7,17 @@ import styles from '../login/page.module.css';
 
 const roles = [
   ['vendor', "I'm a vendor", 'Find pop-up opportunities, apply to markets, save spaces, and manage applications.'],
-  ['venue', "I'm a venue", 'List a space, receive requests, and bring vendors or events into your location.'],
+  ['venue', 'I have an empty venue', 'List a space, receive requests, and bring vendors or events into your location.'],
   ['host', "I'm a host", 'Create pop-up events, recruit vendors, manage applications, and find venues.'],
   ['attendee', "I'm exploring events", 'Discover local pop-ups, markets, food events, and community experiences.'],
 ];
+
+const roleStartPaths = {
+  vendor: '/apply/vendor',
+  venue: '/apply/venue',
+  host: '/apply/host',
+  attendee: '/upcoming',
+};
 
 const onboarding = {
   vendor: ['Business name', 'Category', 'Products sold', 'Location', 'Photos', 'Social links', 'Bio', 'Opportunities wanted', 'Budget', 'Availability', 'Setup needs'],
@@ -32,7 +39,7 @@ export default function SignupPage() {
   const handleSignup = (event) => {
     event.preventDefault();
     login(type, { email, name });
-    router.push(type === 'attendee' ? '/browse' : `/dashboard/${type}`);
+    router.push(roleStartPaths[type] || '/discover');
   };
 
   return (

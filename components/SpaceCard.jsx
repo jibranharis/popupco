@@ -21,9 +21,7 @@ export default function SpaceCard({ space }) {
     setIsSaved(saved.includes(space.id));
   }, [user, space.id]);
 
-  const toggleSave = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const toggleSave = () => {
     if (!user) {
       router.push('/login');
       return;
@@ -36,8 +34,8 @@ export default function SpaceCard({ space }) {
   };
 
   return (
-    <Link href={`/spaces/${space.slug}`} className={`listing-card ${styles.card}`}>
-      <div className={styles.imageWrap}>
+    <article className={`listing-card ${styles.card}`}>
+      <Link href={`/spaces/${space.slug}`} className={styles.imageWrap}>
         <Image
           src={space.image}
           alt={space.name}
@@ -47,20 +45,23 @@ export default function SpaceCard({ space }) {
         />
         <div className={styles.badge}>{space.type}</div>
         <button
+          type="button"
           onClick={toggleSave}
           className={`heart-btn ${isSaved ? 'saved' : ''}`}
           aria-label={isSaved ? 'Remove from saved' : 'Save listing'}
         >
           <Heart size={18} strokeWidth={isSaved ? 0 : 2} />
         </button>
-      </div>
+      </Link>
 
       <div className={styles.content}>
         <div className={styles.topLine}>
           <span><MapPin size={14} /> {space.location}</span>
           <span className={styles.price}>{space.price}</span>
         </div>
-        <h3 className={styles.title}>{space.name}</h3>
+        <h3 className={styles.title}>
+          <Link href={`/spaces/${space.slug}`}>{space.name}</Link>
+        </h3>
         <p className={styles.desc}>{space.description}</p>
 
         <div className={styles.details}>
@@ -75,9 +76,12 @@ export default function SpaceCard({ space }) {
 
         <div className={styles.ctaRow}>
           <span>{space.category}</span>
-          <strong>{space.cta}</strong>
+          <div className={styles.actionLinks}>
+            <Link href={`/spaces/${space.slug}`}>View opportunity</Link>
+            <Link href={`/apply/vendor?event=${space.slug}`}>Apply to sell</Link>
+          </div>
         </div>
       </div>
-    </Link>
+    </article>
   );
 }

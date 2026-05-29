@@ -2,6 +2,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { PLACEHOLDER_EVENTS, getPublicEventBySlug } from '@/lib/data';
+import { SPACES_DATA, getOpportunityBySlug } from '@/lib/spaces';
 import { ChevronRight, CheckCircle } from 'lucide-react';
 import styles from './page.module.css';
 
@@ -50,6 +52,8 @@ function VendorApplicationForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [eventWarning, setEventWarning] = useState('');
   const topRef = useRef(null);
 
   const [form, setForm] = useState({
@@ -63,7 +67,7 @@ function VendorApplicationForm() {
     // Section 4
     product_description: '', avg_price_range: '', photo_links: '', sold_before: '', sold_before_where: '', brand_fit: '',
     // Section 5
-    event_preference: '', preferred_locations: [], available_dates: '', events_per_month: '',
+    event_preference: '', selected_event_title: '', selected_event_source: '', preferred_locations: [], available_dates: '', events_per_month: '',
     // Section 6
     needs_table: '', needs_chairs: '', needs_tent: '', needs_electricity: '', booth_size: '', own_setup: '', special_setup: '',
     // Food conditional
@@ -81,7 +85,24 @@ function VendorApplicationForm() {
 
   useEffect(() => {
     const eventSlug = new URLSearchParams(window.location.search).get('event');
-    if (eventSlug) setField('event_preference', eventSlug);
+    if (!eventSlug) return;
+
+    const publicEvent = getPublicEventBySlug(eventSlug);
+    const opportunity = getOpportunityBySlug(eventSlug);
+
+    if (publicEvent) {
+      setSelectedEvent({ slug: publicEvent.slug, title: publicEvent.event_name, source: 'public event' });
+      setEventPreference(publicEvent.slug);
+      return;
+    }
+
+    if (opportunity) {
+      setSelectedEvent({ slug: opportunity.slug, title: opportunity.name, source: 'vendor opportunity' });
+      setEventPreference(opportunity.slug);
+      return;
+    }
+
+    setEventWarning("We couldn't find that event, but you can still apply as a vendor.");
   }, []);
 
   function scrollTop() {
@@ -90,6 +111,18 @@ function VendorApplicationForm() {
 
   function setField(key, val) {
     setForm((prev) => ({ ...prev, [key]: val }));
+  }
+
+  function setEventPreference(slug) {
+    const publicEvent = getPublicEventBySlug(slug);
+    const opportunity = getOpportunityBySlug(slug);
+
+    setForm((prev) => ({
+      ...prev,
+      event_preference: slug,
+      selected_event_title: publicEvent?.event_name || opportunity?.name || '',
+      selected_event_source: publicEvent ? 'public event' : opportunity ? 'vendor opportunity' : '',
+    }));
   }
 
   function toggleCategory(cat) {
@@ -122,6 +155,10 @@ function VendorApplicationForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (!form.first_name || !form.last_name || !form.email || !form.business_name || form.categories.length === 0 || !form.product_description) {
+      setError('Please complete required contact, business, category, and product details before submitting.');
+      return;
+    }
     if (!form.consent_no_guarantee || !form.consent_permits) {
       setError('Please check both consent boxes before submitting.');
       return;
@@ -178,8 +215,19 @@ function VendorApplicationForm() {
           <div className={styles.pageHeader}>
             <h1 className={styles.headline}>Vendor Application</h1>
             <p className={styles.intro}>
-              Apply to sell at an upcoming Pop Up Co. event. We review applications based on event fit, category mix, setup needs, and availability.
+              Apply to sell at an upcoming PopUpCo opportunity. We review applications based on event fit, category mix, setup needs, and availability.
             </p>
+            {selectedEvent && (
+              <div className="notice notice--info" style={{ margin: '18px auto 0', maxWidth: '620px', textAlign: 'left' }}>
+                <strong>You are applying for: {selectedEvent.title}</strong><br />
+                This event will be included with your application.
+              </div>
+            )}
+            {eventWarning && (
+              <div className="notice notice--warning" style={{ margin: '18px auto 0', maxWidth: '620px', textAlign: 'left' }}>
+                {eventWarning}
+              </div>
+            )}
           </div>
 
           {/* Progress */}
@@ -365,12 +413,18 @@ function VendorApplicationForm() {
               <div className={styles.fields}>
                 <div className="form-group">
                   <label className="form-label" htmlFor="v-event-pref">Which upcoming event are you applying for?</label>
-                  <select id="v-event-pref" className="form-select" value={form.event_preference} onChange={(e) => setField('event_preference', e.target.value)}>
+                  <select id="v-event-pref" className="form-select" value={form.event_preference} onChange={(e) => setEventPreference(e.target.value)}>
                     <option value="">All / open to any upcoming event</option>
-                    <option value="walnut-creek-weekend-market">Walnut Creek Weekend Market</option>
-                    <option value="oakland-makers-night-market">Oakland Makers Night Market</option>
-                    <option value="berkeley-art-market-booth">Berkeley Art Market Booth</option>
-                    <option value="san-jose-community-market">San Jose Community Market</option>
+                    <optgroup label="Public upcoming events">
+                      {PLACEHOLDER_EVENTS.map((event) => (
+                        <option key={event.slug} value={event.slug}>{event.event_name}</option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="Vendor opportunities">
+                      {SPACES_DATA.map((opportunity) => (
+                        <option key={opportunity.slug} value={opportunity.slug}>{opportunity.name}</option>
+                      ))}
+                    </optgroup>
                   </select>
                 </div>
                 <div className="form-group">
@@ -580,7 +634,7 @@ function VendorApplicationForm() {
                 <hr className={styles.divider} />
 
                 <div className="form-group">
-                  <label className="form-label">Are you comfortable with vendor spots typically ranging from $75–$250?</label>
+                  <label className="form-label">Are you comfortable reviewing event-specific booth fees before confirming participation?</label>
                   <div className="radio-group">
                     {["Yes", "No", "Depends"].map((opt) => (
                       <label key={opt} className="radio-item">
@@ -649,7 +703,7 @@ function VendorApplicationForm() {
                 </div>
 
                 <div className={`notice notice--info`}>
-                  Application policies may vary by event.
+                  Applying to PopUpCo is free unless a specific event clearly lists an application or booth fee. Any required fee will be shown before a vendor confirms participation.
                 </div>
 
                 {error && <p className="form-error">{error}</p>}

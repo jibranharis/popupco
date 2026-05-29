@@ -47,10 +47,16 @@ export default function SpaceDetailPage({ params }) {
     setIsSaved(!isSaved);
   };
 
-  const handlePrimary = () => {
-    if (space.cta === 'Apply') router.push(`/apply/vendor?event=${space.slug}`);
-    else if (!user) router.push('/login');
-    else alert('Request sent. The host will receive your message in this demo.');
+  const handleShare = async () => {
+    const shareUrl = typeof window !== 'undefined' ? window.location.href : `https://popupco.vercel.app/spaces/${space.slug}`;
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      await navigator.share({ title: space.name, url: shareUrl });
+      return;
+    }
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      await navigator.clipboard.writeText(shareUrl);
+      alert('Listing link copied.');
+    }
   };
 
   const similar = SPACES_DATA.filter((item) => item.id !== space.id).slice(0, 3);
@@ -73,7 +79,7 @@ export default function SpaceDetailPage({ params }) {
               </div>
             </div>
             <div className={styles.actions}>
-              <button><Share size={16} /> Share</button>
+              <button type="button" onClick={handleShare}><Share size={16} /> Share</button>
               <button onClick={toggleSave}><Heart size={16} fill={isSaved ? '#E53E3E' : 'none'} color={isSaved ? '#E53E3E' : 'currentColor'} /> {isSaved ? 'Saved' : 'Save'}</button>
             </div>
           </div>
@@ -156,8 +162,12 @@ export default function SpaceDetailPage({ params }) {
                 </div>
                 <div className={styles.bookingFact}><Clock size={16} /> Deadline: {space.deadline}</div>
                 <div className={styles.bookingFact}><ShieldCheck size={16} /> {space.trust}</div>
-                <button className="btn btn--primary btn--full" onClick={handlePrimary}>{space.cta === 'Apply' ? 'Apply to sell' : space.cta}</button>
-                <button className="btn btn--secondary btn--full"><MessageSquare size={16} /> Message host</button>
+                <Link href={`/apply/vendor?event=${space.slug}`} className="btn btn--primary btn--full">
+                  {space.cta === 'Apply' ? 'Apply to sell' : 'Request this opportunity'}
+                </Link>
+                <Link href={`/contact?subject=${encodeURIComponent(space.name)}`} className="btn btn--secondary btn--full">
+                  <MessageSquare size={16} /> Message host
+                </Link>
                 <p>You will see fees, rules, and requirements before making a paid commitment.</p>
               </div>
             </aside>

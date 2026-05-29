@@ -23,6 +23,7 @@ export default function VendorsPage() {
             <span className="label">For vendors</span>
             <h1>Find places to sell, grow, and get discovered.</h1>
             <p>No more chasing Instagram posts, random Google Forms, and scattered DMs. PopUpCo brings pop-up opportunities, booth details, applications, messages, and saved listings into one place.</p>
+            <p>Applying to PopUpCo is free unless a specific event clearly lists an application or booth fee before confirmation.</p>
             <div className={styles.ctas}>
               <Link href="/browse" className="btn btn--primary btn--lg">Find opportunities</Link>
               <Link href="/apply/vendor" className="btn btn--secondary btn--lg">Create your vendor profile</Link>

@@ -37,7 +37,7 @@ const searchModes = [
     id: 'host',
     label: 'Host a pop-up',
     button: 'Start Hosting',
-    href: '/hosts',
+    href: '/apply/host',
     fields: [
       ['Location', 'Where are you hosting?'],
       ['Event', 'Event type'],
@@ -87,7 +87,7 @@ const moments = [
     title: 'Host a vendor market',
     copy: 'Bring vendors, artists, food sellers, and shoppers together with tools to collect applications and manage interest.',
     cta: 'Start hosting',
-    href: '/hosts?intent=create-event',
+    href: '/apply/host',
     image: '/event-1.png',
   },
   {
@@ -116,13 +116,13 @@ const roles = [
     title: "I'm a host",
     copy: 'Create pop-up events, recruit vendors, manage applications, and bring local experiences to life.',
     cta: 'Host a pop-up',
-    href: '/hosts',
+    href: '/apply/host',
   },
   {
     title: "I'm exploring events",
     copy: 'Discover local markets, food pop-ups, art shows, and community events near you.',
     cta: 'Explore events',
-    href: '/browse',
+    href: '/upcoming',
   },
 ];
 

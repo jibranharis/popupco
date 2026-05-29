@@ -7,54 +7,21 @@ import { ChevronDown } from 'lucide-react';
 import styles from './page.module.css';
 
 const FAQS = [
-  {
-    q: 'What is Pop Up Co.?',
-    a: 'Pop Up Co. helps vendors, small businesses, creators, and local brands access curated pop-up selling opportunities, starting in the Bay Area.',
-  },
-  {
-    q: 'Is this a farmers market?',
-    a: 'Not exactly. Some events may feel market-style, but Pop Up Co. focuses on curated local brand pop-ups, retail events, creator markets, food trucks, and community-based selling opportunities. The goal is for each event to feel intentional and well-curated.',
-  },
-  {
-    q: 'Who can apply?',
-    a: 'Small brands, vendors, creators, artists, vintage sellers, nonprofits, food trucks, and local businesses can apply. Applications are reviewed based on event fit, category mix, and setup needs.',
-  },
-  {
-    q: 'How much does it cost?',
-    a: 'Vendor spots typically range from $75 to $250 depending on event size, location, and placement. Featured placements, rentals, and dedicated pop-ups may cost more.',
-  },
-  {
-    q: 'Is there an application fee?',
-    a: 'A $25 application fee is credited toward your booth fee if accepted. Event-specific application terms will be shown before payment.',
-  },
-  {
-    q: "Do I need a seller's permit?",
-    a: "Requirements vary by city, venue, event, and product type. Vendors are responsible for having any required permits, licenses, insurance, or approvals for what they sell. Pop Up Co. does not provide legal or permitting advice.",
-  },
-  {
-    q: 'Can food vendors or food trucks apply?',
-    a: 'Yes. Food, beverage, and food truck vendors may require additional permits and approval. Permit requirements will be communicated during the review process.',
-  },
-  {
-    q: 'Do you provide tables, tents, and chairs?',
-    a: 'Vendors are expected to bring their own setup. Tables, tents, and chairs may be available for an additional fee depending on the event.',
-  },
-  {
-    q: 'Do nonprofits get a discount?',
-    a: 'Nonprofit and community organizations may qualify for discounted vendor spots. Eligibility is reviewed during the application process.',
-  },
-  {
-    q: 'Can I list my venue?',
-    a: 'Yes. Venue owners and space operators can submit their space through the venue partner form. Submission does not guarantee that Pop Up Co. will host an event at your location.',
-  },
-  {
-    q: 'Where are you launching?',
-    a: 'Pop Up Co. is launching in the Bay Area. More cities coming soon.',
-  },
-  {
-    q: 'Do you guarantee I will be accepted?',
-    a: 'No. Applications are reviewed based on event fit, category mix, space, setup needs, and availability. Submitting an application does not guarantee acceptance.',
-  },
+  ['What is PopUpCo?', 'PopUpCo is a local-first marketplace for vendors, hosts, venues, and attendees. Vendors find places to sell, hosts create events, venues submit spaces, and attendees discover local pop-ups.'],
+  ['How do vendors apply?', 'Vendors can browse vendor opportunities on Discover or Vendor Opportunities, open a listing, and submit the vendor application. If an event is selected, it is included with the application.'],
+  ['What happens after a vendor applies?', 'PopUpCo reviews event fit, category mix, setup needs, permits, and availability. Submitting an application does not guarantee acceptance.'],
+  ['Are booth fees required?', 'Applying to PopUpCo is free unless a specific event clearly lists an application or booth fee. Booth fees vary by event and will be shown before a vendor confirms participation.'],
+  ['Do vendors need permits?', 'Requirements vary by city, venue, event, and product type. Vendors are responsible for required permits, licenses, insurance, approvals, and tax obligations. PopUpCo does not provide legal or permitting advice.'],
+  ['Can food vendors apply?', 'Yes. Food, beverage, and food truck vendors may need health permits, food handler certification, insurance, or venue approval before participating.'],
+  ['How do venues submit a space?', 'Venue owners can use the venue application to submit a storefront, hall, cafe, studio, parking lot, gallery, school, community center, or other space.'],
+  ['Does listing a venue guarantee bookings?', 'No. Submitting a venue helps PopUpCo understand the space, but it does not guarantee an event, booking, vendor match, or revenue.'],
+  ['Can venues approve event types?', 'Yes. Venue submissions ask about event fit, amenities, restrictions, food rules, music, capacity, availability, and pricing preferences.'],
+  ['How do hosts create an event?', 'Hosts can use the host request flow to describe the event concept, date, venue status, vendors needed, booth fees, and support needed.'],
+  ['Can PopUpCo help hosts find vendors?', 'Yes. Hosts can request help recruiting vendors, managing applications, promoting an event, and coordinating vendor interest.'],
+  ['Can PopUpCo help hosts find a venue?', 'Yes. The host flow supports organizers who already have a venue, need help finding one, or are still deciding.'],
+  ['How do attendees find events?', 'Attendees can use Upcoming Pop-Ups to view public event pages with date, time, location status, access type, organizer, and attendee details.'],
+  ['Are events free?', 'Some events are free, some may be ticketed or RSVP-based, and some are still in planning. Each public event page should show the access type.'],
+  ['Where is PopUpCo launching?', 'PopUpCo is starting in the Bay Area, with more markets and regions planned as the marketplace grows.'],
 ];
 
 function FAQItem({ q, a }) {
@@ -62,11 +29,7 @@ function FAQItem({ q, a }) {
 
   return (
     <div className={`${styles.faqItem} ${open ? styles.faqOpen : ''}`}>
-      <button
-        className={styles.faqQuestion}
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-      >
+      <button className={styles.faqQuestion} onClick={() => setOpen(!open)} aria-expanded={open}>
         <span>{q}</span>
         <ChevronDown size={18} className={`${styles.faqChevron} ${open ? styles.faqChevronOpen : ''}`} />
       </button>
@@ -83,7 +46,9 @@ export default function FAQPage() {
   useEffect(() => {
     if (!pageRef.current) return;
     const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      (entries) => entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      }),
       { threshold: 0.08 }
     );
     pageRef.current.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
@@ -96,9 +61,9 @@ export default function FAQPage() {
       <main ref={pageRef}>
         <section className={styles.hero}>
           <div className="container">
-            <h1 className={styles.headline}>Frequently asked questions</h1>
+            <h1 className={styles.headline}>Questions vendors, hosts, venues, and attendees ask.</h1>
             <p className={styles.sub}>
-              Answers to common questions about Pop Up Co., vendor applications, pricing, and how it works.
+              Answers to common questions about PopUpCo applications, public events, venue submissions, host requests, pricing, and marketplace responsibilities.
             </p>
           </div>
         </section>
@@ -106,20 +71,20 @@ export default function FAQPage() {
         <section className="section">
           <div className="container container--narrow">
             <div className={`fade-in ${styles.faqList}`}>
-              {FAQS.map((faq) => (
-                <FAQItem key={faq.q} q={faq.q} a={faq.a} />
+              {FAQS.map(([q, a]) => (
+                <FAQItem key={q} q={q} a={a} />
               ))}
             </div>
 
             <div className={`fade-in notice notice--warning ${styles.legalNotice}`}>
-              Pop Up Co. does not provide legal, tax, insurance, or permitting advice. Vendors and venues are responsible for confirming and maintaining any permits, licenses, insurance, approvals, or documents required for their products, services, city, venue, and event type.
+              PopUpCo does not provide legal, tax, insurance, or permitting advice. Vendors, hosts, and venues are responsible for confirming and maintaining required permits, licenses, insurance, approvals, or documents.
             </div>
 
             <div className={`fade-in ${styles.ctaBlock}`}>
               <h2 className={styles.ctaH2}>Still have questions?</h2>
               <div className={styles.ctaBtns}>
-                <Link href="/contact" className="btn btn--primary">Contact Us</Link>
-                <Link href="/apply/vendor" className="btn btn--secondary">Apply as a Vendor</Link>
+                <Link href="/contact" className="btn btn--primary">Contact PopUpCo</Link>
+                <Link href="/help" className="btn btn--secondary">Visit Help</Link>
               </div>
             </div>
           </div>

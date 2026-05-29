@@ -12,6 +12,7 @@
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--color-bg-alt);
+  display: block;
 }
 
 .image {
@@ -108,9 +109,20 @@
   white-space: nowrap;
 }
 
-.ctaRow strong {
-  color: var(--color-accent);
+.actionLinks {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
   white-space: nowrap;
+}
+
+.actionLinks a {
+  color: var(--color-accent);
+  font-weight: 800;
+}
+
+.actionLinks a:first-child {
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 520px) {
