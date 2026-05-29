@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ArrowRight, CalendarDays, MapPin, Store, Users } from 'lucide-react';
+import styles from './page.module.css';
 
 const paths = [
   {
@@ -43,26 +45,44 @@ export default function DiscoverPage() {
   return (
     <>
       <Header />
-      <main style={{ padding: '132px 0 96px', background: 'var(--color-bg)', minHeight: '80vh' }}>
-        <section>
-          <div className="container">
-            <span className="label">Discover</span>
-            <h1 style={{ marginTop: '8px', maxWidth: '780px', fontSize: 'clamp(2.75rem, 4.4vw, 4.1rem)', lineHeight: 1.08, letterSpacing: '-0.04em' }}>What do you want to do on PopUpCo?</h1>
-            <p className="text-muted" style={{ marginTop: '16px', maxWidth: '680px', fontSize: '1.08rem' }}>
-              PopUpCo supports vendors, attendees, hosts, and venues. Choose the path that matches what you are trying to do.
-            </p>
+      <main className={styles.main}>
+        <section className={styles.hero}>
+          <div className={`container ${styles.heroGrid}`}>
+            <div className={styles.heroCopy}>
+              <span className="label">Discover</span>
+              <h1>What do you want to do on PopUpCo?</h1>
+              <p>
+                Choose the path that fits you. Find places to sell, events to attend, venues to activate, or hosts to partner with.
+              </p>
+            </div>
+            <div className={styles.visualCard}>
+              <Image
+                src="/images/hero_market_warm_1779840281321.png"
+                alt="Local pop-up market with vendors and shoppers"
+                fill
+                sizes="(max-width: 980px) 100vw, 380px"
+                priority
+              />
+              <span className={styles.visualPill}>Vendors / Venues / Hosts / Events</span>
+            </div>
           </div>
         </section>
 
-        <section className="section">
+        <section className={styles.pathSection}>
           <div className="container">
-            <div className="grid-4">
+            <div className={styles.sectionIntro}>
+              <div>
+                <span className="label">Choose your path</span>
+                <h2>Start with what you need.</h2>
+              </div>
+            </div>
+            <div className={styles.pathGrid}>
               {paths.map(({ title, copy, href, cta, Icon }) => (
-                <Link key={title} href={href} className="card" style={{ padding: '24px', minHeight: '300px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <Icon size={24} color="var(--color-accent)" />
-                  <h2 style={{ fontSize: '1.2rem' }}>{title}</h2>
-                  <p className="text-muted">{copy}</p>
-                  <span style={{ marginTop: 'auto', color: 'var(--color-accent)', fontWeight: 850, display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <Link key={title} href={href} className={`card ${styles.pathCard}`}>
+                  <span className={styles.pathIcon}><Icon size={22} /></span>
+                  <h3>{title}</h3>
+                  <p>{copy}</p>
+                  <span className={styles.pathCta}>
                     {cta} <ArrowRight size={16} />
                   </span>
                 </Link>

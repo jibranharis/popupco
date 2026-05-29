@@ -9,9 +9,16 @@ const features = [
   'Find venues',
   'Recruit vendors',
   'Manage vendor applications',
-  'Balance categories so there are not too many duplicate vendors',
+  'Balance categories',
   'Message accepted vendors',
   'Promote your event',
+];
+
+const dashboardItems = [
+  [ClipboardList, '24 vendor applications', 'Review, accept, waitlist, or message vendors.'],
+  [MapPin, '6 saved spaces', 'Compare venue rules, capacity, load-in, and fees.'],
+  [Users, 'Category balance', 'Keep the vendor mix varied and intentional.'],
+  [MessageSquare, 'Event messages', 'Send setup details and deadline reminders.'],
 ];
 
 export default function HostsPage() {
@@ -20,13 +27,30 @@ export default function HostsPage() {
       <Header />
       <main className={styles.main}>
         <section className={styles.hero}>
-          <div className="container">
-            <span className="label">For hosts</span>
-            <h1>Create better pop-up events without the chaos.</h1>
-            <p>PopUpCo helps organizers find venues, recruit vendors, manage applications, communicate event details, and create markets that feel curated instead of chaotic.</p>
-            <div className={styles.ctas}>
-              <Link href="/apply/host" className="btn btn--primary btn--lg">Host a pop-up</Link>
-              <Link href="/apply/host" className="btn btn--secondary btn--lg">Need a venue</Link>
+          <div className={`container ${styles.heroGrid}`}>
+            <div className={styles.heroCopy}>
+              <span className="label">For hosts</span>
+              <h1>Create better pop-up events without the chaos.</h1>
+              <p>Create an event, find a venue, recruit vendors, and manage applications without scattered forms and DMs.</p>
+              <div className={styles.ctas}>
+                <Link href="/apply/host" className="btn btn--primary btn--lg">Host a pop-up</Link>
+                <Link href="/apply/host" className="btn btn--secondary btn--lg">Need a venue</Link>
+              </div>
+            </div>
+            <div className={styles.visualCard}>
+              <div className={styles.visualHeader}>
+                <strong>Host dashboard</strong>
+                <span className={styles.visualPill}>Preview</span>
+              </div>
+              <div className={styles.visualRows}>
+                {dashboardItems.map(([Icon, title, copy]) => (
+                  <div className={styles.visualRow} key={title}>
+                    <Icon size={20} />
+                    <strong>{title}</strong>
+                    <span>{copy}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -40,12 +64,7 @@ export default function HostsPage() {
               </ul>
             </div>
             <div className={styles.panel}>
-              {[
-                [ClipboardList, '24 vendor applications', 'Review, accept, waitlist, or message vendors.'],
-                [MapPin, '6 saved spaces', 'Compare venue rules, capacity, load-in, and fees.'],
-                [Users, 'Category balance', 'Keep the vendor mix varied and intentional.'],
-                [MessageSquare, 'Event messages', 'Send setup details and deadline reminders.'],
-              ].map(([Icon, title, copy]) => (
+              {dashboardItems.map(([Icon, title, copy]) => (
                 <div key={title}>
                   <Icon size={20} />
                   <strong>{title}</strong>
