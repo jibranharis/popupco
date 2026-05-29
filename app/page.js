@@ -15,7 +15,6 @@ import {
   RotateCcw,
   Search,
   ShieldCheck,
-  Sparkles,
   Tag,
   Users,
   Utensils,
@@ -373,16 +372,12 @@ export default function HomePage() {
                 <span>Marketplace clarity</span>
                 <i />
               </div>
-              <h2>
-                Know Before
-                <br />
-                You Apply<span>.</span>
-              </h2>
-              <p>Clear, upfront details about every event so you can apply with confidence and focus on what matters.</p>
+              <h2>Know Before You Apply<span>.</span></h2>
+              <p>Clear, upfront details about fees, attendance, setup, and permits so vendors can apply with confidence.</p>
               <div className={styles.clarityTiles}>
                 {clarityTiles.map(([Icon, title, copy]) => (
                   <div className={styles.clarityTile} key={title}>
-                    <span><Icon size={22} /></span>
+                    <span><Icon size={19} /></span>
                     <div>
                       <strong>{title}</strong>
                       <small>{copy}</small>
@@ -434,24 +429,13 @@ export default function HomePage() {
                 <div className={styles.detailsRows}>
                   {opportunityRows.map(([Icon, label, value]) => (
                     <div key={label}>
-                      <span className={styles.rowIcon}><Icon size={19} /></span>
+                      <span className={styles.rowIcon}><Icon size={17} /></span>
                       <span>{label}</span>
                       <strong>{value}</strong>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className={styles.trustLogoStrip}>
-            <span>Trusted by thousands of vendors & hosts</span>
-            <div>
-              <strong><Sparkles size={20} /> Makers Co.</strong>
-              <strong>local rise</strong>
-              <strong>Craft Collective</strong>
-              <strong>Main Street Alliance</strong>
-              <strong>taste markets</strong>
             </div>
           </div>
         </section>
