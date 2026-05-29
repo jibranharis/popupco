@@ -47,7 +47,7 @@ export default function DiscoverPage() {
         <section>
           <div className="container">
             <span className="label">Discover</span>
-            <h1 style={{ marginTop: '8px', maxWidth: '760px' }}>What do you want to do on PopUpCo?</h1>
+            <h1 style={{ marginTop: '8px', maxWidth: '780px', fontSize: 'clamp(2.75rem, 4.4vw, 4.1rem)', lineHeight: 1.08, letterSpacing: '-0.04em' }}>What do you want to do on PopUpCo?</h1>
             <p className="text-muted" style={{ marginTop: '16px', maxWidth: '680px', fontSize: '1.08rem' }}>
               PopUpCo supports vendors, attendees, hosts, and venues. Choose the path that matches what you are trying to do.
             </p>

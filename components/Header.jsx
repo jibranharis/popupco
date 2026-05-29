@@ -11,8 +11,6 @@ const publicNav = [
   { label: 'For Vendors', href: '/vendors' },
   { label: 'For Venues', href: '/venues' },
   { label: 'For Hosts', href: '/hosts' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'FAQ', href: '/faq' },
 ];
 
 const roleNav = {
@@ -45,6 +43,10 @@ export default function Header() {
 
   const nav = user ? roleNav[user.type] || roleNav.vendor : publicNav;
   const dashboardHref = user ? `/dashboard/${user.type}` : '/signup';
+  const isActiveNav = (href) => {
+    if (href === '/discover') return pathname === '/discover' || pathname === '/browse' || pathname.startsWith('/upcoming');
+    return pathname === href;
+  };
   const handleLogoClick = () => {
     setMenuOpen(false);
     setProfileOpen(false);
@@ -66,7 +68,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className={`${styles.navLink} ${pathname === link.href ? styles.activeNavLink : ''}`}
+              className={`${styles.navLink} ${isActiveNav(link.href) ? styles.activeNavLink : ''}`}
             >
               {link.label}
             </Link>

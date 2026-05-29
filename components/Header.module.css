@@ -72,7 +72,7 @@
 .navCenter {
   display: flex;
   align-items: center;
-  gap: var(--sp-5);
+  gap: var(--sp-6);
 }
 
 .navRight {
