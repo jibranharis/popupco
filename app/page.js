@@ -15,7 +15,6 @@ import {
   RotateCcw,
   Search,
   ShieldCheck,
-  Sparkles,
   Tag,
   Users,
   Utensils,
@@ -151,13 +150,12 @@ const filmstrip = [
 ];
 
 const messages = [
-  ['Vendor', 'Is the booth fee fixed, or does it depend on category?'],
-  ['Host', 'Booths start at $75. Food vendors need a permit, but handmade goods are ready to apply.'],
+  ['Vendor', 'Are food permits required?'],
+  ['Host', 'Yes. Prepared food vendors need a permit, but packaged goods are ready to apply.'],
   ['Vendor', 'How many people usually attend?'],
-  ['Host', 'We expect 400–600 visitors based on last month\'s market.'],
-  ['Vendor', 'Perfect. Can I apply for the Saturday slot?'],
-  ['Host', 'Yes, applications are open until Friday.'],
-  ['Vendor', 'Thank you.'],
+  ['Host', 'We expect 400-600 visitors based on last month\'s market.'],
+  ['Vendor', 'Can I apply for the Saturday slot?'],
+  ['Host', 'Yes. Applications are open until Friday.'],
 ];
 
 const opportunityRows = [
@@ -318,53 +316,6 @@ export default function HomePage() {
           </section>
         </div>
 
-        <section className={styles.messageSection}>
-          <div className={`container ${styles.messageGrid}`}>
-            <div className={`fade-in ${styles.messageCopy}`}>
-              <span className="label">Clear conversations</span>
-              <h2>Get the details before you commit.</h2>
-              <p>
-                PopUpCo keeps fees, attendance, setup needs, permits, and deadlines in one place so vendors and hosts can move with confidence.
-              </p>
-            </div>
-            <div className={`fade-in fade-in--d2 ${styles.messageChain}`}>
-              {messages.map(([sender, text], index) => (
-                <div
-                  key={`${sender}-${index}`}
-                  className={`${styles.messageBubble} ${sender === 'Vendor' ? styles.vendorMessage : styles.hostMessage}`}
-                  style={{ '--message-index': index }}
-                >
-                  <span>{sender.toUpperCase()}</span>
-                  <p>{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.rolesSection} id="how-it-works">
-          <div className="container">
-            <div className={`fade-in ${styles.sectionIntro} ${styles.roleIntro}`}>
-              <span className="label">Start where you are</span>
-              <h2>Choose how you want to use PopUpCo.</h2>
-            </div>
-            <div className={styles.roleGrid}>
-              {roles.map((role, index) => (
-                <Link
-                  key={role.title}
-                  href={role.href}
-                  className={`fade-in ${styles.roleCard}`}
-                  style={{ '--role-index': index }}
-                >
-                  <h3>{role.title}</h3>
-                  <p>{role.copy}</p>
-                  <span>{role.cta} <ArrowRight size={16} /></span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section className={styles.trustSection}>
           <div className={styles.trustAura} />
           <div className={styles.trustWrap}>
@@ -373,16 +324,12 @@ export default function HomePage() {
                 <span>Marketplace clarity</span>
                 <i />
               </div>
-              <h2>
-                Know Before
-                <br />
-                You Apply<span>.</span>
-              </h2>
-              <p>Clear, upfront details about every event so you can apply with confidence and focus on what matters.</p>
+              <h2>Know Before You Apply<span>.</span></h2>
+              <p>Clear, upfront details about fees, attendance, setup, and permits so vendors can apply with confidence.</p>
               <div className={styles.clarityTiles}>
                 {clarityTiles.map(([Icon, title, copy]) => (
                   <div className={styles.clarityTile} key={title}>
-                    <span><Icon size={22} /></span>
+                    <span><Icon size={20} /></span>
                     <div>
                       <strong>{title}</strong>
                       <small>{copy}</small>
@@ -434,7 +381,7 @@ export default function HomePage() {
                 <div className={styles.detailsRows}>
                   {opportunityRows.map(([Icon, label, value]) => (
                     <div key={label}>
-                      <span className={styles.rowIcon}><Icon size={19} /></span>
+                      <span className={styles.rowIcon}><Icon size={18} /></span>
                       <span>{label}</span>
                       <strong>{value}</strong>
                     </div>
@@ -443,15 +390,51 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+        </section>
 
-          <div className={styles.trustLogoStrip}>
-            <span>Trusted by thousands of vendors & hosts</span>
-            <div>
-              <strong><Sparkles size={20} /> Makers Co.</strong>
-              <strong>local rise</strong>
-              <strong>Craft Collective</strong>
-              <strong>Main Street Alliance</strong>
-              <strong>taste markets</strong>
+        <section className={styles.messageSection}>
+          <div className={`container ${styles.messageGrid}`}>
+            <div className={`fade-in ${styles.messageCopy}`}>
+              <span className="label">Clear conversations</span>
+              <h2>Get the details before you commit.</h2>
+              <p>
+                Ask about fees, attendance, setup needs, permits, and deadlines before applying or approving a vendor.
+              </p>
+            </div>
+            <div className={`fade-in fade-in--d2 ${styles.messageChain}`}>
+              {messages.map(([sender, text], index) => (
+                <div
+                  key={`${sender}-${index}`}
+                  className={`${styles.messageBubble} ${sender === 'Vendor' ? styles.vendorMessage : styles.hostMessage}`}
+                  style={{ '--message-index': index }}
+                >
+                  <span>{sender.toUpperCase()}</span>
+                  <p>{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.rolesSection} id="how-it-works">
+          <div className="container">
+            <div className={`fade-in ${styles.sectionIntro} ${styles.roleIntro}`}>
+              <span className="label">Start where you are</span>
+              <h2>Choose how you want to use PopUpCo.</h2>
+            </div>
+            <div className={styles.roleGrid}>
+              {roles.map((role, index) => (
+                <Link
+                  key={role.title}
+                  href={role.href}
+                  className={`fade-in ${styles.roleCard}`}
+                  style={{ '--role-index': index }}
+                >
+                  <h3>{role.title}</h3>
+                  <p>{role.copy}</p>
+                  <span>{role.cta} <ArrowRight size={16} /></span>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
