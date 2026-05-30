@@ -372,12 +372,16 @@ export default function HomePage() {
                 <span>Marketplace clarity</span>
                 <i />
               </div>
-              <h2>Know Before You Apply<span>.</span></h2>
-              <p>Clear, upfront details about fees, attendance, setup, and permits so vendors can apply with confidence.</p>
+              <h2>
+                Know Before
+                <br />
+                You Apply<span>.</span>
+              </h2>
+              <p>Clear, upfront details about every event&mdash;so you can apply with confidence and focus on what matters.</p>
               <div className={styles.clarityTiles}>
                 {clarityTiles.map(([Icon, title, copy]) => (
                   <div className={styles.clarityTile} key={title}>
-                    <span><Icon size={19} /></span>
+                    <span><Icon size={22} /></span>
                     <div>
                       <strong>{title}</strong>
                       <small>{copy}</small>
@@ -429,7 +433,7 @@ export default function HomePage() {
                 <div className={styles.detailsRows}>
                   {opportunityRows.map(([Icon, label, value]) => (
                     <div key={label}>
-                      <span className={styles.rowIcon}><Icon size={17} /></span>
+                      <span className={styles.rowIcon}><Icon size={20} /></span>
                       <span>{label}</span>
                       <strong>{value}</strong>
                     </div>
