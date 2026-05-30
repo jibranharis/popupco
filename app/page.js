@@ -335,11 +335,32 @@ export default function HomePage() {
 
         <section className={styles.rolesSection} id="how-it-works">
           <div className={styles.roleScene} aria-hidden="true">
-            <span className={styles.sceneLine} />
-            <span className={styles.sceneTentOne} />
-            <span className={styles.sceneTentTwo} />
-            <span className={styles.sceneBuilding} />
-            <span className={styles.sceneLights} />
+            <svg viewBox="0 0 720 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M34 98C116 36 246 36 327 98" />
+              <path d="M107 87V128M168 67V128M230 68V128M292 88V128" />
+              <path d="M112 119C122 128 122 145 112 154C102 145 102 128 112 119Z" />
+              <path d="M172 103C182 112 182 129 172 138C162 129 162 112 172 103Z" />
+              <path d="M234 104C244 113 244 130 234 139C224 130 224 113 234 104Z" />
+              <path d="M295 119C305 128 305 145 295 154C285 145 285 128 295 119Z" />
+              <path d="M142 228V151H306V228" />
+              <path d="M114 151L224 64L334 151H114Z" />
+              <path d="M166 178H284" />
+              <path d="M166 199H284" />
+              <path d="M397 249V128H646V249" />
+              <path d="M365 128L522 34L680 128H365Z" />
+              <path d="M418 160H625" />
+              <path d="M418 187H625" />
+              <path d="M434 249V201H492V249" />
+              <path d="M540 249V190C540 168 558 150 580 150C602 150 620 168 620 190V249" />
+              <path d="M628 48H704V249" />
+              <path d="M646 74H693" />
+              <path d="M646 96H693" />
+              <path d="M646 118H693" />
+              <path d="M79 249C79 215 102 191 132 191C162 191 185 215 185 249" />
+              <path d="M114 214C92 224 78 237 69 253" />
+              <path d="M139 214C159 224 172 237 181 253" />
+              <path d="M18 253H704" />
+            </svg>
           </div>
           <div className="container">
             <div className={`fade-in ${styles.sectionIntro} ${styles.roleIntro}`}>

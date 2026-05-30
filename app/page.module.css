@@ -560,149 +560,53 @@
 .rolesSection {
   position: relative;
   overflow: hidden;
-  padding: clamp(8rem, 10vw, 10.5rem) 0 clamp(7rem, 9vw, 8.5rem);
+  padding: clamp(4rem, 5vw, 5rem) 0 clamp(4.5rem, 5.8vw, 5.5rem);
   background:
-    radial-gradient(circle at 82% 28%, rgba(200, 95, 44, 0.08), transparent 28%),
-    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.72), transparent 28%),
+    radial-gradient(circle at 84% 35%, rgba(200, 95, 44, 0.06), transparent 26%),
+    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.66), transparent 26%),
     linear-gradient(180deg, #fffaf2 0%, #fff6ec 100%);
+}
+
+.rolesSection :global(.container) {
+  max-width: 1280px;
 }
 
 .rolesSection::before {
   content: '';
   position: absolute;
   inset: 0 0 auto auto;
-  width: min(58vw, 980px);
+  width: min(44vw, 720px);
   height: 100%;
-  background: linear-gradient(125deg, transparent 0 30%, rgba(244, 225, 205, 0.42) 30% 100%);
-  opacity: 0.72;
+  background: linear-gradient(125deg, transparent 0 34%, rgba(244, 225, 205, 0.24) 34% 100%);
+  opacity: 0.5;
   pointer-events: none;
 }
 
 .roleScene {
   position: absolute;
-  top: 112px;
-  right: max(-34px, calc((100vw - 1500px) / 2));
-  width: min(780px, 54vw);
-  height: 500px;
-  color: rgba(200, 95, 44, 0.26);
+  top: 54px;
+  right: max(18px, calc((100vw - 1280px) / 2));
+  width: min(520px, 38vw);
+  height: 270px;
+  color: rgba(200, 95, 44, 0.1);
   pointer-events: none;
   z-index: 0;
 }
 
-.roleScene span {
-  position: absolute;
-  display: block;
-  border-color: currentColor;
-}
-
-.sceneLine {
-  inset: 0 34px auto auto;
-  width: 210px;
-  height: 118px;
-  border-top: 2px solid currentColor;
-  border-right: 2px solid currentColor;
-  transform: skewX(-22deg);
-}
-
-.sceneTentOne,
-.sceneTentTwo {
-  bottom: 82px;
-  width: 220px;
-  height: 132px;
-  border: 2px solid currentColor;
-  border-top: 0;
-  opacity: 0.9;
-}
-
-.sceneTentOne {
-  right: 332px;
-}
-
-.sceneTentTwo {
-  right: 78px;
-  bottom: 62px;
-  width: 310px;
-  height: 172px;
-}
-
-.sceneTentOne::before,
-.sceneTentTwo::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: -68px;
-  width: 142px;
-  height: 142px;
-  border-top: 2px solid currentColor;
-  border-left: 2px solid currentColor;
-  transform: translateX(-50%) rotate(45deg);
-  background: transparent;
-}
-
-.sceneTentTwo::before {
-  top: -86px;
-  width: 178px;
-  height: 178px;
-}
-
-.sceneTentOne::after,
-.sceneTentTwo::after {
-  content: '';
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  top: 24px;
-  height: 18px;
-  background:
-    radial-gradient(circle at 8px 0, transparent 9px, currentColor 10px, transparent 11px) 0 0 / 32px 18px repeat-x;
-  opacity: 0.55;
-}
-
-.sceneBuilding {
-  right: -10px;
-  bottom: 52px;
-  width: 150px;
-  height: 230px;
-  border: 2px solid currentColor;
-  border-bottom: 0;
-}
-
-.sceneBuilding::before {
-  content: '';
-  position: absolute;
-  left: 28px;
-  bottom: 0;
-  width: 56px;
-  height: 112px;
-  border: 2px solid currentColor;
-  border-bottom: 0;
-  border-radius: 34px 34px 0 0;
-}
-
-.sceneLights {
-  left: 90px;
-  top: 72px;
-  width: 410px;
-  height: 112px;
-  border-top: 2px solid currentColor;
-  border-radius: 50% 50% 0 0;
-}
-
-.sceneLights::before {
-  content: '';
-  position: absolute;
-  inset: 18px 0 auto;
-  height: 54px;
-  background:
-    radial-gradient(circle, currentColor 0 3px, transparent 4px) 16px 0 / 52px 28px repeat-x;
-  opacity: 0.85;
+.roleScene svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .roleIntro {
   position: relative;
   z-index: 1;
   max-width: 1060px;
-  margin-bottom: clamp(3.5rem, 5.5vw, 5rem);
+  margin-bottom: clamp(3rem, 4vw, 3.5rem);
 }
 
 .roleIntro h2 {
@@ -718,18 +622,18 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: clamp(1.25rem, 2vw, 1.75rem);
+  gap: clamp(1.25rem, 1.7vw, 1.5rem);
 }
 
 .roleCard {
-  min-height: 330px;
+  min-height: 250px;
   display: flex;
   flex-direction: column;
-  padding: clamp(1.6rem, 2vw, 2rem);
+  padding: clamp(1.5rem, 1.8vw, 1.75rem);
   border: 1px solid #e8d8c8;
   border-radius: 22px;
   background: rgba(255, 251, 245, 0.82);
-  box-shadow: 0 18px 54px rgba(38, 34, 30, 0.075);
+  box-shadow: 0 16px 42px rgba(38, 34, 30, 0.07);
   backdrop-filter: blur(10px);
   opacity: 0;
   transform: translateY(32px);
@@ -749,11 +653,11 @@
 
 .roleIcon {
   display: inline-flex;
-  width: 58px;
-  height: 58px;
+  width: 52px;
+  height: 52px;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--sp-6);
+  margin-bottom: var(--sp-5);
   border-radius: 50%;
   background: rgba(200, 95, 44, 0.1);
   color: #c85f2c;
@@ -771,9 +675,9 @@
 }
 
 .roleCard p {
-  margin: var(--sp-4) 0 var(--sp-6);
+  margin: var(--sp-3) 0 var(--sp-5);
   color: #6f665f;
-  line-height: 1.75;
+  line-height: 1.58;
 }
 
 .roleCard > span:last-child {
@@ -782,13 +686,14 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-3);
-  min-height: 46px;
+  min-height: 44px;
   margin-top: auto;
-  padding: 10px 18px;
+  padding: 9px 18px;
   border: 1px solid rgba(200, 95, 44, 0.52);
   border-radius: var(--radius-full);
   color: #c85f2c;
   font-weight: 850;
+  white-space: nowrap;
   transition: background 200ms ease, border-color 200ms ease, color 200ms ease, transform 200ms ease;
 }
 
@@ -809,8 +714,8 @@
 .roleCard:hover > span:last-child,
 .roleCard:focus-visible > span:last-child {
   border-color: #c85f2c;
-  background: rgba(200, 95, 44, 0.08);
-  color: #c85f2c;
+  background: #c85f2c;
+  color: #fff8ef;
 }
 
 .trustSection {
