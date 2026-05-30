@@ -7,17 +7,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import {
   ArrowRight,
-  CalendarDays,
-  Clock3,
-  LineChart,
-  MapPin,
-  ReceiptText,
-  RotateCcw,
   Search,
   ShieldCheck,
-  Tag,
-  Users,
-  Utensils,
 } from 'lucide-react';
 import styles from './page.module.css';
 
@@ -160,19 +151,12 @@ const messages = [
 ];
 
 const opportunityRows = [
-  [Tag, 'Booth fee', '$125'],
-  [Users, 'Expected attendance', '400-600'],
-  [CalendarDays, 'Application deadline', 'June 14'],
-  [Clock3, 'Setup window', '8:00-9:30 AM'],
-  [Utensils, 'Food permits', 'Required for prepared food'],
-  [RotateCcw, 'Cancellation', 'Refundable up to 7 days before'],
-];
-
-const clarityTiles = [
-  [Tag, 'Transparent pricing', 'See all booth costs up front'],
-  [Users, 'Audience insights', 'Know who attends'],
-  [ReceiptText, 'Clear requirements', 'Avoid surprises'],
-  [ShieldCheck, 'Host verified', 'Apply with confidence'],
+  ['Booth fee', '$125'],
+  ['Expected attendance', '400-600'],
+  ['Application deadline', 'June 14'],
+  ['Setup window', '8:00-9:30 AM'],
+  ['Food permits', 'Required for prepared food'],
+  ['Cancellation', 'Refundable up to 7 days before'],
 ];
 
 function useFadeInObserver(ref) {
@@ -365,80 +349,32 @@ export default function HomePage() {
         </section>
 
         <section className={styles.trustSection}>
-          <div className={styles.trustAura} />
-          <div className={styles.trustWrap}>
+          <div className={`container ${styles.trustGrid}`}>
             <div className={`fade-in ${styles.trustCopy}`}>
-              <div className={styles.trustEyebrow}>
-                <span>Marketplace clarity</span>
-                <i />
-              </div>
-              <h2>
-                Know Before
-                <br />
-                You Apply<span>.</span>
-              </h2>
-              <p>Clear, upfront details about every event&mdash;so you can apply with confidence and focus on what matters.</p>
-              <div className={styles.clarityTiles}>
-                {clarityTiles.map(([Icon, title, copy]) => (
-                  <div className={styles.clarityTile} key={title}>
-                    <span><Icon size={22} /></span>
-                    <div>
-                      <strong>{title}</strong>
-                      <small>{copy}</small>
-                    </div>
-                  </div>
+              <span className="label">Marketplace clarity</span>
+              <h2>Know Before You Apply.</h2>
+              <p>Vendors should not have to guess what an event costs, what to bring, or whether the audience fits their business.</p>
+              <div className={styles.trustPoints}>
+                {['Clear booth fees', 'Attendance ranges', 'Setup requirements'].map((point) => (
+                  <span key={point}><ShieldCheck size={16} />{point}</span>
                 ))}
               </div>
             </div>
-
-            <div className={`fade-in fade-in--d2 ${styles.opportunityStack}`}>
-              <div className={styles.attendanceCard}>
-                <span><LineChart size={16} /> Attendance snapshot</span>
-                <strong>400-600</strong>
-                <small>est. attendees</small>
-                <div className={styles.audienceChips}>
-                  <i>Families</i>
-                  <i>Young Adults</i>
-                  <i>Local Shoppers</i>
+            <div className={`fade-in fade-in--d2 ${styles.detailsCard}`}>
+              <div className={styles.detailsHeader}>
+                <div>
+                  <span>Opportunity Details</span>
+                  <h3>Walnut Creek Weekend Market</h3>
                 </div>
-                <div className={styles.lineChart}>
-                  <svg viewBox="0 0 180 54" role="img" aria-label="Attendance trend line">
-                    <path d="M5 38 C28 35, 36 30, 52 26 S78 3, 104 23 S140 30, 174 12" />
-                    <circle cx="104" cy="23" r="5" />
-                  </svg>
-                </div>
+                <strong><ShieldCheck size={15} /> Verified host</strong>
               </div>
-
-              <div className={styles.hostCard}>
-                <div className={styles.hostPhoto}>
-                  <Image
-                    src="/event-1.png"
-                    alt="Outdoor marketplace event"
-                    fill
-                    sizes="220px"
-                  />
-                </div>
-                <span><MapPin size={16} /> Hosted by</span>
-                <strong>Walnut Creek Downtown Assoc.</strong>
-              </div>
-
-              <div className={styles.detailsCard}>
-                <div className={styles.detailsHeader}>
-                  <div>
-                    <span>Opportunity details</span>
-                    <h3>Walnut Creek Weekend Market</h3>
+              <div className={styles.detailsRows}>
+                {opportunityRows.map(([label, value]) => (
+                  <div key={label}>
+                    <span>{label}</span>
+                    <strong>{value}</strong>
                   </div>
-                  <strong><ShieldCheck size={15} /> Verified host</strong>
-                </div>
-                <div className={styles.detailsRows}>
-                  {opportunityRows.map(([Icon, label, value]) => (
-                    <div key={label}>
-                      <span className={styles.rowIcon}><Icon size={20} /></span>
-                      <span>{label}</span>
-                      <strong>{value}</strong>
-                    </div>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
           </div>
