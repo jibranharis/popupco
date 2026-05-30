@@ -645,7 +645,7 @@
 .trustSection {
   position: relative;
   overflow: hidden;
-  padding: clamp(5.8rem, 7vw, 7.5rem) clamp(1.25rem, 4vw, 5rem) clamp(5rem, 6.5vw, 6.75rem);
+  padding: clamp(6.4rem, 7.5vw, 8.25rem) clamp(2rem, 3.2vw, 6rem) clamp(5.5rem, 7vw, 7.5rem);
   background:
     radial-gradient(circle at 64% 20%, rgba(255, 255, 255, 0.92), transparent 28%),
     radial-gradient(circle at 81% 52%, rgba(196, 98, 45, 0.08), transparent 27%),
@@ -668,10 +668,10 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(500px, 0.78fr) minmax(690px, 1fr);
-  gap: clamp(3.25rem, 5vw, 5.5rem);
+  grid-template-columns: minmax(540px, 0.9fr) minmax(600px, 1fr);
+  gap: clamp(3rem, 4vw, 5rem);
   align-items: center;
-  width: min(100%, 1480px);
+  width: min(100%, 1500px);
   margin: 0 auto;
 }
 
@@ -694,13 +694,13 @@
 }
 
 .trustCopy h2 {
-  max-width: 560px;
+  max-width: 600px;
   margin-top: var(--sp-6);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(4.65rem, 5.7vw, 6.15rem);
-  font-weight: 700;
-  line-height: 0.94;
-  letter-spacing: -0.07em;
+  font-family: var(--font-display);
+  font-size: clamp(4.9rem, 5.7vw, 6.25rem);
+  font-weight: 900;
+  line-height: 1.04;
+  letter-spacing: -0.065em;
   color: #26221e;
 }
 
@@ -709,11 +709,11 @@
 }
 
 .trustCopy p {
-  max-width: 560px;
+  max-width: 590px;
   margin-top: var(--sp-6);
   color: #4f4841;
-  font-size: clamp(1.08rem, 1.25vw, 1.22rem);
-  line-height: 1.65;
+  font-size: clamp(1.08rem, 1.2vw, 1.2rem);
+  line-height: 1.7;
 }
 
 .clarityTiles {
@@ -721,7 +721,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--sp-4);
   margin-top: var(--sp-7);
-  max-width: 575px;
+  max-width: 590px;
 }
 
 .clarityTile {
@@ -764,6 +764,7 @@
 .clarityTile strong {
   color: #26221e;
   font-size: 1rem;
+  white-space: nowrap;
 }
 
 .clarityTile small {
@@ -784,9 +785,8 @@
 }
 
 .detailsHeader {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--sp-5);
+  position: relative;
+  display: block;
   padding-bottom: var(--sp-5);
   border-bottom: 1px solid #e8d8c8;
 }
@@ -800,23 +800,26 @@
 }
 
 .detailsHeader h3 {
-  max-width: 560px;
+  max-width: calc(100% - 116px);
   margin-top: var(--sp-2);
-  font-size: clamp(1.85rem, 2.1vw, 2.25rem);
+  font-size: clamp(1.55rem, 1.75vw, 2.05rem);
   line-height: 1.05;
   letter-spacing: -0.045em;
 }
 
 .detailsHeader strong {
+  position: absolute;
+  top: 0;
+  right: 0;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  align-self: flex-start;
   padding: 8px 11px;
   border-radius: var(--radius-full);
   background: rgba(122, 158, 126, 0.12);
   color: #4a7a4e;
   font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .detailsRows {
@@ -838,7 +841,7 @@
 }
 
 .detailsRows span {
-  color: #6f665f;
+  color: #4f4841;
   font-size: 1.04rem;
 }
 
@@ -1285,7 +1288,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: min(650px, 84%);
+  width: min(650px, 98%);
   transform: rotate(4deg);
 }
 
@@ -1366,6 +1369,7 @@
   .opportunityStack {
     min-height: 620px;
     order: 3;
+    transform: none;
   }
 
   .opportunityStack .detailsCard {
