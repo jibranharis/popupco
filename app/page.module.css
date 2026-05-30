@@ -580,11 +580,11 @@
 
 .roleScene {
   position: absolute;
-  top: 72px;
-  right: max(-80px, calc((100vw - 1440px) / 2));
-  width: min(720px, 50vw);
-  height: 430px;
-  color: rgba(200, 95, 44, 0.13);
+  top: 112px;
+  right: max(-34px, calc((100vw - 1500px) / 2));
+  width: min(780px, 54vw);
+  height: 500px;
+  color: rgba(200, 95, 44, 0.26);
   pointer-events: none;
   z-index: 0;
 }
@@ -606,39 +606,61 @@
 
 .sceneTentOne,
 .sceneTentTwo {
-  bottom: 70px;
-  width: 210px;
-  height: 118px;
+  bottom: 82px;
+  width: 220px;
+  height: 132px;
   border: 2px solid currentColor;
   border-top: 0;
+  opacity: 0.9;
 }
 
 .sceneTentOne {
-  right: 260px;
+  right: 332px;
 }
 
 .sceneTentTwo {
-  right: 66px;
-  width: 260px;
-  height: 150px;
+  right: 78px;
+  bottom: 62px;
+  width: 310px;
+  height: 172px;
 }
 
 .sceneTentOne::before,
 .sceneTentTwo::before {
   content: '';
   position: absolute;
-  left: -14px;
-  right: -14px;
-  top: -72px;
-  height: 72px;
-  border: 2px solid currentColor;
-  border-bottom: 0;
-  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  left: 50%;
+  top: -68px;
+  width: 142px;
+  height: 142px;
+  border-top: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  transform: translateX(-50%) rotate(45deg);
+  background: transparent;
+}
+
+.sceneTentTwo::before {
+  top: -86px;
+  width: 178px;
+  height: 178px;
+}
+
+.sceneTentOne::after,
+.sceneTentTwo::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 24px;
+  height: 18px;
+  background:
+    radial-gradient(circle at 8px 0, transparent 9px, currentColor 10px, transparent 11px) 0 0 / 32px 18px repeat-x;
+  opacity: 0.55;
 }
 
 .sceneBuilding {
-  right: -20px;
-  bottom: 48px;
+  right: -10px;
+  bottom: 52px;
   width: 150px;
   height: 230px;
   border: 2px solid currentColor;
