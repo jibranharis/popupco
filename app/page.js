@@ -7,8 +7,12 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import {
   ArrowRight,
+  Building2,
+  CalendarDays,
   Search,
   ShieldCheck,
+  Store,
+  Users,
 } from 'lucide-react';
 import styles from './page.module.css';
 
@@ -109,24 +113,28 @@ const roles = [
     copy: 'Find markets, booths, spaces, and pop-up opportunities that match what you sell.',
     cta: 'Find opportunities',
     href: '/browse',
+    icon: Store,
   },
   {
     title: 'I have an empty venue',
     copy: 'List your space, set rules and availability, and connect with hosts or vendors.',
     cta: 'List your space',
     href: '/apply/venue',
+    icon: Building2,
   },
   {
     title: "I'm a host",
     copy: 'Create pop-up events, recruit vendors, manage applications, and bring local experiences to life.',
     cta: 'Host a pop-up',
     href: '/apply/host',
+    icon: Users,
   },
   {
     title: "I'm exploring events",
     copy: 'Discover local markets, food pop-ups, art shows, and community events near you.',
     cta: 'Explore events',
     href: '/upcoming',
+    icon: CalendarDays,
   },
 ];
 
@@ -326,24 +334,35 @@ export default function HomePage() {
         </section>
 
         <section className={styles.rolesSection} id="how-it-works">
+          <div className={styles.roleScene} aria-hidden="true">
+            <span className={styles.sceneLine} />
+            <span className={styles.sceneTentOne} />
+            <span className={styles.sceneTentTwo} />
+            <span className={styles.sceneBuilding} />
+            <span className={styles.sceneLights} />
+          </div>
           <div className="container">
             <div className={`fade-in ${styles.sectionIntro} ${styles.roleIntro}`}>
               <span className="label">Start where you are</span>
               <h2>Choose how you want to use PopUpCo.</h2>
             </div>
             <div className={styles.roleGrid}>
-              {roles.map((role, index) => (
-                <Link
-                  key={role.title}
-                  href={role.href}
-                  className={`fade-in ${styles.roleCard}`}
-                  style={{ '--role-index': index }}
-                >
-                  <h3>{role.title}</h3>
-                  <p>{role.copy}</p>
-                  <span>{role.cta} <ArrowRight size={16} /></span>
-                </Link>
-              ))}
+              {roles.map((role, index) => {
+                const Icon = role.icon;
+                return (
+                  <Link
+                    key={role.title}
+                    href={role.href}
+                    className={`fade-in ${styles.roleCard}`}
+                    style={{ '--role-index': index }}
+                  >
+                    <span className={styles.roleIcon}><Icon size={28} strokeWidth={1.8} /></span>
+                    <h3>{role.title}</h3>
+                    <p>{role.copy}</p>
+                    <span>{role.cta} <ArrowRight size={16} /></span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
