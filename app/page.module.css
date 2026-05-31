@@ -560,10 +560,10 @@
 .rolesSection {
   position: relative;
   overflow: hidden;
-  padding: clamp(4rem, 5vw, 5rem) 0 clamp(4.5rem, 5.8vw, 5.5rem);
+  padding: clamp(4.5rem, 5vw, 5rem) 0 clamp(4.75rem, 5.8vw, 5.5rem);
   background:
-    radial-gradient(circle at 84% 35%, rgba(200, 95, 44, 0.06), transparent 26%),
-    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.66), transparent 26%),
+    radial-gradient(circle at 82% 30%, rgba(200, 95, 44, 0.08), transparent 42%),
+    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.72), transparent 28%),
     linear-gradient(180deg, #fffaf2 0%, #fff6ec 100%);
 }
 
@@ -575,20 +575,20 @@
   content: '';
   position: absolute;
   inset: 0 0 auto auto;
-  width: min(44vw, 720px);
+  width: min(48vw, 760px);
   height: 100%;
-  background: linear-gradient(125deg, transparent 0 34%, rgba(244, 225, 205, 0.24) 34% 100%);
-  opacity: 0.5;
+  background: radial-gradient(ellipse at center, rgba(244, 225, 205, 0.24), transparent 68%);
+  opacity: 0.8;
   pointer-events: none;
 }
 
 .roleScene {
   position: absolute;
-  top: 54px;
+  top: 42px;
   right: max(18px, calc((100vw - 1280px) / 2));
-  width: min(520px, 38vw);
-  height: 270px;
-  color: rgba(200, 95, 44, 0.1);
+  width: min(560px, 43vw);
+  height: 265px;
+  color: rgba(200, 95, 44, 0.11);
   pointer-events: none;
   z-index: 0;
 }
@@ -605,16 +605,17 @@
 .roleIntro {
   position: relative;
   z-index: 1;
-  max-width: 1060px;
+  max-width: 760px;
   margin-bottom: clamp(3rem, 4vw, 3.5rem);
 }
 
 .roleIntro h2 {
-  margin-top: var(--sp-4);
-  max-width: none;
-  font-size: clamp(2.1rem, 3vw, 3rem);
-  line-height: 1.04;
-  white-space: nowrap;
+  margin-top: 22px;
+  max-width: 760px;
+  font-size: clamp(2.6rem, 3.55vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  white-space: normal;
 }
 
 .roleGrid {
@@ -622,19 +623,22 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: clamp(1.25rem, 1.7vw, 1.5rem);
+  gap: clamp(1.25rem, 1.9vw, 1.5rem);
 }
 
 .roleCard {
-  min-height: 250px;
+  min-height: 292px;
   display: flex;
   flex-direction: column;
-  padding: clamp(1.5rem, 1.8vw, 1.75rem);
-  border: 1px solid #e8d8c8;
+  padding: 24px;
+  border: 1px solid rgba(203, 174, 145, 0.35);
   border-radius: 22px;
-  background: rgba(255, 251, 245, 0.82);
-  box-shadow: 0 16px 42px rgba(38, 34, 30, 0.07);
-  backdrop-filter: blur(10px);
+  background:
+    linear-gradient(180deg, rgba(255, 252, 246, 0.94), rgba(255, 248, 239, 0.9));
+  box-shadow:
+    0 18px 45px rgba(80, 55, 35, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(8px);
   opacity: 0;
   transform: translateY(32px);
   transition:
@@ -653,15 +657,24 @@
 
 .roleIcon {
   display: inline-flex;
-  width: 52px;
-  height: 52px;
+  width: 46px;
+  height: 46px;
   align-items: center;
   justify-content: center;
   margin-bottom: var(--sp-5);
   border-radius: 50%;
-  background: rgba(200, 95, 44, 0.1);
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.56), transparent 38%),
+    #f6e8dd;
   color: #c85f2c;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
   transition: transform 200ms ease, background 200ms ease, color 200ms ease;
+}
+
+.roleCard h3 {
+  font-size: clamp(1.18rem, 1.55vw, 1.35rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
 }
 
 .roleCard:global(.visible) {
@@ -675,34 +688,36 @@
 }
 
 .roleCard p {
-  margin: var(--sp-3) 0 var(--sp-5);
+  margin: 12px 0 var(--sp-4);
   color: #6f665f;
-  line-height: 1.58;
+  font-size: 0.95rem;
+  line-height: 1.46;
 }
 
 .roleCard > span:last-child {
   display: inline-flex;
-  width: 100%;
+  width: fit-content;
+  min-width: 190px;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sp-3);
-  min-height: 44px;
+  gap: 14px;
+  min-height: 42px;
   margin-top: auto;
-  padding: 9px 18px;
-  border: 1px solid rgba(200, 95, 44, 0.52);
+  padding: 0 18px;
+  border: 1px solid rgba(201, 92, 39, 0.45);
   border-radius: var(--radius-full);
   color: #c85f2c;
-  font-weight: 850;
+  font-weight: 700;
   white-space: nowrap;
   transition: background 200ms ease, border-color 200ms ease, color 200ms ease, transform 200ms ease;
 }
 
 .roleCard:global(.visible):hover,
 .roleCard:global(.visible):focus-visible {
-  transform: translateY(-6px);
+  transform: translateY(-4px);
   border-color: rgba(200, 95, 44, 0.48);
   background: rgba(255, 251, 245, 0.95);
-  box-shadow: 0 26px 68px rgba(38, 34, 30, 0.12);
+  box-shadow: 0 26px 62px rgba(80, 55, 35, 0.13);
 }
 
 .roleCard:hover .roleIcon,
