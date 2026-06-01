@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import getDb from '@/lib/db';
+import { getServiceClient } from '@/lib/supabase';
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'popupco-admin-2025';
 
@@ -12,23 +12,26 @@ export async function GET(request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const db = getDb();
-
-  try {
-    if (type === 'vendors') {
-      const rows = db.prepare('SELECT * FROM vendor_applications ORDER BY created_at DESC').all();
-      return NextResponse.json({ data: rows });
-    } else if (type === 'venues') {
-      const rows = db.prepare('SELECT * FROM venue_applications ORDER BY created_at DESC').all();
-      return NextResponse.json({ data: rows });
-    } else if (type === 'contacts') {
-      const rows = db.prepare('SELECT * FROM contacts ORDER BY created_at DESC').all();
-      return NextResponse.json({ data: rows });
-    } else if (type === 'events') {
-      const rows = db.prepare('SELECT * FROM events ORDER BY created_at DESC').all();
-      return NextResponse.json({ data: rows });
-    }
-  } catch (error) {
-    return NextResponse.json({ error: 'Database error' }, { status: 500 });
+  const db = getServiceClient();
+  if (!db) {
+    return NextResponse.json({ data: [] });
   }
+
+  const tableMap = {
+    vendors: 'vendor_applications',
+    venues: 'venue_applications',
+    contacts: 'contacts',
+    hosts: 'host_applications',
+    events: 'events',
+  };
+
+  const table = tableMap[type];
+  if (!table) {
+    return NextResponse.json({ error: 'Invalid type' }, { status: 400 });
+  }
+
+  const { data, error } = await db.from(table).select('*').order('created_at', { ascending: false });
+  if (error) return NextResponse.json({ error: 'Database error' }, { status: 500 });
+
+  return NextResponse.json({ data });
 }

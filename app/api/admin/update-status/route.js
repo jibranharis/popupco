@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import getDb from '@/lib/db';
+import { getServiceClient } from '@/lib/supabase';
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'popupco-admin-2025';
+const ALLOWED_TABLES = ['vendor_applications', 'venue_applications', 'host_applications', 'contacts'];
 
 export async function POST(request) {
   try {
@@ -11,14 +12,16 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const db = getDb();
-    const allowedTables = ['vendor_applications', 'venue_applications', 'contacts'];
-
-    if (!allowedTables.includes(table)) {
+    if (!ALLOWED_TABLES.includes(table)) {
       return NextResponse.json({ error: 'Invalid table' }, { status: 400 });
     }
 
-    db.prepare(`UPDATE ${table} SET status = ? WHERE id = ?`).run(status, id);
+    const db = getServiceClient();
+    if (!db) return NextResponse.json({ error: 'No database configured' }, { status: 503 });
+
+    const { error } = await db.from(table).update({ status }).eq('id', id);
+    if (error) throw error;
+
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: 'Update failed' }, { status: 500 });

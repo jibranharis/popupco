@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
+import { getServiceClient } from '@/lib/supabase';
 
 export async function POST(request) {
   try {
     const body = await request.json();
 
     if (body.action === 'login') {
-      const password = process.env.ADMIN_PASSWORD || 'admin123';
+      const password = process.env.ADMIN_PASSWORD || 'popupco-admin-2025';
       if (body.password === password) {
         return NextResponse.json({ success: true });
       }
@@ -13,11 +14,24 @@ export async function POST(request) {
     }
 
     if (body.action === 'fetch') {
-      // TODO: Connect to a real database.
-      // For now return empty arrays so the admin page renders.
+      const db = getServiceClient();
+      if (!db) {
+        return NextResponse.json({ success: true, data: { vendors: [], venues: [], contacts: [] } });
+      }
+
+      const [vendors, venues, contacts] = await Promise.all([
+        db.from('vendor_applications').select('*').order('created_at', { ascending: false }),
+        db.from('venue_applications').select('*').order('created_at', { ascending: false }),
+        db.from('contacts').select('*').order('created_at', { ascending: false }),
+      ]);
+
       return NextResponse.json({
         success: true,
-        data: { vendors: [], venues: [], contacts: [] },
+        data: {
+          vendors: vendors.data || [],
+          venues: venues.data || [],
+          contacts: contacts.data || [],
+        },
       });
     }
 
