@@ -9,9 +9,15 @@ import {
   ArrowRight,
   Building2,
   CalendarDays,
+  CalendarCheck,
+  Clock3,
+  ClipboardCheck,
+  DollarSign,
   Search,
   ShieldCheck,
   Store,
+  RotateCcw,
+  Utensils,
   Users,
 } from 'lucide-react';
 import styles from './page.module.css';
@@ -159,12 +165,12 @@ const messages = [
 ];
 
 const opportunityRows = [
-  ['Booth fee', '$125'],
-  ['Expected attendance', '400-600'],
-  ['Application deadline', 'June 14'],
-  ['Setup window', '8:00-9:30 AM'],
-  ['Food permits', 'Required for prepared food'],
-  ['Cancellation', 'Refundable up to 7 days before'],
+  ['Booth fee', '$125', DollarSign, 'orange'],
+  ['Expected attendance', '400–600', Users, 'sage'],
+  ['Application deadline', 'June 14', CalendarCheck, 'orange'],
+  ['Setup window', '8:00–9:30 AM', Clock3, 'gold'],
+  ['Food permits', 'Required for prepared food', Utensils, 'sage'],
+  ['Cancellation', 'Refundable up to 7 days before', RotateCcw, 'orange'],
 ];
 
 function useFadeInObserver(ref) {
@@ -408,13 +414,39 @@ export default function HomePage() {
         <section className={styles.trustSection}>
           <div className={`container ${styles.trustGrid}`}>
             <div className={`fade-in ${styles.trustCopy}`}>
-              <span className="label">Marketplace clarity</span>
-              <h2>Know Before You Apply.</h2>
+              <span className="label">Marketplace Clarity</span>
+              <h2>Know Before You Apply<span>.</span></h2>
               <p>Vendors should not have to guess what an event costs, what to bring, or whether the audience fits their business.</p>
               <div className={styles.trustPoints}>
                 {['Clear booth fees', 'Attendance ranges', 'Setup requirements'].map((point) => (
-                  <span key={point}><ShieldCheck size={16} />{point}</span>
+                  <span key={point}><i><ShieldCheck size={15} /></i>{point}</span>
                 ))}
+              </div>
+              <div className={styles.trustIllustration} aria-hidden="true">
+                <svg viewBox="0 0 700 330" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path className={styles.hillBack} d="M0 222C82 174 125 184 190 214C267 249 307 177 378 203C462 233 481 172 553 190C618 206 661 214 700 178V330H0V222Z" />
+                  <path className={styles.hillFront} d="M0 252C76 222 117 228 167 251C226 278 289 242 334 230C390 216 432 257 483 247C557 234 617 228 700 247V330H0V252Z" />
+                  <path className={styles.cityShape} d="M282 205H298V169H312V205H330V184H344V205H362V155H379V205H398V178H414V205" />
+                  <path className={styles.orangeTent} d="M0 156L116 60L230 156H0Z" />
+                  <path className={styles.tentLine} d="M116 60V252M0 156H230M28 156V252M202 156V252" />
+                  <path className={styles.tentLine} d="M260 202L332 138L404 202H260Z" />
+                  <path className={styles.tentLine} d="M260 202H404M282 202V272M382 202V272" />
+                  <path className={styles.tentLine} d="M432 212L514 142L596 212H432Z" />
+                  <path className={styles.tentLine} d="M432 212H596M457 212V278M570 212V278" />
+                  <path className={styles.tableLine} d="M32 260H176M54 282H154M76 260V304M132 260V304" />
+                  <path className={styles.tableLine} d="M290 250H376M306 266H360M314 250V286M352 250V286" />
+                  <path className={styles.tableLine} d="M466 260H572M488 278H548M498 260V298M540 260V298" />
+                  <path className={styles.plantLine} d="M44 274C36 249 39 222 57 204C74 226 70 254 44 274Z" />
+                  <path className={styles.plantLine} d="M72 276C65 246 75 222 99 207C109 238 99 263 72 276Z" />
+                  <path className={styles.plantLine} d="M615 266C607 240 613 218 634 203C647 231 640 256 615 266Z" />
+                  <path className={styles.boardLine} d="M113 238L88 318H162L137 238H113Z" />
+                  <path className={styles.boardLine} d="M103 258H146M99 285H153" />
+                </svg>
+                <div className={styles.floatingStatsCard}>
+                  <div><span>400–600</span><strong>Expected attendance</strong></div>
+                  <div><span>June 14</span><strong>Application deadline</strong></div>
+                  <div><span>8:00–9:30 AM</span><strong>Setup window</strong></div>
+                </div>
               </div>
             </div>
             <div className={`fade-in fade-in--d2 ${styles.detailsCard}`}>
@@ -426,12 +458,20 @@ export default function HomePage() {
                 <strong><ShieldCheck size={15} /> Verified host</strong>
               </div>
               <div className={styles.detailsRows}>
-                {opportunityRows.map(([label, value]) => (
-                  <div key={label}>
+                {opportunityRows.map(([label, value, Icon, tone]) => (
+                  <div key={label} className={styles.detailRow}>
+                    <i className={styles[tone]}><Icon size={20} strokeWidth={2} /></i>
                     <span>{label}</span>
                     <strong>{value}</strong>
                   </div>
                 ))}
+              </div>
+              <div className={styles.detailsCallout}>
+                <i><ClipboardCheck size={24} /></i>
+                <div>
+                  <strong>Plan with confidence.</strong>
+                  <span>Everything you need to prepare for a successful event.</span>
+                </div>
               </div>
             </div>
           </div>
