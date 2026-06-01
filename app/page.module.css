@@ -981,15 +981,91 @@
 }
 
 .trustSection {
+  position: relative;
+  overflow: hidden;
   padding: clamp(8.5rem, 10vw, 10.5rem) 0 clamp(7.5rem, 9vw, 9rem);
-  background: #fffbf5;
+  background:
+    radial-gradient(circle at 11% 82%, rgba(200, 95, 44, 0.055), transparent 34%),
+    linear-gradient(180deg, #fffbf5 0%, #fff8ef 100%);
 }
 
 .trustGrid {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 0.86fr 1.14fr;
   gap: var(--sp-10);
   align-items: center;
+}
+
+.trustScene {
+  position: absolute;
+  left: clamp(-7rem, -5vw, -3rem);
+  bottom: -4.3rem;
+  z-index: 0;
+  width: min(720px, 54vw);
+  max-width: 720px;
+  pointer-events: none;
+  opacity: 0.64;
+  mask-image: linear-gradient(90deg, #000 0%, #000 62%, transparent 100%);
+}
+
+.trustScene svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sceneHillBack {
+  fill: #eadfce;
+  opacity: 0.6;
+}
+
+.sceneHillFront {
+  fill: #cfd8bd;
+  opacity: 0.42;
+}
+
+.sceneSkyline {
+  stroke: #d8c9b8;
+  stroke-width: 2;
+  opacity: 0.38;
+}
+
+.sceneMainTent {
+  fill: rgba(200, 95, 44, 0.34);
+}
+
+.sceneTentStroke,
+.sceneTable,
+.sceneBoard {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sceneTentStroke {
+  stroke: rgba(200, 95, 44, 0.28);
+  stroke-width: 3;
+}
+
+.sceneTable {
+  stroke: rgba(132, 86, 54, 0.28);
+  stroke-width: 3;
+}
+
+.scenePlant {
+  fill: rgba(122, 158, 126, 0.28);
+  stroke: rgba(82, 121, 76, 0.24);
+  stroke-width: 2;
+}
+
+.sceneBoard {
+  stroke: rgba(151, 89, 45, 0.3);
+  stroke-width: 3;
+}
+
+.scenePot {
+  fill: rgba(196, 116, 68, 0.28);
 }
 
 .trustSection .trustCopy h2 {
