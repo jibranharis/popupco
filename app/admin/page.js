@@ -16,7 +16,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useState('vendors');
-  const [data, setData] = useState({ vendors: [], venues: [], contacts: [] });
+  const [data, setData] = useState({ vendors: [], venues: [], hosts: [], contacts: [] });
   const [refreshing, setRefreshing] = useState(false);
 
   const [expandedRow, setExpandedRow] = useState(null);
@@ -57,7 +57,7 @@ export default function AdminDashboard() {
   function handleLogout() {
     localStorage.removeItem('popupco_admin_auth');
     setAuth(false);
-    setData({ vendors: [], venues: [], contacts: [] });
+    setData({ vendors: [], venues: [], hosts: [], contacts: [] });
   }
 
   async function fetchData() {
@@ -135,6 +135,13 @@ export default function AdminDashboard() {
             <span className={styles.navCount}>{data.venues.length}</span>
           </button>
           <button
+            onClick={() => { setActiveTab('hosts'); setExpandedRow(null); }}
+            className={`${styles.navBtn} ${activeTab === 'hosts' ? styles.navActive : ''}`}
+          >
+            <Calendar size={16} /> Host Applications
+            <span className={styles.navCount}>{data.hosts.length}</span>
+          </button>
+          <button
             onClick={() => { setActiveTab('contacts'); setExpandedRow(null); }}
             className={`${styles.navBtn} ${activeTab === 'contacts' ? styles.navActive : ''}`}
           >
@@ -153,6 +160,7 @@ export default function AdminDashboard() {
           <h1 className={styles.pageTitle}>
             {activeTab === 'vendors' && 'Vendor Applications'}
             {activeTab === 'venues' && 'Venue Submissions'}
+            {activeTab === 'hosts' && 'Host Applications'}
             {activeTab === 'contacts' && 'Contact Messages'}
           </h1>
           <button onClick={fetchData} className={`btn btn--secondary btn--sm ${styles.refreshBtn}`} disabled={refreshing}>
@@ -183,15 +191,15 @@ export default function AdminDashboard() {
                         <div className={`${styles.tr} ${styles.trClickable}`} onClick={() => toggleRow(v.id)}>
                           <div className={styles.td}>{formatDate(v.created_at)}</div>
                           <div className={styles.td}>
-                            <strong>{v.business_name}</strong>
-                            <div className={styles.tdSub}>{v.categories}</div>
+                            <strong>{v.brand_name}</strong>
+                            <div className={styles.tdSub}>{Array.isArray(v.categories) ? v.categories.join(', ') : v.categories}</div>
                           </div>
                           <div className={styles.td}>
-                            {v.first_name} {v.last_name}
+                            {v.contact_name}
                             <div className={styles.tdSub}>{v.email}</div>
                           </div>
                           <div className={styles.td}>
-                            {v.event_preference || 'Any'}
+                            {v.event_slug || 'Any'}
                           </div>
                           <div className={styles.tdRight}>
                             <ChevronRight size={16} className={`${styles.chevron} ${expandedRow === v.id ? styles.chevronOpen : ''}`} />
@@ -201,52 +209,35 @@ export default function AdminDashboard() {
                           <div className={styles.expandedContent}>
                             <div className={styles.detailGrid}>
                               <div className={styles.detailBlock}>
-                                <h4>Business Info</h4>
-                                <p><strong>Name:</strong> {v.business_name}</p>
+                                <h4>Brand Info</h4>
+                                <p><strong>Name:</strong> {v.brand_name}</p>
                                 <p><strong>Website:</strong> {v.website || '-'}</p>
                                 <p><strong>Instagram:</strong> {v.instagram || '-'}</p>
-                                <p><strong>Registered:</strong> {v.registered_business}</p>
-                                <p><strong>Nonprofit:</strong> {v.is_nonprofit}</p>
                               </div>
                               <div className={styles.detailBlock}>
-                                <h4>Contact Info</h4>
-                                <p><strong>Name:</strong> {v.first_name} {v.last_name}</p>
+                                <h4>Contact</h4>
+                                <p><strong>Name:</strong> {v.contact_name}</p>
                                 <p><strong>Email:</strong> {v.email}</p>
-                                <p><strong>Phone:</strong> {v.phone}</p>
-                                <p><strong>City:</strong> {v.city}</p>
+                                <p><strong>Phone:</strong> {v.phone || '-'}</p>
                               </div>
                               <div className={styles.detailBlock}>
                                 <h4>Products</h4>
-                                <p><strong>Categories:</strong> {v.categories}</p>
-                                <p><strong>Desc:</strong> {v.product_description}</p>
-                                <p><strong>Price range:</strong> {v.avg_price_range}</p>
-                                <p><strong>Sold before:</strong> {v.sold_before}</p>
+                                <p><strong>Categories:</strong> {Array.isArray(v.categories) ? v.categories.join(', ') : v.categories}</p>
+                                <p><strong>Desc:</strong> {v.description}</p>
+                                <p><strong>Price range:</strong> {v.price_range}</p>
+                                <p><strong>Previous events:</strong> {v.previous_events || '-'}</p>
                               </div>
                               <div className={styles.detailBlock}>
-                                <h4>Event Preferences</h4>
-                                <p><strong>Event:</strong> {v.event_preference}</p>
-                                <p><strong>Locations:</strong> {v.preferred_locations}</p>
-                                <p><strong>Freq:</strong> {v.events_per_month}</p>
-                              </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Setup Needs</h4>
-                                <p><strong>Table/Chair/Tent:</strong> {v.needs_table}/{v.needs_chairs}/{v.needs_tent}</p>
-                                <p><strong>Electricity:</strong> {v.needs_electricity}</p>
-                                <p><strong>Booth size:</strong> {v.booth_size}</p>
-                                <p><strong>Special:</strong> {v.special_setup}</p>
-                              </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Food & Permits</h4>
-                                <p><strong>Food type:</strong> {v.food_type}</p>
-                                <p><strong>Health Permit:</strong> {v.health_permit}</p>
-                                <p><strong>Seller's Permit:</strong> {v.sellers_permit}</p>
-                                <p><strong>Insurance:</strong> {v.liability_insurance}</p>
+                                <h4>Booth & Permits</h4>
+                                <p><strong>Event:</strong> {v.event_slug || 'Any'}</p>
+                                <p><strong>Booth needs:</strong> {v.booth_needs || '-'}</p>
+                                <p><strong>Food permit:</strong> {v.food_permit || '-'}</p>
                               </div>
                             </div>
-                            {v.additional_notes && (
+                            {v.message && (
                               <div className={styles.notesBlock}>
-                                <h4>Additional Notes</h4>
-                                <p>{v.additional_notes}</p>
+                                <h4>Message</h4>
+                                <p>{v.message}</p>
                               </div>
                             )}
                           </div>
@@ -281,15 +272,14 @@ export default function AdminDashboard() {
                           <div className={styles.td}>{formatDate(v.created_at)}</div>
                           <div className={styles.td}>
                             <strong>{v.venue_name}</strong>
-                            <div className={styles.tdSub}>{v.space_types}</div>
+                            <div className={styles.tdSub}>{v.indoor_outdoor}</div>
                           </div>
                           <div className={styles.td}>
                             {v.city}
-                            <div className={styles.tdSub}>{v.neighborhood}</div>
+                            <div className={styles.tdSub}>{v.address}</div>
                           </div>
                           <div className={styles.td}>
                             {v.capacity}
-                            <div className={styles.tdSub}>{v.square_footage} sq ft</div>
                           </div>
                           <div className={styles.tdRight}>
                             <ChevronRight size={16} className={`${styles.chevron} ${expandedRow === v.id ? styles.chevronOpen : ''}`} />
@@ -301,40 +291,105 @@ export default function AdminDashboard() {
                               <div className={styles.detailBlock}>
                                 <h4>Venue Info</h4>
                                 <p><strong>Name:</strong> {v.venue_name}</p>
-                                <p><strong>Types:</strong> {v.space_types}</p>
-                                <p><strong>Address:</strong> {v.address}, {v.city} ({v.neighborhood})</p>
+                                <p><strong>Address:</strong> {v.address}, {v.city}</p>
                                 <p><strong>Indoor/Outdoor:</strong> {v.indoor_outdoor}</p>
-                                <p><strong>Operating/Vacant:</strong> {v.is_operating} / {v.is_vacant}</p>
+                                <p><strong>Capacity:</strong> {v.capacity}</p>
+                                <p><strong>Food allowed:</strong> {v.food_allowed ? 'Yes' : 'No'}</p>
                               </div>
                               <div className={styles.detailBlock}>
-                                <h4>Contact Info</h4>
-                                <p><strong>Name:</strong> {v.first_name} {v.last_name}</p>
-                                <p><strong>Role:</strong> {v.role}</p>
+                                <h4>Contact</h4>
+                                <p><strong>Name:</strong> {v.contact_name}</p>
                                 <p><strong>Email:</strong> {v.email}</p>
-                                <p><strong>Phone:</strong> {v.phone}</p>
-                                <p><strong>Business:</strong> {v.business_name}</p>
+                                <p><strong>Phone:</strong> {v.phone || '-'}</p>
+                                <p><strong>Website:</strong> {v.website || '-'}</p>
                               </div>
                               <div className={styles.detailBlock}>
-                                <h4>Event Fit & Amenities</h4>
-                                <p><strong>Events:</strong> {v.event_types}</p>
-                                <p><strong>Amenities:</strong> {v.amenities}</p>
-                                <p><strong>Food/Music:</strong> Trucks: {v.food_trucks_allowed}, Music: {v.music_allowed}</p>
-                                <p><strong>Restrictions:</strong> {v.restrictions}</p>
+                                <h4>Amenities & Parking</h4>
+                                <p><strong>Amenities:</strong> {Array.isArray(v.amenities) ? v.amenities.join(', ') : v.amenities}</p>
+                                <p><strong>Parking:</strong> {v.parking || '-'}</p>
                               </div>
                               <div className={styles.detailBlock}>
                                 <h4>Pricing & Availability</h4>
-                                <p><strong>Model:</strong> {v.pricing_model}</p>
-                                <p><strong>Rate:</strong> {v.desired_rate}</p>
-                                <p><strong>Days:</strong> {v.preferred_days}</p>
-                                <p><strong>Frequency:</strong> {v.hosting_frequency}</p>
+                                <p><strong>Rental price:</strong> {v.rental_price || '-'}</p>
+                                <p><strong>Availability:</strong> {v.availability || '-'}</p>
                               </div>
                             </div>
-                            {v.additional_notes && (
+                            {v.description && (
                               <div className={styles.notesBlock}>
-                                <h4>Additional Notes</h4>
-                                <p>{v.additional_notes}</p>
+                                <h4>Description</h4>
+                                <p>{v.description}</p>
                               </div>
                             )}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'hosts' && (
+            <div className={styles.tableWrap}>
+              {data.hosts.length === 0 ? (
+                <div className={styles.empty}>No host applications yet.</div>
+              ) : (
+                <div className={styles.table}>
+                  <div className={styles.thead}>
+                    <div className={styles.tr}>
+                      <div className={styles.th}>Date</div>
+                      <div className={styles.th}>Name / Org</div>
+                      <div className={styles.th}>Event Concept</div>
+                      <div className={styles.th}>Location</div>
+                      <div className={styles.th}></div>
+                    </div>
+                  </div>
+                  <div className={styles.tbody}>
+                    {data.hosts.map((h) => (
+                      <div key={h.id} className={styles.rowGroup}>
+                        <div className={`${styles.tr} ${styles.trClickable}`} onClick={() => toggleRow(h.id)}>
+                          <div className={styles.td}>{formatDate(h.created_at)}</div>
+                          <div className={styles.td}>
+                            <strong>{h.name}</strong>
+                            <div className={styles.tdSub}>{h.org_name || h.email}</div>
+                          </div>
+                          <div className={styles.td}>{h.event_concept}</div>
+                          <div className={styles.td}>{h.location || '-'}</div>
+                          <div className={styles.tdRight}>
+                            <ChevronRight size={16} className={`${styles.chevron} ${expandedRow === h.id ? styles.chevronOpen : ''}`} />
+                          </div>
+                        </div>
+                        {expandedRow === h.id && (
+                          <div className={styles.expandedContent}>
+                            <div className={styles.detailGrid}>
+                              <div className={styles.detailBlock}>
+                                <h4>Contact</h4>
+                                <p><strong>Name:</strong> {h.name}</p>
+                                <p><strong>Email:</strong> {h.email}</p>
+                                <p><strong>Phone:</strong> {h.phone || '-'}</p>
+                                <p><strong>Org:</strong> {h.org_name || '-'}</p>
+                                <p><strong>Role:</strong> {h.role || '-'}</p>
+                              </div>
+                              <div className={styles.detailBlock}>
+                                <h4>Event Details</h4>
+                                <p><strong>Concept:</strong> {h.event_concept}</p>
+                                <p><strong>Date:</strong> {h.event_date || '-'}</p>
+                                <p><strong>Location:</strong> {h.location || '-'}</p>
+                                <p><strong>Venue status:</strong> {h.venue_status || '-'}</p>
+                              </div>
+                              <div className={styles.detailBlock}>
+                                <h4>Scale & Budget</h4>
+                                <p><strong>Expected vendors:</strong> {h.expected_vendors || '-'}</p>
+                                <p><strong>Expected attendance:</strong> {h.expected_attendance || '-'}</p>
+                                <p><strong>Budget:</strong> {h.budget || '-'}</p>
+                              </div>
+                              <div className={styles.detailBlock}>
+                                <h4>Background</h4>
+                                <p><strong>Experience:</strong> {h.experience || '-'}</p>
+                                <p><strong>Goals:</strong> {h.goals || '-'}</p>
+                              </div>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -369,7 +424,7 @@ export default function AdminDashboard() {
                             <div className={styles.tdSub}>{c.email}</div>
                           </div>
                           <div className={styles.td}>
-                            <span className={`badge badge--neutral`}>{c.type || 'other'}</span>
+                            <span className={`badge badge--neutral`}>{c.subject || '-'}</span>
                           </div>
                           <div className={`${styles.td} ${styles.tdMessage}`}>
                             {c.message}

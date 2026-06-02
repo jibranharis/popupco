@@ -1,21 +1,21 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { PLACEHOLDER_EVENTS } from '@/lib/data';
+import { SPACES_DATA } from '@/lib/spaces';
 
 export async function GET() {
   try {
     if (supabase) {
       const { data, error } = await supabase
-        .from('events')
+        .from('spaces')
         .select('*')
         .order('created_at', { ascending: true });
       if (!error && data?.length > 0) {
         return NextResponse.json({ data });
       }
     }
-    return NextResponse.json({ data: PLACEHOLDER_EVENTS });
+    return NextResponse.json({ data: SPACES_DATA });
   } catch (error) {
-    console.error('Failed to fetch events:', error);
-    return NextResponse.json({ data: PLACEHOLDER_EVENTS });
+    console.error('Failed to fetch spaces:', error);
+    return NextResponse.json({ data: SPACES_DATA });
   }
 }

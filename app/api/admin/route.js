@@ -16,12 +16,13 @@ export async function POST(request) {
     if (body.action === 'fetch') {
       const db = getServiceClient();
       if (!db) {
-        return NextResponse.json({ success: true, data: { vendors: [], venues: [], contacts: [] } });
+        return NextResponse.json({ success: true, data: { vendors: [], venues: [], hosts: [], contacts: [] } });
       }
 
-      const [vendors, venues, contacts] = await Promise.all([
+      const [vendors, venues, hosts, contacts] = await Promise.all([
         db.from('vendor_applications').select('*').order('created_at', { ascending: false }),
         db.from('venue_applications').select('*').order('created_at', { ascending: false }),
+        db.from('host_applications').select('*').order('created_at', { ascending: false }),
         db.from('contacts').select('*').order('created_at', { ascending: false }),
       ]);
 
@@ -30,6 +31,7 @@ export async function POST(request) {
         data: {
           vendors: vendors.data || [],
           venues: venues.data || [],
+          hosts: hosts.data || [],
           contacts: contacts.data || [],
         },
       });
