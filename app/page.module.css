@@ -614,6 +614,11 @@
   margin-bottom: clamp(2.8rem, 3.6vw, 3.35rem);
 }
 
+.roleIntro :global(.label) {
+  display: inline-block;
+  transform: translateX(14px);
+}
+
 .roleIntro h2 {
   margin-top: 22px;
   max-width: 760px;
