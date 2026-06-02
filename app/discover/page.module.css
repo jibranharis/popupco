@@ -82,10 +82,10 @@
   max-width: 660px;
   margin: 0;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(3.2rem, 4.2vw, 4.5rem);
+  font-size: clamp(3rem, 3.95vw, 4.25rem);
   font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.04em;
+  line-height: 1.03;
+  letter-spacing: -0.035em;
   color: #22211f;
 }
 
@@ -380,7 +380,7 @@
   }
 
   .heroCopy h1 {
-    font-size: clamp(2.4rem, 12vw, 3.2rem);
+    font-size: clamp(2.35rem, 11vw, 3rem);
   }
 
   .pathGrid {
