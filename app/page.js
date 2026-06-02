@@ -9,9 +9,12 @@ import {
   ArrowRight,
   Building2,
   CalendarDays,
+  Clock3,
+  RefreshCw,
   Search,
   ShieldCheck,
   Store,
+  Utensils,
   Users,
 } from 'lucide-react';
 import styles from './page.module.css';
@@ -159,12 +162,12 @@ const messages = [
 ];
 
 const opportunityRows = [
-  ['Booth fee', '$125'],
-  ['Expected attendance', '400-600'],
-  ['Application deadline', 'June 14'],
-  ['Setup window', '8:00-9:30 AM'],
-  ['Food permits', 'Required for prepared food'],
-  ['Cancellation', 'Refundable up to 7 days before'],
+  ['Booth fee', '$125', Store],
+  ['Expected attendance', '400-600', Users],
+  ['Application deadline', 'June 14', CalendarDays],
+  ['Setup window', '8:00-9:30 AM', Clock3],
+  ['Food permits', 'Required for prepared food', Utensils],
+  ['Cancellation', 'Refundable up to 7 days before', RefreshCw],
 ];
 
 function useFadeInObserver(ref) {
@@ -449,13 +452,33 @@ export default function HomePage() {
                 </div>
                 <strong><ShieldCheck size={15} /> Verified host</strong>
               </div>
+              <div className={styles.detailsDivider}><span /></div>
               <div className={styles.detailsRows}>
-                {opportunityRows.map(([label, value]) => (
+                {opportunityRows.map(([label, value, Icon]) => (
                   <div key={label}>
+                    <i className={styles.detailIcon}><Icon size={22} strokeWidth={2.2} /></i>
                     <span>{label}</span>
+                    <em aria-hidden="true" />
                     <strong>{value}</strong>
                   </div>
                 ))}
+              </div>
+              <div className={styles.detailsTrustPanel}>
+                <div className={styles.trustEmblem}>
+                  <ShieldCheck size={32} />
+                </div>
+                <div className={styles.trustPanelCopy}>
+                  <strong>Plan with confidence</strong>
+                  <span>This host is verified and committed to a great vendor experience.</span>
+                </div>
+                <svg className={styles.botanicalLine} viewBox="0 0 150 92" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M18 82C50 48 84 24 132 10" />
+                  <path d="M46 56C35 42 35 28 48 16C57 31 56 45 46 56Z" />
+                  <path d="M72 38C65 24 69 12 84 5C89 20 84 31 72 38Z" />
+                  <path d="M88 32C103 23 118 23 133 34C118 42 103 41 88 32Z" />
+                  <path d="M55 52C71 49 84 55 94 69C78 70 65 64 55 52Z" />
+                  <path d="M28 72C42 71 54 77 62 89C48 89 37 83 28 72Z" />
+                </svg>
               </div>
             </div>
           </div>
