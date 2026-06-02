@@ -121,8 +121,9 @@ export default function DiscoverPathsCarousel() {
         {/* Carousel Content */}
         <div className={styles.trackContainer}>
            {paths.map((path, index) => {
-              let positionClass = styles.activeSlide;
-              if (index === (activeIndex + 1) % paths.length) positionClass = styles.nextSlide;
+              let positionClass;
+              if (index === activeIndex) positionClass = styles.activeSlide;
+              else if (index === (activeIndex + 1) % paths.length) positionClass = styles.nextSlide;
               else if (index === (activeIndex === 0 ? paths.length - 1 : activeIndex - 1)) positionClass = styles.prevSlide;
               else positionClass = styles.hiddenSlide;
 
