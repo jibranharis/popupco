@@ -87,10 +87,10 @@
   max-width: 660px;
   margin: 0;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(3.2rem, 4.2vw, 4.5rem);
-  font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -0.04em;
+  font-size: clamp(3rem, 3.95vw, 4.25rem);
+  font-weight: 500;
+  line-height: 1.03;
+  letter-spacing: -0.035em;
   color: #22211f;
 }
 
@@ -200,11 +200,11 @@
 
 .visualHeader strong {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.75rem;
+  font-size: 1.68rem;
   line-height: 1;
   letter-spacing: -0.04em;
   color: #25211d;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .visualPill {
@@ -343,10 +343,10 @@
 .featureItem strong {
   font-family: Georgia, 'Times New Roman', serif;
   color: #24211f;
-  font-size: 1.32rem;
+  font-size: 1.26rem;
   line-height: 1.12;
   letter-spacing: -0.025em;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .featureItem span span {
@@ -362,7 +362,7 @@
   }
 
   .hero h1 {
-    font-size: clamp(2.8rem, 4.5vw, 3.8rem);
+    font-size: clamp(2.65rem, 4.25vw, 3.6rem);
   }
 
   .visualCard {
@@ -422,7 +422,7 @@
   }
 
   .hero h1 {
-    font-size: clamp(2.5rem, 12vw, 3.2rem);
+    font-size: clamp(2.35rem, 11vw, 3rem);
   }
 
   .hero p {
