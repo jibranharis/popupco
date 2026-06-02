@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import styles from './SuccessCarousel.module.css';
@@ -32,6 +32,13 @@ export default function SuccessCarousel() {
 
   const next = () => setActiveIndex((current) => (current + 1) % cases.length);
   const prev = () => setActiveIndex((current) => (current === 0 ? cases.length - 1 : current - 1));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((current) => (current + 1) % cases.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <section className={styles.carouselSection}>
