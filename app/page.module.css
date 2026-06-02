@@ -266,6 +266,7 @@
 .finalInner h2 {
   margin-top: var(--sp-2);
   font-size: clamp(2rem, 3.5vw, 3.35rem);
+  font-weight: 700;
   line-height: 1;
   letter-spacing: -0.03em;
 }
@@ -677,7 +678,7 @@
   margin-top: 22px;
   max-width: 800px;
   font-size: clamp(3rem, 4.4vw, 4.35rem);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.08;
   letter-spacing: -0.045em;
   white-space: normal;
