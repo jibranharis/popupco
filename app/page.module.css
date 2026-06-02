@@ -58,7 +58,7 @@
   padding: 6px 11px;
   border: 1px solid rgba(200, 95, 44, 0.22);
   border-radius: var(--radius-full);
-  background: rgba(255, 251, 245, 0.72);
+  background: rgba(255, 251, 245, 0.72);
   color: #7a4b30;
   font-size: 0.78rem;
   font-weight: 850;
@@ -69,6 +69,7 @@
   gap: 0.05em;
   max-width: 520px;
   font-size: 3.64rem;
+  font-weight: 700;
   line-height: 1.08;
   letter-spacing: -0.04em;
 }
