@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import DiscoverPathsCarousel from '@/components/DiscoverPathsCarousel';
 import {
   ArrowRight,
   CalendarDays,
@@ -105,23 +106,13 @@ export default function DiscoverPage() {
         <section className={styles.pathSection}>
           <div className="container">
             <div className={styles.sectionIntro}>
-              <span className="label">Choose your path</span>
+              <span className="label">CHOOSE YOUR PATH</span>
               <h2>Start with what you need.</h2>
               <p className={styles.introSub}>Four ways in. Endless possibilities to grow, connect, and create.</p>
             </div>
-            <div className={styles.pathGrid}>
-              {pathCards.map(({ title, copy, href, cta, Icon }) => (
-                <div key={title} className={`card ${styles.pathCard}`}>
-                  <span className={styles.pathIcon}><Icon size={22} /></span>
-                  <h3>{title}</h3>
-                  <p>{copy}</p>
-                  <Link href={href} className={styles.pathCta}>
-                    {cta} <ArrowRight size={16} />
-                  </Link>
-                </div>
-              ))}
-            </div>
           </div>
+          
+          <DiscoverPathsCarousel />
         </section>
       </main>
       <Footer />
