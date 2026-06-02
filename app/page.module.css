@@ -230,11 +230,27 @@
 .momentsSection {
   position: relative;
   z-index: 2;
+  overflow: hidden;
   padding: clamp(6.25rem, 8vw, 7.75rem) 0 var(--sp-24);
-  background: #fff;
+  background:
+    radial-gradient(circle at 82% 15%, rgba(200, 95, 44, 0.095), transparent 34%),
+    radial-gradient(circle at 8% 88%, rgba(238, 195, 153, 0.22), transparent 32%),
+    linear-gradient(180deg, #fffaf3 0%, #fff8ef 48%, #fffaf5 100%);
+}
+
+.momentsSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 76% 38%, rgba(255, 255, 255, 0.6), transparent 42%),
+    linear-gradient(90deg, rgba(200, 95, 44, 0.035), transparent 24%, transparent 76%, rgba(200, 95, 44, 0.035));
 }
 
 .momentsShell {
+  position: relative;
+  z-index: 1;
   padding: 0;
 }
 
