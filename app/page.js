@@ -409,30 +409,6 @@ export default function HomePage() {
         </section>
 
         <section className={styles.trustSection}>
-          <div className={styles.trustScene} aria-hidden="true">
-            <svg viewBox="0 0 720 340" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path className={styles.sceneHillBack} d="M0 238C80 184 132 184 196 216C266 251 316 184 386 207C466 233 494 176 566 196C630 214 678 216 720 184V340H0V238Z" />
-              <path className={styles.sceneHillFront} d="M0 272C62 238 124 238 181 260C244 284 289 249 350 236C417 222 462 263 518 254C594 241 655 242 720 264V340H0V272Z" />
-              <path className={styles.sceneSkyline} d="M292 218H308V182H324V218H342V194H356V218H377V164H394V218H414V188H430V218" />
-              <path className={styles.sceneMainTent} d="M0 168L120 72L238 168H0Z" />
-              <path className={styles.sceneTentStroke} d="M120 72V262M0 168H238M30 168V262M210 168V262" />
-              <path className={styles.sceneTentStroke} d="M266 213L340 148L414 213H266Z" />
-              <path className={styles.sceneTentStroke} d="M266 213H414M288 213V282M392 213V282" />
-              <path className={styles.sceneTentStroke} d="M438 222L522 150L608 222H438Z" />
-              <path className={styles.sceneTentStroke} d="M438 222H608M462 222V290M582 222V290" />
-              <path className={styles.sceneTable} d="M34 272H178M56 292H156M78 272V318M136 272V318" />
-              <path className={styles.sceneTable} d="M298 262H386M316 280H368M326 262V302M362 262V302" />
-              <path className={styles.sceneTable} d="M474 272H580M496 290H556M506 272V310M548 272V310" />
-              <path className={styles.scenePlant} d="M42 286C34 260 38 232 58 214C76 238 70 268 42 286Z" />
-              <path className={styles.scenePlant} d="M74 288C67 256 78 232 102 216C114 248 102 274 74 288Z" />
-              <path className={styles.scenePlant} d="M628 280C620 252 626 230 648 214C662 244 654 270 628 280Z" />
-              <path className={styles.sceneBoard} d="M113 248L88 326H164L139 248H113Z" />
-              <path className={styles.sceneBoard} d="M104 268H148M100 294H154" />
-              <circle className={styles.scenePot} cx="26" cy="304" r="12" />
-              <circle className={styles.scenePot} cx="198" cy="302" r="10" />
-              <circle className={styles.scenePot} cx="438" cy="292" r="8" />
-            </svg>
-          </div>
           <div className={`container ${styles.trustGrid}`}>
             <div className={`fade-in ${styles.trustCopy}`}>
               <span className="label">Marketplace clarity</span>
