@@ -32,8 +32,8 @@ const dashboardItems = [
 ];
 
 const bottomFeatures = [
-  [Search, 'Find the right fits faster', 'Filter by location, dates, fees, setup needs, and more-so you apply with confidence.'],
-  [ShieldCheck, 'See everything up front', 'Booth fees, deadlines, electricity, load-in-no surprises, just clear details.'],
+  [Search, 'Find the right fits faster', 'Filter by location, dates, fees, setup needs, and more—so you apply with confidence.'],
+  [ShieldCheck, 'See everything up front', 'Booth fees, deadlines, electricity, load-in—no surprises, just clear details.'],
   [MessageSquare, 'Communicate in one place', 'Message hosts, ask questions, and keep everything organized.'],
 ];
 
