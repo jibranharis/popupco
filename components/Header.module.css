@@ -85,7 +85,7 @@
 
 .navLink {
   font-size: 0.9375rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #6f4e39;
   transition: color var(--ease-fast);
   position: relative;
@@ -123,10 +123,26 @@
   content: '';
   position: absolute;
   bottom: -24px;
-  left: 0;
-  width: 100%;
-  height: 2px;
+  width: 30px;
+  height: 2.5px;
+  border-radius: 2px;
   background-color: var(--color-accent);
+}
+
+/* Position underline: first two links = left, third = center, fourth = right */
+.navCenter .activeNavLink:nth-child(1)::after,
+.navCenter .activeNavLink:nth-child(2)::after {
+  left: 0;
+}
+
+.navCenter .activeNavLink:nth-child(3)::after {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.navCenter .activeNavLink:nth-child(4)::after {
+  right: 0;
+  left: auto;
 }
 
 .messageBtn {
