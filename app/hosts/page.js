@@ -1,17 +1,23 @@
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { CheckCircle2, ClipboardList, MapPin, MessageSquare, Users } from 'lucide-react';
+import {
+  ArrowRight,
+  CalendarDays,
+  ChevronRight,
+  ClipboardList,
+  Eye,
+  MapPin,
+  MessageSquare,
+  ShieldCheck,
+  Users,
+} from 'lucide-react';
 import styles from './page.module.css';
 
-const features = [
-  'Create an event page',
-  'Find venues',
-  'Recruit vendors',
-  'Manage vendor applications',
-  'Balance categories',
-  'Message accepted vendors',
-  'Promote your event',
+const chips = [
+  [Users, 'Review vendors faster'],
+  [MapPin, 'Compare spaces easily'],
+  [MessageSquare, 'Send details in one place'],
 ];
 
 const dashboardItems = [
@@ -21,11 +27,17 @@ const dashboardItems = [
   [MessageSquare, 'Event messages', 'Send setup details and deadline reminders.'],
 ];
 
+const bottomFeatures = [
+  [Users, 'Build the right lineup', 'Attract great vendors and curate a mix that fits your vision and audience.'],
+  [CalendarDays, 'Keep every detail clear', 'Share setup info, deadlines, and updates so vendors always know what\'s next.'],
+  [ShieldCheck, 'Run everything from one place', 'Manage vendors, venues, messages, and timelines without the back-and-forth.'],
+];
+
 export default function HostsPage() {
   return (
     <>
       <Header />
-      <main className={styles.main}>
+      <main className={`${styles.main} ${styles.hostPage}`}>
         <section className={styles.hero}>
           <div className={`container ${styles.heroGrid}`}>
             <div className={styles.heroCopy}>
@@ -33,21 +45,29 @@ export default function HostsPage() {
               <h1>Create better pop-up events without the chaos.</h1>
               <p>Create an event, find a venue, recruit vendors, and manage applications without scattered forms and DMs.</p>
               <div className={styles.ctas}>
-                <Link href="/apply/host" className="btn btn--primary btn--lg">Host a pop-up</Link>
-                <Link href="/apply/host" className="btn btn--secondary btn--lg">Need a venue</Link>
+                <Link href="/apply/host" className={`${styles.roleButton} ${styles.primaryButton}`}>Host a pop-up <ArrowRight size={20} /></Link>
+                <Link href="/apply/host" className={`${styles.roleButton} ${styles.secondaryButton}`}>Need a venue</Link>
+              </div>
+              <div className={styles.heroChips}>
+                {chips.map(([Icon, text]) => (
+                  <span key={text}><Icon size={16} /> {text}</span>
+                ))}
               </div>
             </div>
             <div className={styles.visualCard}>
               <div className={styles.visualHeader}>
                 <strong>Host dashboard</strong>
-                <span className={styles.visualPill}>Preview</span>
+                <span className={styles.visualPill}><Eye size={15} /> Preview</span>
               </div>
               <div className={styles.visualRows}>
                 {dashboardItems.map(([Icon, title, copy]) => (
                   <div className={styles.visualRow} key={title}>
-                    <Icon size={20} />
-                    <strong>{title}</strong>
-                    <span>{copy}</span>
+                    <span className={styles.rowIcon}><Icon size={25} /></span>
+                    <span className={styles.rowText}>
+                      <strong>{title}</strong>
+                      <span>{copy}</span>
+                    </span>
+                    <ChevronRight className={styles.rowArrow} size={24} />
                   </div>
                 ))}
               </div>
@@ -55,23 +75,17 @@ export default function HostsPage() {
           </div>
         </section>
 
-        <section className="section">
-          <div className={`container ${styles.grid}`}>
-            <div className={styles.copy}>
-              <h2>One place for the work behind the market.</h2>
-              <ul>
-                {features.map((feature) => <li key={feature}><CheckCircle2 size={18} /> {feature}</li>)}
-              </ul>
-            </div>
-            <div className={styles.panel}>
-              {dashboardItems.map(([Icon, title, copy]) => (
-                <div key={title}>
-                  <Icon size={20} />
+        <section className={styles.featureStripSection}>
+          <div className={`container ${styles.featureStrip}`}>
+            {bottomFeatures.map(([Icon, title, copy]) => (
+              <div className={styles.featureItem} key={title}>
+                <span className={styles.featureIcon}><Icon size={31} /></span>
+                <span>
                   <strong>{title}</strong>
                   <span>{copy}</span>
-                </div>
+                </span>
+              </div>
               ))}
-            </div>
           </div>
         </section>
       </main>
