@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Header from '@/components/Header';
+import SuccessCarousel from '@/components/SuccessCarousel';
 import Footer from '@/components/Footer';
 import {
   ArrowRight,
@@ -78,6 +79,8 @@ export default function VendorsPage() {
             </div>
           </div>
         </section>
+
+        <SuccessCarousel />
 
         <section className={styles.featureStripSection}>
           <div className={`container ${styles.featureStrip}`}>
