@@ -488,15 +488,52 @@
 }
 
 .messageSection {
+  position: relative;
+  overflow: hidden;
   min-height: 94vh;
   display: flex;
   align-items: center;
   padding: clamp(7rem, 10vw, 9.5rem) 0;
   background:
-    linear-gradient(180deg, #fff 0%, #f7f1e8 14%, #fff8ef 100%);
+    radial-gradient(ellipse at 88% 6%, rgba(221, 125, 71, 0.22), transparent 34%),
+    radial-gradient(ellipse at 96% 88%, rgba(238, 197, 153, 0.2), transparent 34%),
+    radial-gradient(ellipse at 10% 102%, rgba(219, 198, 168, 0.22), transparent 42%),
+    linear-gradient(180deg, #fffaf4 0%, #fff7ef 50%, #fff8ef 100%);
+}
+
+.messageSection::before {
+  content: '';
+  position: absolute;
+  top: -86px;
+  right: -70px;
+  z-index: 0;
+  width: min(520px, 42vw);
+  height: min(360px, 30vw);
+  background-image: url("data:image/svg+xml,%3Csvg width='560' height='380' viewBox='0 0 560 380' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='.68'%3E%3Cpath d='M520 2C441 79 366 147 272 197C184 244 93 271 4 286' stroke='%23CFA886' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M454 71C418 40 389 39 352 68C386 99 419 100 454 71Z' fill='%23D8B394'/%3E%3Cpath d='M393 128C351 96 315 101 276 139C318 170 355 166 393 128Z' fill='%23D8B394'/%3E%3Cpath d='M316 180C273 154 239 162 207 204C250 230 284 221 316 180Z' fill='%23D8B394'/%3E%3Cpath d='M232 223C190 204 158 218 134 260C174 279 207 265 232 223Z' fill='%23D8B394'/%3E%3Cpath d='M499 35C462 14 433 20 404 56C441 78 471 70 499 35Z' fill='%23E2BFA3'/%3E%3Cpath d='M350 94C353 132 378 154 421 158C419 119 392 96 350 94Z' fill='%23E2BFA3'/%3E%3Cpath d='M266 154C270 195 298 217 342 217C337 178 310 155 266 154Z' fill='%23E2BFA3'/%3E%3Cpath d='M180 208C184 248 211 271 256 272C250 232 224 210 180 208Z' fill='%23E2BFA3'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+.messageSection::after {
+  content: '';
+  position: absolute;
+  left: -120px;
+  bottom: -92px;
+  z-index: 0;
+  width: min(500px, 38vw);
+  height: min(340px, 28vw);
+  background-image: url("data:image/svg+xml,%3Csvg width='500' height='340' viewBox='0 0 500 340' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='.62'%3E%3Cpath d='M-6 330C70 272 147 230 245 201C323 178 404 171 492 174' stroke='%23B8B493' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M71 270C32 249 6 258 -18 295C22 317 48 307 71 270Z' fill='%23A9B097'/%3E%3Cpath d='M139 228C97 207 67 219 41 260C83 282 113 270 139 228Z' fill='%23A9B097'/%3E%3Cpath d='M222 198C182 171 148 180 119 225C160 252 194 242 222 198Z' fill='%23A9B097'/%3E%3Cpath d='M102 250C103 289 127 314 168 321C168 282 144 256 102 250Z' fill='%23C4C1A5'/%3E%3Cpath d='M173 212C176 252 203 276 247 278C244 238 217 214 173 212Z' fill='%23C4C1A5'/%3E%3Cpath d='M256 188C267 225 297 243 338 235C327 198 298 181 256 188Z' fill='%23C4C1A5'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.11;
+  pointer-events: none;
 }
 
 .messageGrid {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(280px, 0.72fr) minmax(520px, 1.28fr);
   gap: clamp(3rem, 6vw, 5.5rem);
