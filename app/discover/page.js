@@ -7,29 +7,30 @@ import styles from './page.module.css';
 
 const paths = [
   {
-    title: 'I want to sell at an event',
-    copy: 'Browse vendor markets, booth opportunities, food pop-ups, and spaces currently accepting vendor interest.',
+    title: 'Sell',
+    copy: 'Sell your products at markets and pop-ups.',
     href: '/browse',
     cta: 'Browse vendor opportunities',
     Icon: Store,
+    active: true,
   },
   {
-    title: 'I want to attend local pop-ups',
-    copy: 'Find public markets, food events, brand pop-ups, and community experiences near you.',
+    title: 'Explore',
+    copy: 'Find pop-ups, events, and local experiences.',
     href: '/upcoming',
     cta: 'View upcoming events',
     Icon: CalendarDays,
   },
   {
-    title: 'I want to host a pop-up',
-    copy: 'Start an event request, recruit vendors, and tell PopUpCo whether you already have a venue or need one.',
+    title: 'Host',
+    copy: 'Bring vendors and communities together.',
     href: '/apply/host',
     cta: 'Start host request',
     Icon: Users,
   },
   {
-    title: 'I have a venue or space',
-    copy: 'Submit a storefront, hall, cafe, studio, lot, gallery, school, or community space for pop-up use.',
+    title: 'Venue',
+    copy: 'List your space and attract great events.',
     href: '/apply/venue',
     cta: 'Submit a venue',
     Icon: MapPin,
@@ -77,8 +78,8 @@ export default function DiscoverPage() {
               </div>
             </div>
             <div className={styles.pathGrid}>
-              {paths.map(({ title, copy, href, cta, Icon }) => (
-                <Link key={title} href={href} className={`card ${styles.pathCard}`}>
+              {paths.map(({ title, copy, href, cta, Icon, active }) => (
+                <Link key={title} href={href} className={`card ${styles.pathCard} ${active ? styles.activePathCard : ''}`}>
                   <span className={styles.pathIcon}><Icon size={22} /></span>
                   <h3>{title}</h3>
                   <p>{copy}</p>
