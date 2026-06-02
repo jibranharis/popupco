@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { 
@@ -94,6 +94,13 @@ export default function DiscoverPathsCarousel() {
 
   const next = () => setActiveIndex((current) => (current + 1) % paths.length);
   const prev = () => setActiveIndex((current) => (current === 0 ? paths.length - 1 : current - 1));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((current) => (current + 1) % paths.length);
+    }, 6000); // 6 seconds
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className={styles.carouselWrapper}>
