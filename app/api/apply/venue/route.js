@@ -11,22 +11,27 @@ export async function POST(request) {
       return NextResponse.json({ success: true });
     }
 
+    const contactName = data.contact_name || data.contactName || data.name ||
+      [data.first_name, data.last_name].filter(Boolean).join(' ') || null;
+    const foodAllowed = data.food_vendors_allowed === 'Yes' || data.food_trucks_allowed === 'Yes' ||
+      data.foodAllowed || data.food_allowed || false;
+
     const { error } = await db.from('venue_applications').insert({
-      contact_name: data.contactName || data.contact_name || data.name,
+      contact_name: contactName,
       email: data.email,
-      phone: data.phone,
-      venue_name: data.venueName || data.venue_name,
-      address: data.address,
-      city: data.city,
-      capacity: data.capacity,
-      indoor_outdoor: data.indoorOutdoor || data.indoor_outdoor,
+      phone: data.phone || null,
+      venue_name: data.venue_name || data.venueName || null,
+      address: data.address || null,
+      city: data.city || null,
+      capacity: data.capacity || null,
+      indoor_outdoor: data.indoor_outdoor || data.indoorOutdoor || null,
       amenities: Array.isArray(data.amenities) ? data.amenities : [],
-      food_allowed: data.foodAllowed ?? data.food_allowed ?? false,
-      parking: data.parking,
-      rental_price: data.rentalPrice || data.rental_price,
-      availability: data.availability,
-      description: data.description,
-      website: data.website,
+      food_allowed: foodAllowed,
+      parking: data.parking || null,
+      rental_price: data.desired_rate || data.rentalPrice || data.rental_price || null,
+      availability: data.preferred_days || data.availability || null,
+      description: data.layout_notes || data.additional_notes || data.description || null,
+      website: data.website || null,
       status: 'pending',
     });
 
