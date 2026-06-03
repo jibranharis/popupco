@@ -42,10 +42,7 @@ export default function SuccessCarousel() {
 
   return (
     <section className={styles.carouselSection}>
-      <div className={styles.backgroundBlobs}>
-        <div className={styles.blob1}></div>
-        <div className={styles.blob2}></div>
-      </div>
+      <div className={styles.backgroundArch}></div>
       
       <div className={styles.headerArea}>
         <span className={styles.eyebrow}>SUCCESS STORIES</span>

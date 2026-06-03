@@ -8,34 +8,18 @@
   align-items: center;
 }
 
-.backgroundBlobs {
+.backgroundArch {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.blob1, .blob2 {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.6;
-}
-
-.blob1 {
-  width: 700px; 
-  height: 700px;
-  background: radial-gradient(circle, rgba(240, 195, 172, 0.25), transparent);
-  top: -150px; 
-  left: -200px;
-}
-
-.blob2 {
-  width: 600px; 
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140vw; /* Very wide so the curve is extremely soft */
   height: 600px;
-  background: radial-gradient(circle, rgba(235, 215, 185, 0.3), transparent);
-  bottom: -100px; 
-  right: -150px;
+  background: #fdfbf7;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  z-index: 0;
+  border-bottom: 1px solid rgba(229, 216, 202, 0.4);
 }
 
 .headerArea {
@@ -80,11 +64,13 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 1320px; /* controlled width */
+  max-width: 1200px; /* narrowed slightly so the edges crop the side cards */
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
+  padding: 20px 0; /* Add some padding so box-shadows aren't clipped top/bottom */
 }
 
 .carouselTrack {
@@ -185,16 +171,16 @@
 
 .prev {
   z-index: 2;
-  /* Translated left, scaled down, rotated in 3D to face center */
-  transform: translateX(-520px) scale(0.85) rotateY(15deg);
-  opacity: 0.85;
+  /* Translated left further to push it half out of the 1200px container bounds */
+  transform: translateX(-560px) scale(0.9) rotateY(12deg);
+  opacity: 0.6;
 }
 
 .next {
   z-index: 2;
-  /* Translated right, scaled down, rotated in 3D to face center */
-  transform: translateX(520px) scale(0.85) rotateY(-15deg);
-  opacity: 0.85;
+  /* Translated right further to push it half out of the 1200px container bounds */
+  transform: translateX(560px) scale(0.9) rotateY(-12deg);
+  opacity: 0.6;
 }
 
 /* Mobile & Tablet */
