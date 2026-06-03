@@ -47,8 +47,7 @@ export default function SuccessCarousel() {
       <div className={styles.headerArea}>
         <span className={styles.eyebrow}>SUCCESS STORIES</span>
         <h2 className={styles.headline}>
-          True stories.<br/>
-          Real results.
+          True stories. Real results.
         </h2>
         <p className={styles.subtext}>
           See how vendors use PopUpCo to launch memorable pop-ups, reach better audiences, and grow with confidence.

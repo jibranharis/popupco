@@ -171,28 +171,28 @@
 
 .prev {
   z-index: 2;
-  /* Translated left further to push it half out of the 1200px container bounds */
-  transform: translateX(-560px) scale(0.9) rotateY(12deg);
+  /* Translated left further to push it half out of the 1200px container bounds AND create a gap */
+  transform: translateX(-660px) scale(0.9) rotateY(12deg);
   opacity: 0.6;
 }
 
 .next {
   z-index: 2;
-  /* Translated right further to push it half out of the 1200px container bounds */
-  transform: translateX(560px) scale(0.9) rotateY(-12deg);
+  /* Translated right further to push it half out of the 1200px container bounds AND create a gap */
+  transform: translateX(660px) scale(0.9) rotateY(-12deg);
   opacity: 0.6;
 }
 
 /* Mobile & Tablet */
 @media (max-width: 1180px) {
-  .prev { transform: translateX(-420px) scale(0.85) rotateY(15deg); }
-  .next { transform: translateX(420px) scale(0.85) rotateY(-15deg); }
+  .prev { transform: translateX(-600px) scale(0.85) rotateY(15deg); }
+  .next { transform: translateX(600px) scale(0.85) rotateY(-15deg); }
 }
 
 @media (max-width: 900px) {
   .card { width: 500px; height: 440px; }
-  .prev { transform: translateX(-320px) scale(0.85) rotateY(15deg); }
-  .next { transform: translateX(320px) scale(0.85) rotateY(-15deg); }
+  .prev { transform: translateX(-500px) scale(0.85) rotateY(15deg); }
+  .next { transform: translateX(500px) scale(0.85) rotateY(-15deg); }
 }
 
 @media (max-width: 640px) {
