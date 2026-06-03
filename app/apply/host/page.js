@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CheckCircle, ChevronRight } from 'lucide-react';
+import { useAuth } from '@/components/AuthContext';
 import styles from '../venue/page.module.css';
 
 const SECTIONS = [
@@ -29,6 +30,7 @@ const SUPPORT_OPTIONS = [
 ];
 
 export default function HostApplicationPage() {
+  const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -76,7 +78,7 @@ export default function HostApplicationPage() {
 
     setSubmitting(true);
     setError('');
-    const payload = { ...form, submittedAt: new Date().toISOString() };
+    const payload = { ...form, submittedAt: new Date().toISOString(), user_id: user?.id || null };
 
     try {
       if (typeof window !== 'undefined') {

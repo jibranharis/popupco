@@ -12,6 +12,7 @@ export async function POST(request) {
     }
 
     const { error } = await db.from('host_applications').insert({
+      user_id: data.user_id || null,
       name: data.name,
       email: data.email,
       phone: data.phone || null,

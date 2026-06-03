@@ -17,6 +17,7 @@ export async function POST(request) {
       data.foodAllowed || data.food_allowed || false;
 
     const { error } = await db.from('venue_applications').insert({
+      user_id: data.user_id || null,
       contact_name: contactName,
       email: data.email,
       phone: data.phone || null,

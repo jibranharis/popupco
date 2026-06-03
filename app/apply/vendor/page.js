@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { PLACEHOLDER_EVENTS, getPublicEventBySlug } from '@/lib/data';
 import { SPACES_DATA, getOpportunityBySlug } from '@/lib/spaces';
 import { ChevronRight, CheckCircle } from 'lucide-react';
+import { useAuth } from '@/components/AuthContext';
 import styles from './page.module.css';
 
 const SECTIONS = [
@@ -48,6 +49,7 @@ const LOCATIONS = [
 const FOOD_CATEGORIES = ['Packaged food', 'Beverage', 'Food truck'];
 
 function VendorApplicationForm() {
+  const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -169,7 +171,7 @@ function VendorApplicationForm() {
       const res = await fetch('/api/apply/vendor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, user_id: user?.id || null }),
       });
       const data = await res.json();
       if (data.success) {

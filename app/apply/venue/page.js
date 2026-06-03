@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ChevronRight, CheckCircle } from 'lucide-react';
+import { useAuth } from '@/components/AuthContext';
 import styles from './page.module.css';
 
 const SECTIONS = [
@@ -64,6 +65,7 @@ const PRICING_MODELS = [
 ];
 
 export default function VenueApplicationPage() {
+  const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -126,7 +128,7 @@ export default function VenueApplicationPage() {
       const res = await fetch('/api/apply/venue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, user_id: user?.id || null }),
       });
       const data = await res.json();
       if (data.success) {

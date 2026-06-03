@@ -15,6 +15,7 @@ export async function POST(request) {
       [data.first_name, data.last_name].filter(Boolean).join(' ') || null;
 
     const { error } = await db.from('vendor_applications').insert({
+      user_id: data.user_id || null,
       event_slug: data.event_preference || data.eventSlug || data.event_slug || null,
       brand_name: data.business_name || data.brandName || data.brand_name || null,
       contact_name: contactName,
