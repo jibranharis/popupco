@@ -127,13 +127,16 @@
 }
 
 .primaryButton {
-  border: 1px solid rgba(196, 98, 45, 0.9);
-  background: linear-gradient(180deg, #d66b32 0%, #c64f1d 100%);
-  color: #fff;
-  box-shadow: 0 15px 30px rgba(196, 98, 45, 0.24);
+  border: 1px solid rgba(196, 98, 45, 0.45);
+  background: #fdeee3;
+  color: #c64f1d;
+  box-shadow: 0 10px 22px rgba(196, 98, 45, 0.08);
 }
 
 .primaryButton:hover {
+  border-color: rgba(196, 98, 45, 0.9);
+  background: linear-gradient(180deg, #d66b32 0%, #c64f1d 100%);
+  color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 20px 38px rgba(196, 98, 45, 0.32);
 }

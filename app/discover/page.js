@@ -14,10 +14,10 @@ import {
 import styles from './page.module.css';
 
 const quickActions = [
-  [Store, 'Sell at an event'],
-  [CalendarDays, 'Attend local pop-ups'],
-  [Users, 'Host a pop-up'],
-  [MapPin, 'List a venue'],
+  [Store, 'Sell at an event', '/vendors'],
+  [CalendarDays, 'Attend local pop-ups', '/upcoming'],
+  [Users, 'Host a pop-up', '/hosts'],
+  [MapPin, 'List a venue', '/venues'],
 ];
 
 const popularPaths = [
@@ -77,8 +77,10 @@ export default function DiscoverPage() {
                 Whether you want to sell, attend, host, or list a space, PopUpCo connects you with the people, places, and opportunities that bring pop-ups to life.
               </p>
               <div className={styles.heroChips}>
-                {quickActions.map(([Icon, text]) => (
-                  <span key={text}><Icon size={16} /> {text}</span>
+                {quickActions.map(([Icon, text, href]) => (
+                  <Link href={href} key={text} className={styles.chipButton}>
+                    <Icon size={16} /> <span>{text}</span>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -89,14 +91,14 @@ export default function DiscoverPage() {
               </div>
               <div className={styles.visualRows}>
                 {popularPaths.map(([Icon, title, copy, href]) => (
-                  <div className={styles.visualRow} key={title}>
+                  <Link href={href} className={styles.visualRow} key={title}>
                     <span className={styles.rowIcon}><Icon size={25} /></span>
                     <span className={styles.rowText}>
                       <strong>{title}</strong>
                       <span>{copy}</span>
                     </span>
                     <ChevronRight className={styles.rowArrow} size={24} />
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
