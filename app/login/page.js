@@ -2,26 +2,37 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/components/AuthContext';
+import { supabase } from '@/lib/supabase';
 import styles from './page.module.css';
-
-const roles = [
-  ['vendor', 'Vendor'],
-  ['venue', 'Venue'],
-  ['host', 'Host'],
-  ['attendee', 'Attendee'],
-];
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useAuth();
   const [email, setEmail] = useState('');
-  const [type, setType] = useState('vendor');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    login(type, { email, name: email.split('@')[0] });
-    router.push(type === 'attendee' ? '/upcoming' : `/dashboard/${type}`);
+    setError('');
+    setLoading(true);
+
+    if (!supabase) {
+      setError('Auth is not configured.');
+      setLoading(false);
+      return;
+    }
+
+    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (authError) {
+      setError(authError.message);
+      setLoading(false);
+      return;
+    }
+
+    const role = data.user?.user_metadata?.role || 'vendor';
+    router.push(role === 'attendee' ? '/upcoming' : `/dashboard/${role}`);
   };
 
   return (
@@ -29,33 +40,37 @@ export default function LoginPage() {
       <Link href="/" className={styles.backHome}>PopUpCo</Link>
       <div className={styles.authContainer}>
         <h1 className={styles.title}>Welcome back</h1>
-        <p className="text-muted mb-6">Account login is in beta. You can use this demo login, or go directly to the marketplace flows below.</p>
+        <p className="text-muted mb-6">Sign in to your PopUpCo account.</p>
         <form onSubmit={handleLogin} className={styles.form}>
           <div className="form-group">
-            <label className="form-label">Account type</label>
-            <div className={styles.segmented}>
-              {roles.map(([value, label]) => (
-                <button key={value} type="button" className={type === value ? styles.segmentActive : ''} onClick={() => setType(value)}>
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="form-group">
             <label className="form-label">Email</label>
-            <input type="email" className="form-input" placeholder="hello@brand.com" value={email} onChange={(event) => setEmail(event.target.value)} required />
+            <input
+              type="email"
+              className="form-input"
+              placeholder="hello@brand.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
-
           <div className="form-group">
             <label className="form-label">Password</label>
-            <input type="password" className="form-input" placeholder="Password" required />
+            <input
+              type="password"
+              className="form-input"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
             <div className={styles.textRight}>
               <Link href="/contact?subject=Forgot%20password" className={styles.forgot}>Forgot password?</Link>
             </div>
           </div>
-
-          <button type="submit" className="btn btn--primary btn--full mt-4">Log in</button>
+          {error && <p style={{ color: 'var(--color-error, #e53e3e)', fontSize: '0.875rem' }}>{error}</p>}
+          <button type="submit" className="btn btn--primary btn--full mt-4" disabled={loading}>
+            {loading ? 'Signing in…' : 'Log in'}
+          </button>
         </form>
         <div className={styles.onboardingPreview} style={{ marginTop: '20px' }}>
           <Link href="/apply/vendor">Apply as vendor</Link>

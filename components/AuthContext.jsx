@@ -1,50 +1,48 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
 
 const AuthContext = createContext();
+
+function mapUser(supabaseUser) {
+  if (!supabaseUser) return null;
+  return {
+    id: supabaseUser.id,
+    email: supabaseUser.email,
+    name: supabaseUser.user_metadata?.name || supabaseUser.email?.split('@')[0] || 'User',
+    type: supabaseUser.user_metadata?.role || 'vendor',
+  };
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check localStorage for simulated auth state
-    const storedUser = localStorage.getItem('popupco_user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        console.error('Failed to parse user from local storage');
-      }
+    if (!supabase) {
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(mapUser(session?.user ?? null));
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(mapUser(session?.user ?? null));
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const login = (type, userData = {}) => {
-    const defaults = {
-      vendor: 'Jane Vendor',
-      venue: 'John Venue',
-      host: 'Taylor Host',
-      attendee: 'Alex Explorer',
-    };
-    const newUser = {
-      id: Math.random().toString(36).substring(7),
-      type,
-      name: userData.name || defaults[type] || 'PopUpCo User',
-      email: userData.email || 'user@example.com',
-      ...userData
-    };
-    setUser(newUser);
-    localStorage.setItem('popupco_user', JSON.stringify(newUser));
-  };
-
-  const logout = () => {
+  const logout = async () => {
+    if (supabase) await supabase.auth.signOut();
     setUser(null);
-    localStorage.removeItem('popupco_user');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -2,20 +2,20 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/components/AuthContext';
+import { supabase } from '@/lib/supabase';
 import styles from '../login/page.module.css';
 
 const roles = [
   ['vendor', "I'm a vendor", 'Find pop-up opportunities, apply to markets, save spaces, and manage applications.'],
-  ['venue', 'I have an empty venue', 'List a space, receive requests, and bring vendors or events into your location.'],
+  ['venue', 'I have a venue', 'List a space, receive requests, and bring vendors or events into your location.'],
   ['host', "I'm a host", 'Create pop-up events, recruit vendors, manage applications, and find venues.'],
   ['attendee', "I'm exploring events", 'Discover local pop-ups, markets, food events, and community experiences.'],
 ];
 
 const roleStartPaths = {
-  vendor: '/apply/vendor',
-  venue: '/apply/venue',
-  host: '/apply/host',
+  vendor: '/dashboard/vendor',
+  venue: '/dashboard/venue',
+  host: '/dashboard/host',
   attendee: '/upcoming',
 };
 
@@ -28,17 +28,39 @@ const onboarding = {
 
 export default function SignupPage() {
   const router = useRouter();
-  const { login } = useAuth();
   const [step, setStep] = useState(1);
   const [type, setType] = useState('vendor');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const fields = useMemo(() => onboarding[type] || onboarding.vendor, [type]);
 
-  const handleSignup = (event) => {
+  const handleSignup = async (event) => {
     event.preventDefault();
-    login(type, { email, name });
+    setError('');
+    setLoading(true);
+
+    if (!supabase) {
+      setError('Auth is not configured.');
+      setLoading(false);
+      return;
+    }
+
+    const { error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { name, role: type } },
+    });
+
+    if (authError) {
+      setError(authError.message);
+      setLoading(false);
+      return;
+    }
+
     router.push(roleStartPaths[type] || '/discover');
   };
 
@@ -66,25 +88,30 @@ export default function SignupPage() {
           </>
         ) : (
           <>
-            <h1 className={styles.title}>Build your {type} account</h1>
-            <p className="text-muted mb-6">We will ask for these details as your profile grows.</p>
+            <h1 className={styles.title}>Create your account</h1>
+            <p className="text-muted mb-6">We will ask for more details as your profile grows.</p>
             <div className={styles.onboardingPreview}>
               {fields.map((field) => <span key={field}>{field}</span>)}
             </div>
             <form onSubmit={handleSignup} className={styles.form}>
               <div className="form-group">
-                <label className="form-label">{type === 'vendor' ? 'Business name' : type === 'venue' ? 'Space or venue name' : type === 'host' ? 'Organization name' : 'Name'}</label>
-                <input className="form-input" required value={name} onChange={(event) => setName(event.target.value)} />
+                <label className="form-label">
+                  {type === 'vendor' ? 'Business name' : type === 'venue' ? 'Space or venue name' : type === 'host' ? 'Organization name' : 'Name'}
+                </label>
+                <input className="form-input" required value={name} onChange={(e) => setName(e.target.value)} />
               </div>
               <div className="form-group">
                 <label className="form-label">Email</label>
-                <input type="email" className="form-input" required value={email} onChange={(event) => setEmail(event.target.value)} />
+                <input type="email" className="form-input" required value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="form-group">
                 <label className="form-label">Password</label>
-                <input type="password" className="form-input" required />
+                <input type="password" className="form-input" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
-              <button type="submit" className="btn btn--primary btn--full mt-4">Create account</button>
+              {error && <p style={{ color: 'var(--color-error, #e53e3e)', fontSize: '0.875rem' }}>{error}</p>}
+              <button type="submit" className="btn btn--primary btn--full mt-4" disabled={loading}>
+                {loading ? 'Creating account…' : 'Create account'}
+              </button>
               <button type="button" onClick={() => setStep(1)} className="btn btn--ghost btn--full mt-2">Back</button>
             </form>
           </>
