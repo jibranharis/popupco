@@ -39,7 +39,7 @@
   display: flex;
   min-height: 620px;
   align-items: center;
-  padding: 112px 0 44px;
+  padding: 48px 0 96px;
 }
 
 .heroGrid {
@@ -232,7 +232,7 @@
 .pathSection {
   position: relative;
   z-index: 1;
-  padding: var(--sp-12, 48px) 0 var(--sp-24, 96px);
+  padding: 112px 0 var(--sp-16, 64px);
 }
 
 .sectionIntro {

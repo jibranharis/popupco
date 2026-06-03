@@ -68,6 +68,18 @@ export default function DiscoverPage() {
     <>
       <Header />
       <main className={styles.main}>
+        <section className={styles.pathSection}>
+          <div className="container">
+            <div className={styles.sectionIntro}>
+              <span className="label">CHOOSE YOUR PATH</span>
+              <h2>Start with what you need.</h2>
+              <p className={styles.introSub}>Four ways in. Endless possibilities to grow, connect, and create.</p>
+            </div>
+          </div>
+          
+          <DiscoverPathsCarousel />
+        </section>
+
         <section className={styles.hero}>
           <div className={`container ${styles.heroGrid}`}>
             <div className={styles.heroCopy}>
@@ -101,18 +113,6 @@ export default function DiscoverPage() {
               </div>
             </div>
           </div>
-        </section>
-
-        <section className={styles.pathSection}>
-          <div className="container">
-            <div className={styles.sectionIntro}>
-              <span className="label">CHOOSE YOUR PATH</span>
-              <h2>Start with what you need.</h2>
-              <p className={styles.introSub}>Four ways in. Endless possibilities to grow, connect, and create.</p>
-            </div>
-          </div>
-          
-          <DiscoverPathsCarousel />
         </section>
       </main>
       <Footer />
