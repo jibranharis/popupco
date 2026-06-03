@@ -14,7 +14,10 @@ import {
   TrendingUp,
   CheckCircle,
   Building2,
-  HeartHandshake
+  HeartHandshake,
+  Sparkles,
+  Sprout,
+  Target
 } from 'lucide-react';
 import styles from './DiscoverPathsCarousel.module.css';
 
@@ -25,15 +28,32 @@ const paths = [
     tabLabel: 'I want to sell at an event',
     eyebrow: 'VENDORS',
     heading: 'I want to sell at an event',
-    body: 'Browse vendor markets, booth opportunities, food pop-ups, and spaces currently accepting vendor interest. Find events that fit your products, audience, and goals.',
+    body: 'Browse vendor markets, booth opportunities, food pop-ups, and spaces currently accepting vendor interest.',
     cta: 'Browse vendor opportunities',
     href: '/vendors',
     image: '/images/path-vendor.png',
     benefits: [
       { icon: Users, label: 'Reach new customers' },
-      { icon: CalendarDays, label: 'Flexible events and spaces' },
+      { icon: CalendarDays, label: 'Flexible events' },
       { icon: TrendingUp, label: 'Grow your brand' },
-      { icon: CheckCircle, label: 'Track and build your impact' }
+      { icon: CheckCircle, label: 'Track your impact' }
+    ],
+    whyWorks: [
+      {
+        icon: TrendingUp,
+        title: 'Real exposure, real sales',
+        copy: 'Get in front of curated, ready-to-buy audiences at local events.'
+      },
+      {
+        icon: CalendarDays,
+        title: 'Your schedule, your terms',
+        copy: 'Choose events that fit your calendar, product type, and growth goals.'
+      },
+      {
+        icon: Sparkles,
+        title: 'Built to help vendors grow',
+        copy: 'Simple tools to apply, track, and build a strong event presence.'
+      }
     ]
   },
   {
@@ -44,13 +64,30 @@ const paths = [
     heading: 'I want to attend local pop-ups',
     body: 'Find public markets, food events, brand pop-ups, and community experiences near you.',
     cta: 'View upcoming events',
-    href: '/discover',
+    href: '/upcoming',
     image: '/images/path-attendee.png',
     benefits: [
-      { icon: MapPin, label: 'Discover what’s nearby' },
+      { icon: MapPin, label: 'Discover nearby events' },
       { icon: Store, label: 'Explore local brands' },
-      { icon: HeartHandshake, label: 'Enjoy unique experiences' },
-      { icon: Users, label: 'Support your community' }
+      { icon: HeartHandshake, label: 'Unique experiences' },
+      { icon: Users, label: 'Support community' }
+    ],
+    whyWorks: [
+      {
+        icon: MapPin,
+        title: 'Hyper-local discovery',
+        copy: 'Find events happening in your neighborhood, not just your city.'
+      },
+      {
+        icon: Store,
+        title: 'Shop independent brands',
+        copy: 'Discover makers, chefs, and creators you won\'t find anywhere else.'
+      },
+      {
+        icon: HeartHandshake,
+        title: 'Community-first experiences',
+        copy: 'Every event is built around real people and real local culture.'
+      }
     ]
   },
   {
@@ -64,10 +101,27 @@ const paths = [
     href: '/hosts',
     image: '/images/path-host.png',
     benefits: [
-      { icon: Building2, label: 'Build your event vision' },
-      { icon: Users, label: 'Recruit the right vendors' },
-      { icon: CheckCircle, label: 'Manage details clearly' },
-      { icon: HeartHandshake, label: 'Create community impact' }
+      { icon: Building2, label: 'Build your vision' },
+      { icon: Users, label: 'Recruit vendors' },
+      { icon: CheckCircle, label: 'Manage clearly' },
+      { icon: HeartHandshake, label: 'Community impact' }
+    ],
+    whyWorks: [
+      {
+        icon: Building2,
+        title: 'From idea to event day',
+        copy: 'Guided tools to plan, recruit, and run your pop-up with confidence.'
+      },
+      {
+        icon: Users,
+        title: 'The right vendors, fast',
+        copy: 'Browse and connect with vendors who fit your event theme and audience.'
+      },
+      {
+        icon: Sparkles,
+        title: 'Make a lasting impression',
+        copy: 'Host events that build your brand and bring your community together.'
+      }
     ]
   },
   {
@@ -81,10 +135,27 @@ const paths = [
     href: '/venues',
     image: '/images/path-venue.png',
     benefits: [
-      { icon: Store, label: 'Fill unused space' },
-      { icon: Users, label: 'Attract the right events' },
-      { icon: CheckCircle, label: 'Set your rules clearly' },
-      { icon: HeartHandshake, label: 'Build local partnerships' }
+      { icon: Sprout, label: 'Fill unused space' },
+      { icon: Target, label: 'Attract right audience' },
+      { icon: CheckCircle, label: 'Set your own terms' },
+      { icon: HeartHandshake, label: 'Build local connections' }
+    ],
+    whyWorks: [
+      {
+        icon: Sprout,
+        title: 'Turn idle space into real opportunity',
+        copy: 'Earn income and support local creators — on your terms.'
+      },
+      {
+        icon: Users,
+        title: 'Bring the right people to you',
+        copy: 'Connect with curated vendors, hosts, and engaged communities.'
+      },
+      {
+        icon: Sparkles,
+        title: 'Designed for easy, impactful hosting',
+        copy: 'Simple tools and guidance from listing to pop-up day.'
+      }
     ]
   }
 ];
@@ -98,9 +169,11 @@ export default function DiscoverPathsCarousel() {
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((current) => (current + 1) % paths.length);
-    }, 6000); // 6 seconds
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
+
+  const activePath = paths[activeIndex];
 
   return (
     <div className={styles.carouselWrapper}>
@@ -117,10 +190,10 @@ export default function DiscoverPathsCarousel() {
                   className={`${styles.tab} ${isActive ? styles.activeTab : ''}`}
                   onClick={() => setActiveIndex(index)}
                 >
-                  <Icon size={16} className={styles.tabIcon} />
+                  <Icon size={15} className={styles.tabIcon} />
                   <span>{path.tabLabel}</span>
                 </button>
-              )
+              );
             })}
           </div>
         </div>
@@ -134,7 +207,6 @@ export default function DiscoverPathsCarousel() {
               else if (index === (activeIndex === 0 ? paths.length - 1 : activeIndex - 1)) positionClass = styles.prevSlide;
               else positionClass = styles.hiddenSlide;
 
-              // Only render slides that are visible or adjacent to save DOM weight
               if (positionClass === styles.hiddenSlide) return null;
 
               return (
@@ -148,10 +220,9 @@ export default function DiscoverPathsCarousel() {
                      <p>{path.body}</p>
                      
                      <Link href={path.href} className={styles.ctaButton} onClick={(e) => {
-                        // Prevent navigation if clicking on a background slide preview
                         if (positionClass !== styles.activeSlide) e.preventDefault();
                      }}>
-                       {path.cta} <ArrowRight size={18} />
+                       {path.cta} <ArrowRight size={16} />
                      </Link>
 
                      <div className={styles.benefitsArea}>
@@ -162,17 +233,17 @@ export default function DiscoverPathsCarousel() {
                            return (
                              <div key={i} className={styles.benefitItem}>
                                <span className={styles.benefitIconWrap}>
-                                 <BIcon size={18} />
+                                 <BIcon size={15} />
                                </span>
                                <span className={styles.benefitText}>{benefit.label}</span>
                              </div>
-                           )
+                           );
                          })}
                        </div>
                      </div>
                    </div>
                    <div className={styles.imagePanel}>
-                     <Image src={path.image} alt={path.heading} fill className={styles.slideImage} sizes="(max-width: 1024px) 100vw, 600px" />
+                     <Image src={path.image} alt={path.heading} fill className={styles.slideImage} sizes="(max-width: 1024px) 100vw, 560px" />
                    </div>
                 </div>
               );
@@ -181,7 +252,7 @@ export default function DiscoverPathsCarousel() {
 
         {/* Controls */}
         <div className={styles.controls}>
-           <button onClick={prev} className={styles.arrowBtn} aria-label="Previous path"><ChevronLeft size={24} /></button>
+           <button onClick={prev} className={styles.arrowBtn} aria-label="Previous path"><ChevronLeft size={20} /></button>
            <div className={styles.dots}>
              {paths.map((_, i) => (
                <button 
@@ -192,8 +263,32 @@ export default function DiscoverPathsCarousel() {
                />
              ))}
            </div>
-           <button onClick={next} className={styles.arrowBtn} aria-label="Next path"><ChevronRight size={24} /></button>
+           <button onClick={next} className={styles.arrowBtn} aria-label="Next path"><ChevronRight size={20} /></button>
          </div>
+      </div>
+
+      {/* Why This Path Works — connected below the carousel */}
+      <div className={styles.whySection}>
+        <div className={styles.whyCard}>
+          <p className={styles.whyTitle}>Why this path works</p>
+          <div className={styles.whyColumns}>
+            {activePath.whyWorks.map((item, i) => {
+              const WIcon = item.icon;
+              return (
+                <div key={i} className={styles.whyCol}>
+                  {i > 0 && <div className={styles.whyDivider} />}
+                  <div className={styles.whyColInner}>
+                    <span className={styles.whyIconWrap}><WIcon size={18} /></span>
+                    <div>
+                      <strong className={styles.whyColTitle}>{item.title}</strong>
+                      <p className={styles.whyColCopy}>{item.copy}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

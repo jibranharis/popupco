@@ -1,107 +1,130 @@
+/* ─────────────────────────────────────────────
+   Outer Wrapper
+   ───────────────────────────────────────────── */
 .carouselWrapper {
   width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   padding: 0 24px;
+  gap: 0;
 }
 
+/* ─────────────────────────────────────────────
+   Main Framed Container
+   ───────────────────────────────────────────── */
 .mainContainer {
   width: 100%;
-  max-width: 1320px;
-  background: #ffffff;
-  border: 1px solid rgba(229, 216, 202, 0.6);
-  border-radius: 40px;
-  box-shadow: 0 24px 64px rgba(40, 30, 20, 0.06);
-  padding: 48px 0;
+  max-width: 1200px;
+  background: #fdfaf5; /* warm ivory — blends into page */
+  border: 1px solid rgba(214, 186, 159, 0.45);
+  border-radius: 32px;
+  box-shadow: 0 12px 40px rgba(40, 30, 20, 0.055);
+  padding: 36px 0 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden; /* ensure side slides don't leak out of the container bounds entirely */
+  overflow: hidden;
   position: relative;
 }
 
-/* Tabs */
+/* ─────────────────────────────────────────────
+   Tabs
+   ───────────────────────────────────────────── */
 .tabScrollWrapper {
   width: 100%;
   overflow-x: auto;
-  scrollbar-width: none; /* Firefox */
-  padding: 0 48px;
-  margin-bottom: 48px;
+  scrollbar-width: none;
+  padding: 0 40px;
+  margin-bottom: 28px;
 }
 
 .tabScrollWrapper::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
 }
 
 .tabRow {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 10px;
   min-width: max-content;
 }
 
 .tab {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 28px;
-  background: #fdfbf7;
-  border: 1px solid rgba(229, 216, 202, 0.8);
+  gap: 8px;
+  padding: 10px 22px;
+  background: transparent;
+  border: 1px solid rgba(214, 186, 159, 0.5);
   border-radius: 100px;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #4f4a45;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b6158;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.22s ease;
 }
 
 .tabIcon {
   color: #ba572b;
+  opacity: 0.7;
+  transition: opacity 0.22s ease;
 }
 
 .tab:hover {
-  background: #fcf6ef;
-  border-color: #d6ba9f;
-  transform: translateY(-2px);
+  background: #fdf3ea;
+  border-color: #c47d55;
+  color: #ba572b;
+}
+
+.tab:hover .tabIcon {
+  opacity: 1;
 }
 
 .activeTab {
   background: #fff5ec;
   border-color: #ba572b;
+  border-width: 1.5px;
   color: #ba572b;
-  box-shadow: 0 8px 16px rgba(186, 87, 43, 0.1);
+  font-weight: 600;
 }
+
+.activeTab .tabIcon {
+  opacity: 1;
+}
+
 .activeTab:hover {
   transform: none;
 }
 
-/* Carousel Track */
+/* ─────────────────────────────────────────────
+   Carousel Track
+   ───────────────────────────────────────────── */
 .trackContainer {
   position: relative;
   width: 100%;
-  height: 560px; /* height of the featured panel */
+  height: 420px; /* Reduced from 560px — more compact */
   display: flex;
   justify-content: center;
   align-items: center;
-  perspective: 1500px;
+  perspective: 1400px;
 }
 
 .slide {
   position: absolute;
   width: 100%;
-  max-width: 1060px; /* width of the featured panel */
+  max-width: 980px;
   height: 100%;
   display: flex;
-  border-radius: 32px;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 20px 48px rgba(40, 30, 20, 0.08);
-  background: #fcf9f2;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 12px 36px rgba(40, 30, 20, 0.09);
+  background: #fefcf8;
+  transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.55s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: transform, opacity;
-  cursor: pointer; /* if it's a side slide */
+  cursor: pointer;
 }
 
-/* Active slide is straight and front */
 .activeSlide {
   z-index: 3;
   transform: translateX(0) scale(1) rotateY(0deg);
@@ -109,106 +132,110 @@
   cursor: default;
 }
 
-/* Left slide: peek in from the left */
 .prevSlide {
   z-index: 2;
-  /* Shift far left so it peeks in, scale down slightly, tilt inward */
-  transform: translateX(-1080px) scale(0.9) rotateY(15deg);
-  opacity: 0.4;
+  transform: translateX(-1020px) scale(0.88) rotateY(14deg);
+  opacity: 0.38;
 }
 
-/* Right slide: peek in from the right */
 .nextSlide {
   z-index: 2;
-  transform: translateX(1080px) scale(0.9) rotateY(-15deg);
-  opacity: 0.4;
+  transform: translateX(1020px) scale(0.88) rotateY(-14deg);
+  opacity: 0.38;
 }
 
-.prevSlide:hover, .nextSlide:hover {
-  opacity: 0.7;
+.prevSlide:hover,
+.nextSlide:hover {
+  opacity: 0.62;
 }
 
 .hiddenSlide {
   display: none;
 }
 
-/* Content Panel */
+/* ─────────────────────────────────────────────
+   Content Panel (left side of slide)
+   ───────────────────────────────────────────── */
 .contentPanel {
-  flex: 1;
-  padding: 56px;
+  flex: 0 0 420px;
+  padding: 36px 40px 28px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  background: #fcf9f2;
+  background: #fefcf8;
 }
 
 .eyebrow {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: #ba572b;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .contentPanel h3 {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 2.75rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #22211f;
-  margin-bottom: 20px;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
 }
 
 .contentPanel p {
-  font-size: 1.125rem;
-  color: #4f4a45;
-  line-height: 1.6;
-  margin-bottom: 40px;
-  max-width: 440px;
+  font-size: 0.9375rem;
+  color: #5a544e;
+  line-height: 1.58;
+  margin-bottom: 24px;
+  max-width: 360px;
 }
 
 .ctaButton {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   background: #c25e30;
   color: #ffffff;
-  padding: 16px 32px;
+  padding: 12px 26px;
   border-radius: 100px;
   font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.25s ease;
+  font-size: 0.9rem;
+  transition: all 0.22s ease;
   align-self: flex-start;
-  margin-bottom: 48px;
+  margin-bottom: 0;
 }
 
 .ctaButton:hover {
   background: #ba572b;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(194, 94, 48, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(194, 94, 48, 0.22);
 }
 
+/* ─────────────────────────────────────────────
+   Benefits Area — contained inside the slide
+   ───────────────────────────────────────────── */
 .benefitsArea {
   margin-top: auto;
-  border-top: 1px solid rgba(229, 216, 202, 0.8);
-  padding-top: 32px;
+  border-top: 1px solid rgba(214, 186, 159, 0.5);
+  padding-top: 18px;
 }
 
 .benefitsLabel {
   display: block;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #22211f;
-  margin-bottom: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
 .benefitsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 8px;
 }
 
 .benefitItem {
@@ -216,58 +243,64 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 12px;
+  gap: 7px;
 }
 
 .benefitIconWrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: #fff5ec;
+  background: #fdeee3;
   color: #ba572b;
+  flex-shrink: 0;
 }
 
 .benefitText {
-  font-size: 0.8125rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  color: #4f4a45;
-  line-height: 1.4;
+  color: #5a544e;
+  line-height: 1.35;
 }
 
-/* Image Panel */
+/* ─────────────────────────────────────────────
+   Image Panel (right side of slide)
+   ───────────────────────────────────────────── */
 .imagePanel {
-  flex: 1.1;
+  flex: 1;
   position: relative;
-  background: #eae3da;
+  background: #e8ddd4;
+  min-width: 0;
 }
 
 .slideImage {
   object-fit: cover;
 }
 
-/* Controls */
+/* ─────────────────────────────────────────────
+   Controls
+   ───────────────────────────────────────────── */
 .controls {
   display: flex;
   align-items: center;
-  gap: 24px;
-  margin-top: 48px;
+  gap: 20px;
+  margin-top: 24px;
 }
 
 .arrowBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 1.5px solid rgba(229, 216, 202, 0.8);
-  background: #fdfbf7;
+  border: 1px solid rgba(214, 186, 159, 0.7);
+  background: #fdfaf5;
   color: #7a4b30;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.22s ease;
 }
 
 .arrowBtn:hover {
@@ -278,99 +311,164 @@
 
 .dots {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: #e5d8ca;
+  background: #ddd0c2;
   border: none;
   cursor: pointer;
   padding: 0;
-  transition: all 0.3s ease;
+  transition: all 0.28s ease;
 }
 
 .dot:hover {
-  background: #d6ba9f;
+  background: #c4a882;
 }
 
 .activeDot {
   background: #ba572b;
-  transform: scale(1.25);
+  transform: scale(1.3);
 }
 
-/* Responsive Breakpoints */
+/* ─────────────────────────────────────────────
+   Why This Path Works — connected below carousel
+   ───────────────────────────────────────────── */
+.whySection {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0;
+  margin-top: 12px; /* tight gap — connected feel */
+}
+
+.whyCard {
+  background: #fdfaf5;
+  border: 1px solid rgba(214, 186, 159, 0.45);
+  border-top: none; /* merges visually with carousel above */
+  border-radius: 0 0 28px 28px;
+  padding: 28px 40px 32px;
+  box-shadow: 0 8px 28px rgba(40, 30, 20, 0.045);
+}
+
+.whyTitle {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #22211f;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+
+.whyColumns {
+  display: flex;
+  align-items: flex-start;
+}
+
+.whyCol {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  position: relative;
+}
+
+.whyDivider {
+  width: 1px;
+  background: rgba(214, 186, 159, 0.5);
+  align-self: stretch;
+  margin: 0 28px;
+  flex-shrink: 0;
+}
+
+.whyColInner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 1;
+}
+
+.whyIconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fdeee3;
+  color: #ba572b;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.whyColTitle {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  color: #22211f;
+  margin-bottom: 5px;
+  line-height: 1.25;
+}
+
+.whyColCopy {
+  font-size: 0.875rem;
+  color: #5a544e;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────
+   Responsive Breakpoints
+   ───────────────────────────────────────────── */
 @media (max-width: 1280px) {
-  .slide {
-    max-width: 900px;
-  }
-  .prevSlide { transform: translateX(-880px) scale(0.9) rotateY(15deg); }
-  .nextSlide { transform: translateX(880px) scale(0.9) rotateY(-15deg); }
+  .slide { max-width: 880px; }
+  .prevSlide { transform: translateX(-900px) scale(0.88) rotateY(14deg); }
+  .nextSlide { transform: translateX(900px) scale(0.88) rotateY(-14deg); }
+  .contentPanel { flex: 0 0 380px; padding: 32px 36px 24px; }
 }
 
-@media (max-width: 1024px) {
-  .slide {
-    max-width: 840px;
-  }
-  .contentPanel {
-    padding: 40px;
-  }
-  .contentPanel h3 {
-    font-size: 2.25rem;
-  }
-  .benefitsGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px 16px;
-  }
-  .prevSlide, .nextSlide {
-    opacity: 0;
-    pointer-events: none;
-  }
+@media (max-width: 1100px) {
+  .slide { max-width: 800px; }
+  .contentPanel { flex: 0 0 340px; padding: 28px 30px 22px; }
+  .contentPanel h3 { font-size: 1.75rem; }
+  .whyCard { padding: 24px 32px 28px; }
+  .prevSlide, .nextSlide { opacity: 0; pointer-events: none; }
 }
 
 @media (max-width: 840px) {
   .slide {
     flex-direction: column-reverse;
     height: auto;
-    max-width: 600px;
+    max-width: 580px;
   }
   .trackContainer {
     height: auto;
-    padding: 0 24px;
+    padding: 0 20px;
+  }
+  .contentPanel {
+    flex: none;
+    padding: 28px 24px 22px;
   }
   .imagePanel {
-    height: 300px;
+    height: 260px;
     flex: none;
   }
-  .activeSlide {
-    position: relative; /* flow in document */
-  }
-  .tabRow {
-    justify-content: flex-start;
-  }
+  .activeSlide { position: relative; }
+  .tabRow { justify-content: flex-start; }
+  .whyColumns { flex-direction: column; gap: 20px; }
+  .whyDivider { width: 100%; height: 1px; margin: 0; }
+  .whyCol { flex-direction: row; }
+  .benefitsGrid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
-  .mainContainer {
-    border-radius: 24px;
-    padding: 32px 0;
-  }
-  .tabScrollWrapper {
-    padding: 0 24px;
-    margin-bottom: 32px;
-  }
-  .contentPanel {
-    padding: 32px 24px;
-  }
-  .contentPanel h3 {
-    font-size: 1.75rem;
-  }
-  .carouselWrapper {
-    padding: 0 16px;
-  }
-  .imagePanel {
-    height: 240px;
-  }
+  .mainContainer { border-radius: 20px; padding: 28px 0 24px; }
+  .tabScrollWrapper { padding: 0 20px; margin-bottom: 20px; }
+  .contentPanel { padding: 24px 20px 18px; }
+  .contentPanel h3 { font-size: 1.5rem; }
+  .carouselWrapper { padding: 0 16px; }
+  .imagePanel { height: 220px; }
+  .whyCard { padding: 20px 20px 24px; border-radius: 0 0 20px 20px; }
+  .whySection { margin-top: 8px; }
 }
