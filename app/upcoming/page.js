@@ -142,7 +142,7 @@ export default function UpcomingPage() {
                         </div>
 
                         <div className={styles.cardCtas}>
-                          <Link href={`/upcoming/${event.slug}`} className="btn btn--primary btn--sm">
+                          <Link href={`/events/${event.slug}`} className="btn btn--primary btn--sm">
                             View Event
                           </Link>
                           {event.vendorApplicationsOpen && (

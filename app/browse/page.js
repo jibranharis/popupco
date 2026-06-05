@@ -65,8 +65,13 @@ export default function BrowsePage() {
           <div className="container">
             <div className={styles.heroCopy}>
               <span className="label">Vendor opportunities</span>
-              <h1>Vendor Opportunities</h1>
-              <p>Find pop-ups, markets, and local events currently accepting vendor applications.</p>
+              <h1>Find your next pop-up opportunity</h1>
+              <p>Browse markets, booth opportunities, retail spaces, and local events currently accepting vendor applications.</p>
+            </div>
+            <div className={styles.statsCard}>
+              <strong>{SPACES_DATA.length} active opportunities</strong>
+              <span>4 Bay Area cities</span>
+              <span>Applications open now</span>
             </div>
             <div className={styles.searchPanel}>
               <div className={styles.searchBox}>

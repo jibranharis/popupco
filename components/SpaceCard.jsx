@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { CalendarDays, Heart, MapPin, ShieldCheck, Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthContext';
+import GatedLink, { loginHref } from './GatedLink';
 import styles from './SpaceCard.module.css';
 
 export default function SpaceCard({ space }) {
@@ -23,7 +24,7 @@ export default function SpaceCard({ space }) {
 
   const toggleSave = () => {
     if (!user) {
-      router.push('/login');
+      router.push(loginHref(`/spaces/${space.slug}`, 'save'));
       return;
     }
 
@@ -78,7 +79,7 @@ export default function SpaceCard({ space }) {
           <span>{space.category}</span>
           <div className={styles.actionLinks}>
             <Link href={`/spaces/${space.slug}`}>View opportunity</Link>
-            <Link href={`/apply/vendor?event=${space.slug}`}>Apply to sell</Link>
+            <GatedLink href={`/apply/vendor?event=${space.slug}`} intent="apply">Apply to sell</GatedLink>
           </div>
         </div>
       </div>

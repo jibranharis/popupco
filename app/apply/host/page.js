@@ -1,9 +1,12 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { CheckCircle, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/components/AuthContext';
+import { loginHref } from '@/components/GatedLink';
+import { CheckCircle, ChevronRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import styles from '../venue/page.module.css';
 
 const SECTIONS = [
@@ -12,7 +15,8 @@ const SECTIONS = [
   'Venue Status',
   'Date and Timing',
   'Vendors Needed',
-  'Event Support',
+  'Pricing and Logistics',
+  'Promotion Needs',
   'Final Review',
 ];
 
@@ -30,7 +34,8 @@ const SUPPORT_OPTIONS = [
 ];
 
 export default function HostApplicationPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [section, setSection] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -44,8 +49,17 @@ export default function HostApplicationPage() {
     preferred_city: '', venue_preference: '', expected_size: '', date_flexibility: '', budget_range: '',
     preferred_date: '', alternate_dates: '', event_start: '', event_end: '', setup_time: '', breakdown_time: '', flexible_date: '',
     vendor_spots: '', vendor_categories: [], booth_fee_charged: '', booth_fee_amount: '', curated_vendors: '',
+    logistics_notes: '', food_vendors_allowed: '', equipment_available: '',
     support_needed: [], additional_notes: '', consent: false,
   });
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace(loginHref(`${window.location.pathname}${window.location.search}`, 'host'));
+    }
+  }, [loading, router, user]);
+
+  if (loading || !user) return null;
 
   const setField = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
   const toggleArray = (key, value) => {
@@ -113,6 +127,10 @@ export default function HostApplicationPage() {
             <p className={styles.successDesc}>
               Your host request has been submitted. PopUpCo will review your event concept, venue needs, and vendor mix, then follow up with next steps.
             </p>
+            <div className={styles.successActions}>
+              <Link href="/dashboard/applications" className="btn btn--primary">View dashboard</Link>
+              <Link href="/dashboard/profile?role=host" className="btn btn--secondary">Edit host profile</Link>
+            </div>
           </div>
         </main>
         <Footer />
@@ -383,8 +401,33 @@ export default function HostApplicationPage() {
 
             {section === 5 && (
               <div className={styles.fields}>
+                <div className={styles.twoCol}>
+                  <div className="form-group">
+                    <label className="form-label">Booth fee amount or range</label>
+                    <input className="form-input" value={form.booth_fee_amount} onChange={(e) => setField('booth_fee_amount', e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Parking/load-in details</label>
+                    <input className="form-input" value={form.logistics_notes} onChange={(e) => setField('logistics_notes', e.target.value)} />
+                  </div>
+                </div>
+                <div className={styles.twoCol}>
+                  <div className="form-group">
+                    <label className="form-label">Food vendors allowed?</label>
+                    <input className="form-input" value={form.food_vendors_allowed} onChange={(e) => setField('food_vendors_allowed', e.target.value)} placeholder="Yes, no, or permit-dependent" />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Electricity / tables / chairs</label>
+                    <input className="form-input" value={form.equipment_available} onChange={(e) => setField('equipment_available', e.target.value)} />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {section === 6 && (
+              <div className={styles.fields}>
                 <div className="form-group">
-                  <label className="form-label">Event support needed</label>
+                  <label className="form-label">Promotion and event support needed</label>
                   <div className="checkbox-grid">
                     {SUPPORT_OPTIONS.map((support) => (
                       <label key={support} className="checkbox-item">
@@ -401,7 +444,7 @@ export default function HostApplicationPage() {
               </div>
             )}
 
-            {section === 6 && (
+            {section === 7 && (
               <div className={styles.fields}>
                 <div className="notice notice--info">
                   Review your event request, then submit it for PopUpCo follow-up. You can still edit details after we contact you.

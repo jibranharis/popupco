@@ -4,8 +4,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg);
-  padding: var(--sp-4);
+  background:
+    radial-gradient(circle at 85% 12%, rgba(207, 96, 43, 0.12), transparent 34%),
+    radial-gradient(circle at 8% 88%, rgba(231, 196, 154, 0.18), transparent 30%),
+    var(--color-bg);
+  padding: 112px var(--sp-4) 56px;
 }
 
 .backHome {
@@ -14,39 +17,49 @@
   left: 40px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.125rem;
 }
 
-.logoMark {
-  color: var(--color-accent);
-  font-size: 1.25rem;
+.backHome img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
 }
 
 .authContainer {
-  background: #fff;
-  border: 1px solid var(--color-border);
+  background: rgba(255, 251, 245, 0.9);
+  border: 1px solid rgba(203, 174, 145, 0.58);
   border-radius: var(--radius-2xl);
   padding: var(--sp-10);
   width: 100%;
   max-width: 440px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 24px 70px rgba(80, 55, 35, 0.12);
+  backdrop-filter: blur(10px);
 }
 
 .signupWide {
-  max-width: 720px;
+  max-width: 780px;
 }
 
 .title {
-  font-size: 1.75rem;
+  font-size: clamp(1.9rem, 3vw, 2.35rem);
   margin-bottom: var(--sp-2);
+  letter-spacing: -0.035em;
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  margin-bottom: var(--sp-6);
 }
 
 .form {
   display: flex;
   flex-direction: column;
+  gap: var(--sp-4);
 }
 
 .forgot {
@@ -57,6 +70,24 @@
 
 .forgot:hover {
   text-decoration: underline;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.intentNotice {
+  padding: 12px 14px;
+  margin-bottom: var(--sp-5);
+  border: 1px solid rgba(196, 98, 45, 0.24);
+  border-radius: var(--radius-md);
+  background: rgba(196, 98, 45, 0.08);
+  color: #7a3d20;
+  font-size: 0.92rem;
+  font-weight: 700;
 }
 
 .divider {
@@ -86,7 +117,7 @@
 }
 
 .footer {
-  margin-top: var(--sp-8);
+  margin-top: var(--sp-6);
   text-align: center;
   font-size: 0.9375rem;
   color: var(--color-text-muted);
@@ -121,7 +152,28 @@
 }
 
 .typeCard input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.typeCard p {
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
   margin-top: 4px;
+}
+
+.typeIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: rgba(196, 98, 45, 0.1);
+  color: var(--color-accent);
+  flex: 0 0 auto;
 }
 
 .roleCards {
@@ -175,6 +227,78 @@
   text-align: right;
 }
 
+.quickSection {
+  width: min(720px, calc(100% - 32px));
+  margin-top: var(--sp-6);
+  text-align: center;
+}
+
+.quickSection h2 {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--sp-3);
+}
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.quickCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 10px;
+  border: 1px solid rgba(203, 174, 145, 0.62);
+  border-radius: var(--radius-full);
+  background: rgba(255, 251, 245, 0.76);
+  color: var(--color-text);
+  font-size: 0.86rem;
+  font-weight: 800;
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--ease-fast), border-color var(--ease-fast), color var(--ease-fast);
+}
+
+.quickCard svg {
+  color: var(--color-accent);
+}
+
+.quickCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(196, 98, 45, 0.44);
+  color: var(--color-accent);
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-4);
+}
+
+.termsRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.termsRow input {
+  margin-top: 3px;
+  accent-color: var(--color-accent);
+}
+
+.termsRow a {
+  color: var(--color-text);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 @media (max-width: 640px) {
   .backHome {
     top: 24px;
@@ -185,8 +309,15 @@
   }
 
   .roleCards,
-  .segmented {
+  .segmented,
+  .quickGrid,
+  .twoCol {
     grid-template-columns: 1fr;
     border-radius: var(--radius-lg);
+  }
+
+  .authLayout {
+    align-items: stretch;
+    padding-top: 96px;
   }
 }

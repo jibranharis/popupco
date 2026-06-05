@@ -5,8 +5,17 @@
 }
 
 .hero {
-  padding: 128px 0 var(--sp-10);
-  background: linear-gradient(180deg, #fff 0%, var(--color-bg) 100%);
+  padding: 132px 0 var(--sp-10);
+  background:
+    radial-gradient(circle at 86% 18%, rgba(196, 98, 45, 0.12), transparent 30%),
+    linear-gradient(180deg, #fff8ef 0%, var(--color-bg) 100%);
+}
+
+.hero :global(.container) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  gap: var(--sp-8);
+  align-items: end;
 }
 
 .heroCopy {
@@ -24,6 +33,27 @@
   margin-top: var(--sp-4);
   color: var(--color-text-muted);
   font-size: 1.13rem;
+  line-height: 1.55;
+}
+
+.statsCard {
+  display: grid;
+  gap: 8px;
+  padding: var(--sp-5);
+  border: 1px solid rgba(203, 174, 145, 0.58);
+  border-radius: var(--radius-xl);
+  background: rgba(255, 251, 245, 0.86);
+  box-shadow: var(--shadow-sm);
+}
+
+.statsCard strong {
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+.statsCard span {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
 }
 
 .searchPanel {
@@ -37,7 +67,7 @@
   padding: var(--sp-3);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  background: rgba(255,255,255,0.92);
+  background: rgba(255, 251, 245, 0.94);
   box-shadow: var(--shadow-md);
   backdrop-filter: blur(10px);
 }
@@ -94,8 +124,8 @@
 }
 
 .tabs .active {
-  background: var(--color-charcoal);
-  border-color: var(--color-charcoal);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
   color: #fff;
 }
 
@@ -105,6 +135,7 @@
   gap: var(--sp-2);
   padding-bottom: var(--sp-8);
   border-bottom: 1px solid var(--color-border);
+  opacity: 0.88;
 }
 
 .filterRail button {
@@ -139,7 +170,8 @@
   padding: var(--sp-10);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  background: #fff;
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-xs);
 }
 
 .emptyState p {
@@ -154,6 +186,10 @@
   .searchPanel {
     grid-template-columns: 1fr;
     position: static;
+  }
+
+  .hero :global(.container) {
+    grid-template-columns: 1fr;
   }
 
   .filterToggle {

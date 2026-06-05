@@ -6,6 +6,7 @@ import { notFound, useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SpaceCard from '@/components/SpaceCard';
+import GatedLink, { loginHref } from '@/components/GatedLink';
 import { getOpportunityBySlug, SPACES_DATA } from '@/lib/spaces';
 import { useAuth } from '@/components/AuthContext';
 import {
@@ -38,7 +39,7 @@ export default function SpaceDetailPage({ params }) {
 
   const toggleSave = () => {
     if (!user) {
-      router.push('/login');
+      router.push(loginHref(`/spaces/${space.slug}`, 'save'));
       return;
     }
     const saved = JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]');
@@ -162,12 +163,12 @@ export default function SpaceDetailPage({ params }) {
                 </div>
                 <div className={styles.bookingFact}><Clock size={16} /> Deadline: {space.deadline}</div>
                 <div className={styles.bookingFact}><ShieldCheck size={16} /> {space.trust}</div>
-                <Link href={`/apply/vendor?event=${space.slug}`} className="btn btn--primary btn--full">
+                <GatedLink href={`/apply/vendor?event=${space.slug}`} intent="apply" className="btn btn--primary btn--full">
                   {space.cta === 'Apply' ? 'Apply to sell' : 'Request this opportunity'}
-                </Link>
-                <Link href={`/contact?subject=${encodeURIComponent(space.name)}`} className="btn btn--secondary btn--full">
+                </GatedLink>
+                <GatedLink href={`/contact?subject=${encodeURIComponent(space.name)}`} intent="message" className="btn btn--secondary btn--full">
                   <MessageSquare size={16} /> Message host
-                </Link>
+                </GatedLink>
                 <p>You will see fees, rules, and requirements before making a paid commitment.</p>
               </div>
             </aside>

@@ -42,7 +42,7 @@ export default function Header() {
   }, [menuOpen]);
 
   const nav = user ? roleNav[user.type] || roleNav.vendor : publicNav;
-  const dashboardHref = user ? `/dashboard/${user.type}` : '/signup';
+  const dashboardHref = user ? '/dashboard' : '/signup';
   const isActiveNav = (href) => {
     if (href === '/discover') return pathname === '/discover' || pathname === '/browse' || pathname.startsWith('/upcoming');
     return pathname === href;
@@ -83,7 +83,7 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link href={`${dashboardHref}#messages`} className={styles.messageBtn} aria-label="Messages">
+              <Link href="/dashboard/messages" className={styles.messageBtn} aria-label="Messages">
                 <Mail size={18} />
                 <span>1</span>
               </Link>
@@ -99,7 +99,11 @@ export default function Header() {
                     </div>
                     <div className={styles.dropdownLinks}>
                       <Link href={dashboardHref} onClick={() => setProfileOpen(false)}>Dashboard</Link>
-                      <Link href={`${dashboardHref}#profile`} onClick={() => setProfileOpen(false)}>Profile</Link>
+                      <Link href="/dashboard/profile" onClick={() => setProfileOpen(false)}>Profile</Link>
+                      <Link href="/dashboard/applications" onClick={() => setProfileOpen(false)}>Applications</Link>
+                      <Link href="/dashboard/saved" onClick={() => setProfileOpen(false)}>Saved</Link>
+                      <Link href="/dashboard/messages" onClick={() => setProfileOpen(false)}>Messages</Link>
+                      <Link href="/dashboard/settings" onClick={() => setProfileOpen(false)}>Settings</Link>
                       <button onClick={() => { logout(); setProfileOpen(false); }}>Log out</button>
                     </div>
                   </div>
@@ -133,7 +137,7 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link href={`${dashboardHref}#messages`} className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Messages (1)</Link>
+              <Link href="/dashboard/messages" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Messages (1)</Link>
               <Link href={dashboardHref} className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Dashboard</Link>
               <button className={styles.mobileNavLink} onClick={() => { logout(); setMenuOpen(false); }}>Log out</button>
             </>

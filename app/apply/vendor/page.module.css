@@ -242,6 +242,14 @@
   margin-top: var(--space-lg);
 }
 
+.successActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
 @media (max-width: 768px) {
   .twoCol {
     grid-template-columns: 1fr;

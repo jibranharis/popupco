@@ -1,9 +1,12 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { ChevronRight, CheckCircle } from 'lucide-react';
 import { useAuth } from '@/components/AuthContext';
+import { loginHref } from '@/components/GatedLink';
+import { ChevronRight, CheckCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 
 const SECTIONS = [
@@ -65,7 +68,8 @@ const PRICING_MODELS = [
 ];
 
 export default function VenueApplicationPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [section, setSection] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -84,6 +88,14 @@ export default function VenueApplicationPage() {
     additional_notes: '',
     consent: false,
   });
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace(loginHref(`${window.location.pathname}${window.location.search}`, 'venue'));
+    }
+  }, [loading, router, user]);
+
+  if (loading || !user) return null;
 
   function scrollTop() {
     topRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -124,11 +136,16 @@ export default function VenueApplicationPage() {
     }
     setSubmitting(true);
     setError('');
+    const payload = { ...form, user_id: user?.id || null, submittedAt: new Date().toISOString() };
     try {
+      if (typeof window !== 'undefined') {
+        const stored = JSON.parse(localStorage.getItem('popupco_venue_submissions') || '[]');
+        localStorage.setItem('popupco_venue_submissions', JSON.stringify([...stored, payload]));
+      }
       const res = await fetch('/api/apply/venue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, user_id: user?.id || null }),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (data.success) {
@@ -155,6 +172,10 @@ export default function VenueApplicationPage() {
             <p className={styles.successDesc}>
               Thanks for submitting your space. We'll review location, capacity, amenities, availability, and event fit. We'll be in touch if it matches an upcoming pop-up concept.
             </p>
+            <div className={styles.successActions}>
+              <Link href="/dashboard" className="btn btn--primary">View dashboard</Link>
+              <Link href="/dashboard/profile?role=venue" className="btn btn--secondary">Edit venue profile</Link>
+            </div>
           </div>
         </main>
         <Footer />

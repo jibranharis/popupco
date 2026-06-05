@@ -9,6 +9,13 @@ export default function sitemap() {
     '/discover',
     '/browse',
     '/upcoming',
+    '/forgot-password',
+    '/dashboard',
+    '/dashboard/profile',
+    '/dashboard/applications',
+    '/dashboard/saved',
+    '/dashboard/messages',
+    '/dashboard/settings',
     '/vendors',
     '/venues',
     '/hosts',
@@ -27,7 +34,7 @@ export default function sitemap() {
   ];
 
   const opportunityRoutes = SPACES_DATA.map((space) => `/spaces/${space.slug}`);
-  const eventRoutes = PLACEHOLDER_EVENTS.map((event) => `/upcoming/${event.slug}`);
+  const eventRoutes = PLACEHOLDER_EVENTS.flatMap((event) => [`/upcoming/${event.slug}`, `/events/${event.slug}`]);
 
   return [...staticRoutes, ...opportunityRoutes, ...eventRoutes].map((route) => ({
     url: `${baseUrl}${route}`,

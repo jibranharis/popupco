@@ -1,11 +1,14 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { useAuth } from '@/components/AuthContext';
+import { loginHref } from '@/components/GatedLink';
 import { PLACEHOLDER_EVENTS, getPublicEventBySlug } from '@/lib/data';
 import { SPACES_DATA, getOpportunityBySlug } from '@/lib/spaces';
 import { ChevronRight, CheckCircle } from 'lucide-react';
-import { useAuth } from '@/components/AuthContext';
+import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 
 const SECTIONS = [
@@ -167,11 +170,16 @@ function VendorApplicationForm() {
     }
     setSubmitting(true);
     setError('');
+    const payload = { ...form, user_id: user?.id || null, submittedAt: new Date().toISOString() };
     try {
+      if (typeof window !== 'undefined') {
+        const stored = JSON.parse(localStorage.getItem('popupco_vendor_applications') || '[]');
+        localStorage.setItem('popupco_vendor_applications', JSON.stringify([...stored, payload]));
+      }
       const res = await fetch('/api/apply/vendor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, user_id: user?.id || null }),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (data.success) {
@@ -201,6 +209,11 @@ function VendorApplicationForm() {
             <p className={styles.successDisclaimer}>
               Submitting an application does not guarantee acceptance.
             </p>
+            <div className={styles.successActions}>
+              <Link href="/dashboard/applications" className="btn btn--primary">View dashboard</Link>
+              <Link href="/browse" className="btn btn--secondary">Browse more opportunities</Link>
+              <Link href="/dashboard/profile" className="btn btn--secondary">Edit vendor profile</Link>
+            </div>
           </div>
         </main>
         <Footer />
@@ -743,5 +756,16 @@ function VendorApplicationForm() {
 }
 
 export default function VendorApplicationPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace(loginHref(`${window.location.pathname}${window.location.search}`, 'apply'));
+    }
+  }, [loading, router, user]);
+
+  if (loading || !user) return null;
+
   return <VendorApplicationForm />;
 }

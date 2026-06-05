@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import GatedLink from '@/components/GatedLink';
 import { PLACEHOLDER_EVENTS, getPublicEventBySlug } from '@/lib/data';
 import { MapPin, Calendar, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation';
@@ -193,18 +194,18 @@ export default async function EventDetailPage({ params }) {
                 </>
               )}
 
-              <Link href="/contact" className={`btn btn--secondary ${styles.applyBtn}`}>
+              <GatedLink href={`/events/${event.slug}`} intent="save" className={`btn btn--secondary ${styles.applyBtn}`}>
                 Save / share event
-              </Link>
+              </GatedLink>
 
               {event.vendorApplicationsOpen ? (
-                <Link href={vendorHref} className={`btn btn--primary ${styles.applyBtn}`}>
+                <GatedLink href={vendorHref} intent="apply" className={`btn btn--primary ${styles.applyBtn}`}>
                   Apply to sell at this event
-                </Link>
+                </GatedLink>
               ) : event.status === 'venue_needed' ? (
-                <Link href="/apply/venue" className={`btn btn--primary ${styles.applyBtn}`}>
+                <GatedLink href="/apply/venue" intent="venue" className={`btn btn--primary ${styles.applyBtn}`}>
                   Offer a venue
-                </Link>
+                </GatedLink>
               ) : (
                 <div className={styles.comingSoonNote}>
                   Vendor applications are not open yet. <Link href="/contact" className={styles.notifyLink}>Ask about this event</Link>
