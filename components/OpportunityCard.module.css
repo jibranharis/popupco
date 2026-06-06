@@ -205,6 +205,12 @@
   margin-left: 16px;
 }
 
+.floatCardLeft {
+  right: 100%;
+  margin-right: 16px;
+  transform: translate(-20px, -50%);
+}
+
 .floatCardTopLeft {
   right: 100%;
   margin-right: 16px;

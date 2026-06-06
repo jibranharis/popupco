@@ -21,7 +21,7 @@ const rowData = [
     label: 'Booth fee',
     value: '$125',
     Icon: Store,
-    popupSide: 'right',
+    popupSide: 'left',
     popupStyle: 'float',
     popup: {
       headline: 'Accurate booth fees, shown upfront.',
@@ -60,7 +60,7 @@ const rowData = [
     label: 'Setup window',
     value: '8:00–9:30 AM',
     Icon: Clock3,
-    popupSide: 'right',
+    popupSide: 'left',
     popupStyle: 'float',
     popup: {
       headline: 'Plan arrival with confidence.',
@@ -73,7 +73,7 @@ const rowData = [
     label: 'Food permits',
     value: 'Required for prepared food',
     Icon: Utensils,
-    popupSide: 'right',
+    popupSide: 'left',
     popupStyle: 'float',
     popup: {
       headline: 'Know permit requirements in advance.',
@@ -218,7 +218,11 @@ function FloatCard({ popup, side, rowIndex, visible }) {
       className={[
         styles.floatCard,
         visible ? styles.floatCardVisible : '',
-        side === 'top-left' ? styles.floatCardTopLeft : styles.floatCardRight,
+        side === 'top-left'
+          ? styles.floatCardTopLeft
+          : side === 'left'
+            ? styles.floatCardLeft
+            : styles.floatCardRight,
       ].join(' ')}
       style={{ '--row-i': rowIndex }}
       aria-hidden={!visible}
