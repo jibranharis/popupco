@@ -153,17 +153,17 @@
 }
 
 .searchPanelContainer {
-  background: rgba(248, 244, 237, 0.4);
-  backdrop-filter: blur(24px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(245, 240, 232, 0.68);
+  backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.32);
   border-radius: 20px;
-  padding: 16px 20px;
+  padding: 24px;
   box-shadow: 
-    0 24px 64px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 24px 70px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
   width: 90vw;
   max-width: 1000px;
   margin: 0 auto;
@@ -178,9 +178,9 @@
 .searchTab {
   padding: 10px 22px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.32);
-  color: #3c332d;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.15);
+  color: #4a4540;
   font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
@@ -188,23 +188,23 @@
 }
 
 .searchTab:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .searchTabActive {
-  background: rgba(255, 255, 255, 0.72);
-  border-color: rgba(198, 88, 39, 0.25);
+  background: rgba(255, 252, 247, 0.95);
+  border-color: rgba(198, 88, 39, 0.20);
   color: #c85f2c;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
 .searchBar {
   display: flex;
   align-items: stretch;
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 252, 247, 0.90);
+  border: 1px solid rgba(60, 45, 35, 0.10);
   border-radius: 14px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 16px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 6px 20px rgba(0,0,0,0.06);
   min-height: 72px;
   padding: 6px;
 }
@@ -237,18 +237,18 @@
 }
 
 .fieldLabel {
-  font-size: 0.6rem;
-  font-weight: 800;
+  font-size: 0.65rem;
+  font-weight: 700;
   letter-spacing: 0.1em;
-  color: #26221e;
+  color: #4a4540;
   text-transform: uppercase;
   margin-bottom: 2px;
 }
 
 .fieldValue {
   font-size: 0.95rem;
-  font-weight: 500;
-  color: #7b7167;
+  font-weight: 600;
+  color: #26221e;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -256,7 +256,7 @@
 
 .searchDivider {
   width: 1px;
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(60, 45, 35, 0.10);
   margin: 12px 0;
   flex-shrink: 0;
 }
