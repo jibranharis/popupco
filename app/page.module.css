@@ -57,7 +57,7 @@
   display: flex;
   align-items: flex-start;
   flex: 1;
-  padding-top: max(120px, 18vh);
+  padding-top: max(100px, 14vh);
 }
 
 /* Left copy block */
@@ -145,7 +145,7 @@
 ───────────────────────────────────────────────── */
 .heroPanel {
   position: absolute;
-  bottom: 64px;
+  bottom: 120px;
   left: 0;
   right: 0;
   z-index: 10;

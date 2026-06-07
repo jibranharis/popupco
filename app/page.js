@@ -222,12 +222,6 @@ export default function HomePage() {
                   The Bay Area&apos;s most trusted marketplace for pop-up<br className={styles.heroSubBr} />
                   spaces, vendors, and events.
                 </p>
-                <div className={styles.heroCtas}>
-                  <Link href="#how-it-works" className={styles.ctaSecondary}>
-                    <PlayCircle size={18} />
-                    How it works
-                  </Link>
-                </div>
               </div>
             </div>
 
