@@ -65,11 +65,9 @@
 }
 
 .heroHeadline {
-  color: #ffffff;
-  font-family: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
-  font-size: clamp(2.8rem, 4.5vw, 4.5rem);
+  font-size: 4rem;
   font-weight: 500;
-  line-height: 1.02;
+  line-height: 1.15;
   letter-spacing: -0.02em;
   margin-bottom: 32px;
   text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
@@ -229,6 +227,10 @@
   border-radius: 8px;
 }
 
+.searchFieldTypable {
+  cursor: text;
+}
+
 .searchField:hover {
   background: rgba(255, 255, 255, 0.6);
   border-radius: 10px;
@@ -261,6 +263,24 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.fieldInput {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #5f564f;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  outline: none;
+  font-family: inherit;
+}
+
+.fieldInput::placeholder {
+  color: #9c928a;
+  opacity: 0.8;
 }
 
 .fieldChevron {

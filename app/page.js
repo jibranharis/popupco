@@ -303,28 +303,42 @@ export default function HomePage() {
                   {currentConfig.fields.map((field, idx) => (
                     <div key={field.id} className={styles.searchFieldGroup}>
                       <div className={styles.searchFieldWrapper}>
-                        <div className={styles.searchField} onClick={() => setActiveDropdown(activeDropdown === field.id ? null : field.id)}>
+                        <div 
+                          className={`${styles.searchField} ${field.id !== 'location' ? styles.searchFieldTypable : ''}`}
+                          onClick={() => { if (field.id === 'location') setActiveDropdown(activeDropdown === field.id ? null : field.id); }}
+                        >
                           <field.icon size={18} className={styles.fieldIcon} />
                           <div className={styles.fieldContent}>
                             <span className={styles.fieldLabel}>{field.label}</span>
-                            <span className={styles.fieldValue}>{field.value}</span>
+                            {field.id === 'location' ? (
+                              <span className={styles.fieldValue}>{field.value}</span>
+                            ) : (
+                              <input 
+                                type="text"
+                                className={styles.fieldInput}
+                                value={field.value}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  if (field.id === 'category') setCategory(val);
+                                  else if (field.id === 'date') setDate(val);
+                                  else if (field.id === 'budget') setBudget(val);
+                                  else if (field.id === 'spaceType') setSpaceType(val);
+                                  else if (field.id === 'size') setSize(val);
+                                  else if (field.id === 'duration') setDuration(val);
+                                  else if (field.id === 'eventType') setEventType(val);
+                                  else if (field.id === 'attendance') setAttendance(val);
+                                  else if (field.id === 'fee') setFee(val);
+                                }}
+                              />
+                            )}
                           </div>
-                          <ChevronDown size={16} className={styles.fieldChevron} />
+                          {field.id === 'location' && <ChevronDown size={16} className={styles.fieldChevron} />}
                         </div>
-                        {activeDropdown === field.id && (
+                        {activeDropdown === field.id && field.id === 'location' && (
                           <div className={styles.dropdownMenu}>
                             {field.options.map(opt => (
                               <button key={opt} onClick={() => { 
-                                if (field.id === 'location') setLocation(opt);
-                                else if (field.id === 'category') setCategory(opt);
-                                else if (field.id === 'date') setDate(opt);
-                                else if (field.id === 'budget') setBudget(opt);
-                                else if (field.id === 'spaceType') setSpaceType(opt);
-                                else if (field.id === 'size') setSize(opt);
-                                else if (field.id === 'duration') setDuration(opt);
-                                else if (field.id === 'eventType') setEventType(opt);
-                                else if (field.id === 'attendance') setAttendance(opt);
-                                else if (field.id === 'fee') setFee(opt);
+                                setLocation(opt);
                                 setActiveDropdown(null); 
                               }}>
                                 {opt}
