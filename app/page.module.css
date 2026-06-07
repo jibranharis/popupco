@@ -20,7 +20,7 @@
   position: sticky;
   top: 0;
   height: 100vh;
-  min-height: 640px;
+  min-height: 840px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -44,8 +44,9 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(18, 16, 14, 0.65) 0%, rgba(18, 16, 14, 0.4) 40%, transparent 100%),
-    linear-gradient(0deg, rgba(18, 16, 14, 0.25) 0%, transparent 30%);
+    linear-gradient(90deg, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, transparent 20%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, transparent 30%);
   z-index: 1;
 }
 
@@ -56,8 +57,8 @@
   display: flex;
   align-items: center;
   flex: 1;
-  padding-top: 96px;
-  padding-bottom: 40px;
+  padding-top: 110px;
+  padding-bottom: 240px;
 }
 
 /* Left copy block */
@@ -70,7 +71,7 @@
 .heroHeadline {
   color: #ffffff;
   font-family: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
-  font-size: clamp(3.5rem, 6.5vw, 5.5rem);
+  font-size: clamp(3rem, 5vw, 5rem);
   font-weight: 500;
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -146,7 +147,7 @@
 ───────────────────────────────────────────────── */
 .heroPanel {
   position: absolute;
-  bottom: 40px;
+  bottom: 64px;
   left: 0;
   right: 0;
   z-index: 10;
@@ -163,6 +164,9 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 86vw;
+  max-width: 1360px;
+  margin: 0 auto;
 }
 
 .searchBar {
@@ -276,9 +280,9 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(200, 95, 44, 0.15);
-  color: #c85f2c;
+  background: #fdfaf7;
+  border: none;
+  color: #5f564f;
   flex-shrink: 0;
 }
 
