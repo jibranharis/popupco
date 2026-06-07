@@ -43,10 +43,10 @@
 .heroOverlay {
   position: absolute;
   inset: 0;
-  z-index: 1;
   background:
-    linear-gradient(105deg, rgba(10,8,6,0.72) 0%, rgba(10,8,6,0.38) 50%, rgba(10,8,6,0.18) 100%),
-    linear-gradient(180deg, rgba(10,8,6,0.3) 0%, transparent 40%, rgba(10,8,6,0.45) 100%);
+    linear-gradient(90deg, rgba(18, 16, 14, 0.65) 0%, rgba(18, 16, 14, 0.4) 40%, transparent 100%),
+    linear-gradient(0deg, rgba(18, 16, 14, 0.25) 0%, transparent 30%);
+  z-index: 1;
 }
 
 /* Inner layout */
@@ -62,26 +62,29 @@
 
 /* Left copy block */
 .heroCopy {
-  max-width: 600px;
+  position: relative;
+  max-width: 580px;
+  margin-top: -60px;
 }
 
 .heroHeadline {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: clamp(3rem, 5.5vw, 5rem);
-  font-weight: 700;
-  line-height: 1.08;
+  color: #ffffff;
+  font-family: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(3.5rem, 6.5vw, 5.5rem);
+  font-weight: 500;
+  line-height: 1.05;
   letter-spacing: -0.02em;
-  color: #fff;
-  margin-bottom: 20px;
-  text-shadow: 0 2px 24px rgba(0,0,0,0.3);
+  margin-bottom: var(--sp-4);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
 .heroSub {
-  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
-  color: rgba(255,255,255,0.8);
-  line-height: 1.65;
-  margin-bottom: 32px;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.5;
   font-weight: 400;
+  margin-bottom: var(--sp-6);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
 .heroSubBr {
@@ -120,23 +123,21 @@
 .ctaSecondary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 13px 22px;
-  border-radius: 10px;
-  border: 1.5px solid rgba(255,255,255,0.4);
-  background: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.9);
-  font-size: 0.9375rem;
-  font-weight: 600;
-  backdrop-filter: blur(6px);
-  transition: border-color 200ms ease, background 200ms ease, transform 200ms ease;
-  white-space: nowrap;
+  gap: 10px;
+  padding: 16px 28px;
+  border-radius: 12px;
+  background: rgba(18, 16, 14, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+  transition: background 200ms ease, border-color 200ms ease;
 }
 
 .ctaSecondary:hover {
-  border-color: rgba(255,255,255,0.75);
-  background: rgba(255,255,255,0.14);
-  transform: translateY(-2px);
+  background: rgba(18, 16, 14, 0.55);
+  border-color: rgba(255, 255, 255, 0.5);
   color: #fff;
 }
 
@@ -144,17 +145,32 @@
    FLOATING SEARCH + TRUST PANEL
 ───────────────────────────────────────────────── */
 .heroPanel {
-  position: relative;
-  z-index: 3;
-  padding: 0 0 28px;
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 0 var(--sp-4);
+}
+
+.searchPanelContainer {
+  background: rgba(245, 243, 240, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  padding: 24px 32px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .searchBar {
   display: flex;
   align-items: center;
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   min-height: 72px;
 }
@@ -242,51 +258,46 @@
 .trustRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 20px 10px;
-  border-top: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
-  border-radius: 0 0 16px 16px;
-  backdrop-filter: blur(8px);
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 16px;
 }
 
 .trustItem {
-  flex: 1;
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-width: 0;
+  gap: 16px;
 }
 
 .trustIcon {
-  display: inline-flex;
-  width: 32px;
-  height: 32px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgba(200,95,44,0.12);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(200, 95, 44, 0.15);
   color: #c85f2c;
   flex-shrink: 0;
 }
 
+.trustItem div {
+  display: flex;
+  flex-direction: column;
+}
+
 .trustItem strong {
-  display: block;
-  font-size: 0.8rem;
+  color: #26221e;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: rgba(255,255,255,0.92);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 2px;
 }
 
 .trustItem span {
-  display: block;
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.55);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #6f665f;
+  font-size: 0.8rem;
+  font-weight: 400;
 }
 
 /* ─── Responsive hero ──────────────────────────── */

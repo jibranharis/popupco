@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Mail, Menu, User, X } from 'lucide-react';
+import { ChevronDown, Mail, Menu, User, X } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import styles from './Header.module.css';
 
@@ -11,6 +11,7 @@ const publicNav = [
   { label: 'For Vendors', href: '/vendors' },
   { label: 'For Venues', href: '/venues' },
   { label: 'For Hosts', href: '/hosts' },
+  { label: 'Resources', href: '#', hasDropdown: true },
 ];
 
 export default function Header() {
@@ -64,11 +65,12 @@ export default function Header() {
         <nav className={styles.navCenter} aria-label="Primary">
           {nav.map((link) => (
             <Link
-              key={link.href}
+              key={link.label}
               href={link.href}
               className={`${styles.navLink} ${isActiveNav(link.href) ? styles.activeNavLink : ''}`}
             >
               {link.label}
+              {link.hasDropdown && <ChevronDown size={14} style={{ marginLeft: '4px', display: 'inline-block', verticalAlign: 'middle' }} />}
             </Link>
           ))}
         </nav>

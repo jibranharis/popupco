@@ -200,8 +200,8 @@ export default function HomePage() {
           <section className={styles.hero}>
             {/* Full-bleed background image */}
             <Image
-              src="/hero-market.png"
-              alt="Busy outdoor pop-up market with white tents, vendors, and crowds"
+              src="/images/hero-market-cinematic.jpg"
+              alt="Warm sunny pop-up market with string lights and white vendor tents"
               fill
               priority
               className={styles.heroBg}
@@ -236,7 +236,7 @@ export default function HomePage() {
 
             {/* ── Floating search + trust panel ── */}
             <div className={styles.heroPanel}>
-              <div className="container">
+              <div className={`container ${styles.searchPanelContainer}`}>
                 <div className={styles.searchBar}>
                   <div className={styles.searchField}>
                     <MapPin size={15} className={styles.fieldIcon} />
