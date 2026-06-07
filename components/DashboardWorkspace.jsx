@@ -132,14 +132,77 @@ function Overview({ user, savedSpaces, submissionCount }) {
   );
 }
 
+const profileFieldConfig = {
+  vendor: [
+    { label: 'Business name', key: 'business_name' },
+    { label: 'Vendor category', key: 'category' },
+    { label: 'Business description', key: 'bio', multiline: true },
+    { label: 'Website / Instagram', key: 'website' },
+    { label: 'City', key: 'city' },
+    { label: 'Setup needs', key: 'setup_needs' },
+    { label: 'Food permit status', key: 'food_permit' },
+  ],
+  venue: [
+    { label: 'Venue name', key: 'venue_name' },
+    { label: 'Space type', key: 'space_type' },
+    { label: 'Address / city', key: 'address' },
+    { label: 'Capacity', key: 'capacity' },
+    { label: 'Amenities', key: 'amenities' },
+    { label: 'Rules', key: 'rules', multiline: true },
+    { label: 'Availability', key: 'availability' },
+    { label: 'Pricing', key: 'pricing' },
+  ],
+  host: [
+    { label: 'Organization name', key: 'org_name' },
+    { label: 'Event types hosted', key: 'event_types' },
+    { label: 'Typical vendor count', key: 'vendor_count' },
+    { label: 'Preferred cities', key: 'preferred_cities' },
+    { label: 'Promotion channels', key: 'promo_channels' },
+    { label: 'Past events', key: 'past_events', multiline: true },
+    { label: 'Contact info', key: 'contact_info' },
+  ],
+  attendee: [
+    { label: 'Name', key: 'display_name' },
+    { label: 'Home city', key: 'city' },
+    { label: 'Event interests', key: 'interests' },
+    { label: 'Weekend availability', key: 'availability' },
+  ],
+};
+
 function Profile({ user }) {
   const role = user.type || 'vendor';
-  const profileFields = {
-    vendor: ['Business name', 'Vendor category', 'Business description', 'Website / Instagram', 'City', 'Setup needs', 'Food permit status', 'Product photos'],
-    venue: ['Venue name', 'Space type', 'Address / city', 'Capacity', 'Amenities', 'Rules', 'Availability', 'Pricing'],
-    host: ['Organization name', 'Event types hosted', 'Typical vendor count', 'Preferred cities', 'Promotion channels', 'Past events', 'Contact info'],
-    attendee: ['Name', 'Email', 'Home city', 'Event interests', 'Saved event preferences', 'Weekend availability'],
-  }[role];
+  const fieldConfig = profileFieldConfig[role] || [];
+  const [fields, setFields] = useState({});
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState('');
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user: authUser } }) => {
+      const meta = authUser?.user_metadata || {};
+      const initial = {};
+      fieldConfig.forEach(({ key }) => { initial[key] = meta[key] || ''; });
+      setFields(initial);
+      setProfileLoading(false);
+    });
+  }, []);
+
+  const handleChange = (key, value) => setFields((prev) => ({ ...prev, [key]: value }));
+
+  const handleSave = async (event) => {
+    event.preventDefault();
+    setSaving(true);
+    setSaved(false);
+    setSaveError('');
+    const { error } = await supabase.auth.updateUser({ data: fields });
+    setSaving(false);
+    if (error) { setSaveError(error.message); return; }
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
+  };
+
+  const displayName = fields.business_name || fields.venue_name || fields.org_name || fields.display_name || user.name || 'Your profile';
 
   return (
     <section className={styles.profileGrid}>
@@ -148,23 +211,46 @@ function Profile({ user }) {
           <h1>Profile</h1>
           <p>Help hosts, venues, and vendors understand who you are before reviewing applications or requests.</p>
         </div>
-        <div className={styles.fieldGrid}>
-          {profileFields.map((field) => (
-            <label key={field} className={styles.fakeField}>
-              <span>{field}</span>
-              <input placeholder={`Add ${field.toLowerCase()}`} />
-            </label>
-          ))}
-        </div>
+        {profileLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <form onSubmit={handleSave} className={styles.fieldGrid}>
+            {fieldConfig.map(({ label, key, multiline }) => (
+              <label key={key} className={styles.fakeField}>
+                <span>{label}</span>
+                {multiline ? (
+                  <textarea
+                    placeholder={`Add ${label.toLowerCase()}`}
+                    value={fields[key] || ''}
+                    onChange={(e) => handleChange(key, e.target.value)}
+                    rows={3}
+                  />
+                ) : (
+                  <input
+                    placeholder={`Add ${label.toLowerCase()}`}
+                    value={fields[key] || ''}
+                    onChange={(e) => handleChange(key, e.target.value)}
+                  />
+                )}
+              </label>
+            ))}
+            {saveError && <p className="form-error">{saveError}</p>}
+            {saved && <p style={{ color: 'var(--color-sage)', fontSize: '0.875rem' }}>Profile saved.</p>}
+            <button type="submit" className="btn btn--primary" disabled={saving} style={{ marginTop: 'var(--sp-4)' }}>
+              {saving ? 'Saving...' : 'Save profile'}
+            </button>
+          </form>
+        )}
       </div>
       <aside className={styles.previewCard}>
         <span>Profile preview</span>
-        <h2>{user.name || 'Your profile'}</h2>
+        <h2>{displayName}</h2>
         <p>{roleCopy[role]}</p>
         <div className={styles.previewTags}>
           <span>{role}</span>
-          <span>Bay Area</span>
-          <span>70% complete</span>
+          {(fields.city || fields.preferred_cities || fields.address) && (
+            <span>{fields.city || fields.preferred_cities || fields.address}</span>
+          )}
         </div>
       </aside>
     </section>
