@@ -16,8 +16,7 @@
 ───────────────────────────────────────────────── */
 .hero {
   position: relative;
-  min-height: 640px;
-  height: 72vh;
+  min-height: max(760px, 85vh);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -54,8 +53,8 @@
   display: flex;
   align-items: flex-start;
   flex: 1;
-  padding-top: 16vh;
-  padding-bottom: 240px;
+  padding-top: max(12vh, 120px);
+  padding-bottom: 260px;
 }
 
 /* Left copy block */
