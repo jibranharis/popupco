@@ -376,10 +376,13 @@ export default function HomePage() {
                 <div className={styles.searchBar}>
                   {currentConfig.fields.map((field, idx) => (
                     <div key={field.id} className={styles.searchFieldGroup}>
-                      <div className={styles.searchFieldWrapper}>
+                      <div 
+                        className={styles.searchFieldWrapper}
+                        onMouseEnter={() => { if (field.id === 'location' || field.id === 'date') setActiveDropdown(field.id); }}
+                        onMouseLeave={() => { if (field.id === 'location' || field.id === 'date') setActiveDropdown(null); }}
+                      >
                         <div 
                           className={`${styles.searchField} ${field.id !== 'location' && field.id !== 'date' ? styles.searchFieldTypable : ''}`}
-                          onClick={() => { if (field.id === 'location' || field.id === 'date') setActiveDropdown(activeDropdown === field.id ? null : field.id); }}
                         >
                           <field.icon size={18} className={styles.fieldIcon} />
                           <div className={styles.fieldContent}>
@@ -421,7 +424,7 @@ export default function HomePage() {
                           </div>
                         )}
                         {activeDropdown === field.id && field.id === 'date' && (
-                          <div className={styles.dropdownMenu}>
+                          <div className={`${styles.dropdownMenu} ${styles.dropdownMenuCalendar}`}>
                             <CalendarPicker 
                               selectedDates={selectedDates} 
                               setSelectedDates={setSelectedDates} 
