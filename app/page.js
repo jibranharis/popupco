@@ -10,90 +10,68 @@ import {
   ArrowRight,
   Building2,
   CalendarDays,
+  CheckCircle,
+  ChevronDown,
   Clock3,
+  Coins,
+  DollarSign,
+  Flag,
+  LayoutGrid,
+  MapPin,
+  Paintbrush,
+  PlayCircle,
   RefreshCw,
   Search,
   ShieldCheck,
   Store,
   Utensils,
   Users,
+  Zap,
 } from 'lucide-react';
 import styles from './page.module.css';
 
-const searchModes = [
-  {
-    id: 'sell',
-    label: 'Find a place to sell',
-    button: 'Find Opportunities',
-    href: '/browse',
-    fields: [
-      ['Where', 'Where do you want to sell?'],
-      ['Category', 'What do you sell?'],
-      ['When', 'Any weekend'],
-      ['Budget', '$75-$250'],
-    ],
-  },
-  {
-    id: 'space',
-    label: 'List your space',
-    button: 'List Your Space',
-    href: '/apply/venue',
-    fields: [
-      ['Location', 'Where is your space?'],
-      ['Type', 'Space type'],
-      ['Capacity', 'Capacity'],
-      ['Availability', 'Availability'],
-    ],
-  },
-  {
-    id: 'host',
-    label: 'Host a pop-up',
-    button: 'Start Hosting',
-    href: '/apply/host',
-    fields: [
-      ['Location', 'Where are you hosting?'],
-      ['Event', 'Event type'],
-      ['Vendors', 'Vendor categories'],
-      ['Date', 'Date'],
-    ],
-  },
-];
+/* ─── Static data ─────────────────────────────────────── */
 
 const moments = [
   {
     title: 'Sell at a local market',
     copy: 'Find weekend markets, vendor fairs, and community events where your products can meet real local customers.',
     cta: 'Find markets',
-    href: '/browse?type=vendor-markets',
+    href: '/vendors?type=vendor-markets',
     image: '/hero-market.png',
+    icon: Store,
   },
   {
     title: 'Launch a product in person',
     copy: 'Test a new product with real shoppers before committing to a storefront, lease, or long-term retail plan.',
     cta: 'Find launch spaces',
-    href: '/browse?type=retail-spaces',
+    href: '/vendors?type=retail-spaces',
     image: '/images/media__1779838728727.jpg',
+    icon: Zap,
   },
   {
     title: 'Sell art or handmade goods',
     copy: 'Discover art markets, maker fairs, gallery nights, and local events built for creative sellers.',
     cta: 'Find creative markets',
-    href: '/browse?category=artists-makers',
+    href: '/vendors?category=artists-makers',
     image: '/cat-jewelry.png',
+    icon: Paintbrush,
   },
   {
     title: 'Find food pop-up space',
     copy: 'Find markets, halls, patios, and event spaces that welcome food vendors, tastings, and small food concepts.',
     cta: 'Find food spaces',
-    href: '/browse?category=food',
+    href: '/vendors?category=food',
     image: '/cat-food.png',
+    icon: Utensils,
   },
   {
     title: 'Book a community space',
     copy: 'Reserve halls, courtyards, storefronts, and local venues for pop-ups, workshops, and community events.',
     cta: 'Browse spaces',
-    href: '/browse?type=event-venues',
+    href: '/vendors?type=event-venues',
     image: '/images/media__1779838851661.jpg',
+    icon: Users,
   },
   {
     title: 'Host a vendor market',
@@ -101,6 +79,7 @@ const moments = [
     cta: 'Start hosting',
     href: '/apply/host',
     image: '/event-1.png',
+    icon: Building2,
   },
   {
     title: 'List your venue',
@@ -108,6 +87,7 @@ const moments = [
     cta: 'List your space',
     href: '/apply/venue',
     image: '/images/media__1779840173203.jpg',
+    icon: MapPin,
   },
 ];
 
@@ -116,7 +96,7 @@ const roles = [
     title: "I'm a vendor",
     copy: 'Find markets, booths, spaces, and pop-up opportunities that match what you sell.',
     cta: 'Find opportunities',
-    href: '/browse',
+    href: '/vendors',
     icon: Store,
   },
   {
@@ -171,6 +151,15 @@ const opportunityRows = [
   ['Cancellation', 'Refundable up to 7 days before', RefreshCw],
 ];
 
+const trustProps = [
+  { icon: Flag,         title: 'Bay Area first',     sub: 'Local insights, local opportunities' },
+  { icon: CheckCircle,  title: 'Curated venues',     sub: 'Quality spaces, handpicked' },
+  { icon: Users,        title: 'Real hosts',          sub: 'Verified, responsive, and ready' },
+  { icon: Coins,        title: 'Flexible budgets',   sub: 'Options for every size and stage' },
+];
+
+/* ─── Observer hook ───────────────────────────────────── */
+
 function useFadeInObserver(ref) {
   useEffect(() => {
     if (!ref.current) return undefined;
@@ -185,9 +174,10 @@ function useFadeInObserver(ref) {
   }, [ref]);
 }
 
+/* ─── Page ────────────────────────────────────────────── */
+
 export default function HomePage() {
   const pageRef = useRef(null);
-  const [activeMode, setActiveMode] = useState(searchModes[0]);
   const [activeMoment, setActiveMoment] = useState(0);
   useFadeInObserver(pageRef);
 
@@ -204,66 +194,122 @@ export default function HomePage() {
     <>
       <Header />
       <main ref={pageRef} className={styles.page}>
+
+        {/* ── STICKY CINEMATIC HERO ───────────────────── */}
         <div className={styles.introScroll}>
           <section className={styles.hero}>
-            <div className={`container ${styles.heroGrid}`}>
+            {/* Full-bleed background image */}
+            <Image
+              src="/hero-market.png"
+              alt="Busy outdoor pop-up market with white tents, vendors, and crowds"
+              fill
+              priority
+              className={styles.heroBg}
+              sizes="100vw"
+            />
+            {/* Dark overlay gradient */}
+            <div className={styles.heroOverlay} />
+
+            <div className={`container ${styles.heroInner}`}>
+              {/* ── Left hero copy ── */}
               <div className={styles.heroCopy}>
-                <div className={styles.rolePills}>
-                  {['Vendors', 'Venues', 'Hosts', 'Bay Area first'].map((item) => <span key={item}>{item}</span>)}
-                </div>
-                <h1>
-                  <span>Find your next</span>
-                  <span>Pop-Up</span>
-                  <span>Opportunity.</span>
+                <h1 className={styles.heroHeadline}>
+                  Find your next<br />
+                  Pop-Up<br />
+                  Opportunity.
                 </h1>
-              </div>
-
-              <div className={styles.heroMedia}>
-                <Image src="/hero-market.png" alt="Local vendors selling at a warm market" fill priority className={styles.heroImage} />
-                <div className={styles.heroTag}>
-                  <strong>Booth from $50+</strong>
+                <p className={styles.heroSub}>
+                  The Bay Area&apos;s most trusted marketplace for pop-up<br className={styles.heroSubBr} />
+                  spaces, vendors, and events.
+                </p>
+                <div className={styles.heroCtas}>
+                  <Link href="/vendors" className={styles.ctaPrimary}>
+                    Find Opportunities
+                  </Link>
+                  <Link href="#how-it-works" className={styles.ctaSecondary}>
+                    <PlayCircle size={18} />
+                    How it works
+                  </Link>
                 </div>
               </div>
+            </div>
 
-              <div className={styles.searchPanel} aria-label="PopUpCo search">
-                <div className={styles.modeTabs} role="tablist" aria-label="Search intent">
-                  {searchModes.map((mode) => (
-                    <button
-                      key={mode.id}
-                      type="button"
-                      role="tab"
-                      aria-selected={activeMode.id === mode.id}
-                      className={activeMode.id === mode.id ? styles.activeMode : ''}
-                      onClick={() => setActiveMode(mode)}
-                    >
-                      {mode.label}
-                    </button>
+            {/* ── Floating search + trust panel ── */}
+            <div className={styles.heroPanel}>
+              <div className="container">
+                <div className={styles.searchBar}>
+                  <div className={styles.searchField}>
+                    <MapPin size={15} className={styles.fieldIcon} />
+                    <div className={styles.fieldContent}>
+                      <span className={styles.fieldLabel}>LOCATION</span>
+                      <span className={styles.fieldValue}>Bay Area, CA</span>
+                    </div>
+                    <ChevronDown size={14} className={styles.fieldChevron} />
+                  </div>
+                  <div className={styles.searchDivider} />
+                  <div className={styles.searchField}>
+                    <LayoutGrid size={15} className={styles.fieldIcon} />
+                    <div className={styles.fieldContent}>
+                      <span className={styles.fieldLabel}>CATEGORY</span>
+                      <span className={styles.fieldValue}>All categories</span>
+                    </div>
+                    <ChevronDown size={14} className={styles.fieldChevron} />
+                  </div>
+                  <div className={styles.searchDivider} />
+                  <div className={styles.searchField}>
+                    <CalendarDays size={15} className={styles.fieldIcon} />
+                    <div className={styles.fieldContent}>
+                      <span className={styles.fieldLabel}>DATE</span>
+                      <span className={styles.fieldValue}>Any weekend</span>
+                    </div>
+                    <ChevronDown size={14} className={styles.fieldChevron} />
+                  </div>
+                  <div className={styles.searchDivider} />
+                  <div className={styles.searchField}>
+                    <DollarSign size={15} className={styles.fieldIcon} />
+                    <div className={styles.fieldContent}>
+                      <span className={styles.fieldLabel}>BUDGET</span>
+                      <span className={styles.fieldValue}>$75 – $250+</span>
+                    </div>
+                    <ChevronDown size={14} className={styles.fieldChevron} />
+                  </div>
+                  <Link href="/vendors" className={styles.searchBtn}>
+                    <Search size={16} />
+                    Search
+                  </Link>
+                </div>
+
+                {/* Trust props row */}
+                <div className={styles.trustRow}>
+                  {trustProps.map(({ icon: Icon, title, sub }) => (
+                    <div key={title} className={styles.trustItem}>
+                      <span className={styles.trustIcon}><Icon size={16} /></span>
+                      <div>
+                        <strong>{title}</strong>
+                        <span>{sub}</span>
+                      </div>
+                    </div>
                   ))}
                 </div>
-                <form className={styles.searchFields}>
-                  {activeMode.fields.map(([label, placeholder]) => (
-                    <label key={label}>
-                      <span>{label}</span>
-                      <input placeholder={placeholder} />
-                    </label>
-                  ))}
-                  <Link href={activeMode.href}><Search size={18} /> {activeMode.button}</Link>
-                </form>
               </div>
             </div>
           </section>
+        </div>
 
-          <section className={styles.momentsSection}>
-            <div className={`container ${styles.momentsShell}`}>
-              <div className={`fade-in ${styles.sectionIntro}`}>
-                <span className="label">Browse by moment</span>
-                <h2>A Pop-Up For Every Idea.</h2>
-                <p>Explore the different ways vendors, venues, and hosts can bring local commerce to life.</p>
-              </div>
+        {/* ── BROWSE BY MOMENT ───────────────────────── */}
+        <section className={styles.momentsSection}>
+          <div className={`container ${styles.momentsShell}`}>
+            <div className={`fade-in ${styles.sectionIntro}`}>
+              <span className="label">Browse by moment</span>
+              <h2>A Pop-Up For Every Idea.</h2>
+              <p>Explore the different ways vendors, venues, and hosts can bring local commerce to life.</p>
+            </div>
 
-              <div className={styles.momentsGrid}>
-                <div className={`fade-in ${styles.momentTabs}`}>
-                  {moments.map((moment, index) => (
+            <div className={styles.momentsGrid}>
+              <div className={`fade-in ${styles.momentTabs}`}>
+                {moments.map((moment, index) => {
+                  const MomentIcon = moment.icon;
+                  return (
                     <Link
                       key={moment.title}
                       href={moment.href}
@@ -273,46 +319,48 @@ export default function HomePage() {
                       onFocus={() => setActiveMoment(index)}
                       onClick={() => setActiveMoment(index)}
                     >
-                      <span>{String(index + 1).padStart(2, '0')}</span>
+                      <span className={styles.momentNum}>{String(index + 1).padStart(2, '0')}</span>
+                      <span className={styles.momentIcon}><MomentIcon size={14} /></span>
                       {moment.title}
                     </Link>
-                  ))}
-                </div>
+                  );
+                })}
+              </div>
 
-                <div className={`fade-in fade-in--d2 ${styles.momentStage}`}>
-                  <div className={styles.momentVisual}>
-                    <Image
-                      key={moments[activeMoment].image}
-                      src={moments[activeMoment].image}
-                      alt={moments[activeMoment].title}
-                      fill
-                      className={styles.momentImage}
-                      sizes="(max-width: 900px) 100vw, 54vw"
-                    />
-                    <div className={styles.momentShade} />
-                  </div>
-                  <div className={styles.momentContent}>
-                    <h3>{moments[activeMoment].title}</h3>
-                    <p>{moments[activeMoment].copy}</p>
-                    <Link href={moments[activeMoment].href}>{moments[activeMoment].cta} <ArrowRight size={17} /></Link>
-                  </div>
-                  <div className={styles.filmstripWrap} aria-label="Local commerce examples">
-                    <div className={styles.filmstrip}>
-                      {[...filmstrip, ...filmstrip].map(([label, type, image], index) => (
-                        <div key={`${label}-${index}`} className={index % filmstrip.length === activeMoment ? styles.filmCardActive : styles.filmCard}>
-                          <Image src={image} alt={`${label} for ${type}`} width={150} height={104} className={styles.filmImage} />
-                          <span>{label}</span>
-                          <strong>{type}</strong>
-                        </div>
-                      ))}
-                    </div>
+              <div className={`fade-in fade-in--d2 ${styles.momentStage}`}>
+                <div className={styles.momentVisual}>
+                  <Image
+                    key={moments[activeMoment].image}
+                    src={moments[activeMoment].image}
+                    alt={moments[activeMoment].title}
+                    fill
+                    className={styles.momentImage}
+                    sizes="(max-width: 900px) 100vw, 54vw"
+                  />
+                  <div className={styles.momentShade} />
+                </div>
+                <div className={styles.momentContent}>
+                  <h3>{moments[activeMoment].title}</h3>
+                  <p>{moments[activeMoment].copy}</p>
+                  <Link href={moments[activeMoment].href}>{moments[activeMoment].cta} <ArrowRight size={17} /></Link>
+                </div>
+                <div className={styles.filmstripWrap} aria-label="Local commerce examples">
+                  <div className={styles.filmstrip}>
+                    {[...filmstrip, ...filmstrip].map(([label, type, image], index) => (
+                      <div key={`${label}-${index}`} className={index % filmstrip.length === activeMoment ? styles.filmCardActive : styles.filmCard}>
+                        <Image src={image} alt={`${label} for ${type}`} width={150} height={104} className={styles.filmImage} />
+                        <span>{label}</span>
+                        <strong>{type}</strong>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
 
+        {/* ── MESSAGE SECTION ────────────────────────── */}
         <section className={styles.messageSection}>
           <div className={`container ${styles.messageGrid}`}>
             <div className={`fade-in ${styles.messageCopy}`}>
@@ -337,6 +385,7 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── ROLES SECTION ──────────────────────────── */}
         <section className={styles.rolesSection} id="how-it-works">
           <div className="container">
             <div className={`fade-in ${styles.sectionIntro} ${styles.roleIntro}`}>
@@ -364,6 +413,7 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── TRUST SECTION ──────────────────────────── */}
         <section className={styles.trustSection}>
           <div className={`container ${styles.trustGrid}`}>
             <div className={`fade-in ${styles.trustCopy}`}>
@@ -382,15 +432,17 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── FINAL CTA ──────────────────────────────── */}
         <section className={styles.finalCta}>
           <div className={`container fade-in ${styles.finalInner}`}>
             <h2>Ready to find your next pop-up opportunity?</h2>
             <div className={styles.finalButtons}>
-              <Link href="/browse" className="btn btn--primary btn--lg">Find a place to sell</Link>
+              <Link href="/vendors" className="btn btn--primary btn--lg">Find a place to sell</Link>
               <Link href="/signup" className="btn btn--secondary btn--lg">Create account</Link>
             </div>
           </div>
         </section>
+
       </main>
       <Footer />
     </>

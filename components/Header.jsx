@@ -22,7 +22,12 @@ export default function Header() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(pathname !== '/' || window.scrollY > 64);
+      // On homepage, stay transparent until scrolled past 90% of viewport height
+      if (pathname === '/') {
+        setScrolled(window.scrollY > window.innerHeight * 0.75);
+      } else {
+        setScrolled(true);
+      }
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });

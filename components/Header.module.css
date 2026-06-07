@@ -4,23 +4,23 @@
   left: 0;
   width: 100%;
   height: 72px;
-  background: rgba(255, 242, 227, 0.94);
-  border-bottom: 1px solid rgba(38, 34, 30, 0.1);
-  box-shadow: none;
-  backdrop-filter: blur(10px);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  backdrop-filter: none;
   z-index: 100;
   transition:
-    background 220ms ease,
-    border-color 220ms ease,
-    box-shadow 220ms ease,
-    backdrop-filter 220ms ease;
+    background 320ms ease,
+    border-color 320ms ease,
+    box-shadow 320ms ease,
+    backdrop-filter 320ms ease;
 }
 
+/* Solid state: triggered by scroll */
 .scrolled {
-  background: rgba(255, 242, 227, 0.96);
-  border-bottom-color: rgba(38, 34, 30, 0.18);
-  box-shadow: none;
-  backdrop-filter: blur(10px);
+  background: rgba(250, 248, 244, 0.97);
+  border-bottom-color: rgba(38, 34, 30, 0.1);
+  box-shadow: 0 1px 12px rgba(38,34,30,0.06);
+  backdrop-filter: blur(12px);
 }
 
 .inner {
@@ -63,9 +63,14 @@
 
 .logoText {
   font-family: var(--font-display);
-  font-weight: 700; /* Bold typography wordmark */
+  font-weight: 700;
   font-size: 1.32rem;
   letter-spacing: -0.02em;
+  color: #fff;
+  transition: color 320ms ease;
+}
+
+.scrolled .logoText {
   color: var(--color-text);
 }
 
@@ -86,20 +91,48 @@
 .navLink {
   font-size: 0.9375rem;
   font-weight: 500;
-  color: #6f4e39;
-  transition: color var(--ease-fast);
+  color: rgba(255,255,255,0.88);
+  transition: color 320ms ease;
   position: relative;
 }
 
 .navLink:hover {
+  color: #fff;
+}
+
+.scrolled .navLink {
+  color: #6f4e39;
+}
+
+.scrolled .navLink:hover {
   color: var(--color-text);
 }
 
 .loginLink {
   padding: 10px 18px;
-  border: 1px solid rgba(196, 98, 45, 0.22);
+  border: 1.5px solid rgba(255,255,255,0.45);
   border-radius: 10px;
-  background: rgba(255, 251, 245, 0.5);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.92);
+  transition: border-color 320ms ease, background 320ms ease, color 320ms ease;
+}
+
+.loginLink:hover {
+  border-color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+.scrolled .loginLink {
+  border-color: rgba(196,98,45,0.22);
+  background: rgba(255,251,245,0.5);
+  color: var(--color-text);
+}
+
+.scrolled .loginLink:hover {
+  border-color: var(--color-accent);
+  background: rgba(196,98,45,0.06);
+  color: var(--color-accent);
 }
 
 .signupLink {
@@ -107,7 +140,8 @@
   border-radius: 10px;
   background: var(--color-accent);
   color: #fff;
-  box-shadow: 0 10px 24px rgba(196, 98, 45, 0.18);
+  box-shadow: 0 4px 14px rgba(196,98,45,0.35);
+  transition: background 320ms ease, box-shadow 320ms ease, color 320ms ease;
 }
 
 .signupLink:hover {
@@ -116,6 +150,10 @@
 }
 
 .activeNavLink {
+  color: #fff;
+}
+
+.scrolled .activeNavLink {
   color: var(--color-accent);
 }
 
@@ -126,6 +164,11 @@
   width: 30px;
   height: 2.5px;
   border-radius: 2px;
+  background-color: rgba(255,255,255,0.7);
+  transition: background-color 320ms ease;
+}
+
+.scrolled .activeNavLink::after {
   background-color: var(--color-accent);
 }
 
@@ -266,6 +309,11 @@
 .hamburger {
   display: none;
   z-index: 101;
+  color: #fff;
+  transition: color 320ms ease;
+}
+
+.scrolled .hamburger {
   color: var(--color-text);
 }
 
@@ -335,12 +383,6 @@
 }
 
 @media (max-width: 768px) {
-  .header {
-    background: rgba(255, 242, 227, 0.96);
-    border-bottom-color: rgba(38, 34, 30, 0.18);
-    backdrop-filter: blur(10px);
-  }
-
   .navRight {
     display: none;
   }
