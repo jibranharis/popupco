@@ -3,18 +3,54 @@ import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import GatedLink from '@/components/GatedLink';
-import { PLACEHOLDER_EVENTS, getPublicEventBySlug } from '@/lib/data';
+import { getPublicEventBySlug } from '@/lib/data';
+import { supabase } from '@/lib/supabase';
 import { MapPin, Calendar, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 
-export async function generateStaticParams() {
-  return PLACEHOLDER_EVENTS.map((event) => ({ slug: event.slug }));
+function mapDbEvent(row) {
+  return {
+    slug: row.slug,
+    event_name: row.event_name,
+    status: row.status,
+    date: row.date,
+    startTime: row.start_time,
+    endTime: row.end_time,
+    city: row.city,
+    location_name: row.location_name,
+    image_url: row.image_url,
+    description: row.description,
+    publicDescription: row.public_description,
+    attendeeInfo: row.attendee_info,
+    accessType: row.access_type,
+    eventType: row.event_type,
+    expectedVendors: row.expected_vendors,
+    familyFriendly: row.family_friendly,
+    petsAllowed: row.pets_allowed,
+    foodAvailable: row.food_available,
+    accessibility: row.accessibility,
+    organizerName: row.organizer_name,
+    parking: row.parking,
+    categories: row.categories,
+    food_allowed: row.food_allowed,
+    vendorApplicationsOpen: row.vendor_applications_open,
+    vendor_spots_total: row.vendor_spots_total,
+    booth_price_min: row.booth_price_min,
+    booth_price_max: row.booth_price_max,
+    application_deadline: row.application_deadline,
+  };
+}
+
+async function getEvent(slug) {
+  const { data } = await supabase.from('events').select('*').eq('slug', slug).single();
+  if (data) return mapDbEvent(data);
+  return getPublicEventBySlug(slug);
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const event = getPublicEventBySlug(slug);
+  const event = await getEvent(slug);
   if (!event) return {};
   return {
     title: event.event_name,
@@ -31,7 +67,7 @@ const statusConfig = {
 
 export default async function EventDetailPage({ params }) {
   const { slug } = await params;
-  const event = getPublicEventBySlug(slug);
+  const event = await getEvent(slug);
   if (!event) notFound();
 
   const status = statusConfig[event.status] || statusConfig.coming_soon;
@@ -69,15 +105,19 @@ export default async function EventDetailPage({ params }) {
       <Header />
       <main className={styles.main}>
         <div className={styles.heroWrap}>
-          <Image
-            src={event.image_url}
-            alt={event.event_name}
-            fill
-            priority
-            className={styles.heroImage}
-            sizes="100vw"
-          />
-          <div className={styles.heroOverlay} />
+          {event.image_url && (
+            <>
+              <Image
+                src={event.image_url}
+                alt={event.event_name}
+                fill
+                priority
+                className={styles.heroImage}
+                sizes="100vw"
+              />
+              <div className={styles.heroOverlay} />
+            </>
+          )}
           <div className={`container ${styles.heroContent}`}>
             <Link href="/upcoming" className={styles.backLink}>
               <ArrowLeft size={15} /> Back to Upcoming Pop-Ups
@@ -85,8 +125,8 @@ export default async function EventDetailPage({ params }) {
             <span className={`${status.cls} ${styles.statusPill}`}>{status.label}</span>
             <h1 className={styles.heroTitle}>{event.event_name}</h1>
             <div className={styles.heroMeta}>
-              <span><Calendar size={15} /> {event.date} · {event.startTime}-{event.endTime}</span>
-              <span><MapPin size={15} /> {event.city}</span>
+              {event.date && <span><Calendar size={15} /> {event.date}{event.startTime ? ` · ${event.startTime}-${event.endTime}` : ''}</span>}
+              {event.city && <span><MapPin size={15} /> {event.city}</span>}
             </div>
           </div>
         </div>
@@ -96,21 +136,21 @@ export default async function EventDetailPage({ params }) {
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>About this event</h2>
               <p className={styles.sectionText}>{event.publicDescription || event.description}</p>
-              <p className={styles.sectionText}>{event.attendeeInfo}</p>
+              {event.attendeeInfo && <p className={styles.sectionText}>{event.attendeeInfo}</p>}
             </section>
 
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>Attendee details</h2>
               <ul className={styles.checkList}>
                 {[
-                  `Access: ${event.accessType}`,
-                  `Event type: ${event.eventType}`,
-                  `Expected vendors: ${event.expectedVendors}`,
-                  `Family-friendly: ${event.familyFriendly}`,
-                  `Pets: ${event.petsAllowed}`,
-                  `Food: ${event.foodAvailable}`,
-                  `Accessibility: ${event.accessibility}`,
-                ].map((item) => (
+                  event.accessType && `Access: ${event.accessType}`,
+                  event.eventType && `Event type: ${event.eventType}`,
+                  event.expectedVendors && `Expected vendors: ${event.expectedVendors}`,
+                  event.familyFriendly && `Family-friendly: ${event.familyFriendly}`,
+                  event.petsAllowed && `Pets: ${event.petsAllowed}`,
+                  event.foodAvailable && `Food: ${event.foodAvailable}`,
+                  event.accessibility && `Accessibility: ${event.accessibility}`,
+                ].filter(Boolean).map((item) => (
                   <li key={item} className={styles.checkItem}>
                     <CheckCircle size={16} className={styles.checkIcon} /> {item}
                   </li>
@@ -118,13 +158,15 @@ export default async function EventDetailPage({ params }) {
               </ul>
             </section>
 
-            <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Organizer</h2>
-              <p className={styles.sectionText}>{event.organizerName}</p>
-              <p className={styles.sectionText}>
-                PopUpCo is currently developing its marketplace experience. Some event details may require direct follow-up from the PopUpCo team before they are final.
-              </p>
-            </section>
+            {event.organizerName && (
+              <section className={styles.section}>
+                <h2 className={styles.sectionTitle}>Organizer</h2>
+                <p className={styles.sectionText}>{event.organizerName}</p>
+                <p className={styles.sectionText}>
+                  PopUpCo is currently developing its marketplace experience. Some event details may require direct follow-up from the PopUpCo team before they are final.
+                </p>
+              </section>
+            )}
 
             {event.food_allowed === 1 && (
               <section className={styles.section}>
@@ -153,44 +195,62 @@ export default async function EventDetailPage({ params }) {
 
           <aside className={styles.sidebar}>
             <div className={`card ${styles.sideCard}`}>
-              <div className={styles.sideDetail}>
-                <span className={styles.sideLabel}>Location</span>
-                <span className={styles.sideVal}>{event.location_name}</span>
-              </div>
-              <div className={styles.sideDetail}>
-                <span className={styles.sideLabel}>Date</span>
-                <span className={styles.sideVal}>{event.date}</span>
-              </div>
-              <div className={styles.sideDetail}>
-                <span className={styles.sideLabel}>Time</span>
-                <span className={styles.sideVal}>{event.startTime}-{event.endTime}</span>
-              </div>
-              <div className={styles.sideDetail}>
-                <span className={styles.sideLabel}>Access</span>
-                <span className={styles.sideVal}>{event.accessType}</span>
-              </div>
-              <div className={styles.sideDetail}>
-                <span className={styles.sideLabel}>Parking</span>
-                <span className={styles.sideVal}>{event.parking}</span>
-              </div>
-              <div className={styles.sideDetail}>
-                <span className={styles.sideLabel}>Categories</span>
-                <span className={styles.sideVal}>{event.categories}</span>
-              </div>
+              {event.location_name && (
+                <div className={styles.sideDetail}>
+                  <span className={styles.sideLabel}>Location</span>
+                  <span className={styles.sideVal}>{event.location_name}</span>
+                </div>
+              )}
+              {event.date && (
+                <div className={styles.sideDetail}>
+                  <span className={styles.sideLabel}>Date</span>
+                  <span className={styles.sideVal}>{event.date}</span>
+                </div>
+              )}
+              {event.startTime && (
+                <div className={styles.sideDetail}>
+                  <span className={styles.sideLabel}>Time</span>
+                  <span className={styles.sideVal}>{event.startTime}-{event.endTime}</span>
+                </div>
+              )}
+              {event.accessType && (
+                <div className={styles.sideDetail}>
+                  <span className={styles.sideLabel}>Access</span>
+                  <span className={styles.sideVal}>{event.accessType}</span>
+                </div>
+              )}
+              {event.parking && (
+                <div className={styles.sideDetail}>
+                  <span className={styles.sideLabel}>Parking</span>
+                  <span className={styles.sideVal}>{event.parking}</span>
+                </div>
+              )}
+              {event.categories && (
+                <div className={styles.sideDetail}>
+                  <span className={styles.sideLabel}>Categories</span>
+                  <span className={styles.sideVal}>{event.categories}</span>
+                </div>
+              )}
               {event.vendorApplicationsOpen && (
                 <>
-                  <div className={styles.sideDetail}>
-                    <span className={styles.sideLabel}>Vendor spots</span>
-                    <span className={styles.sideVal}>Up to {event.vendor_spots_total}</span>
-                  </div>
-                  <div className={styles.sideDetail}>
-                    <span className={styles.sideLabel}>Vendor booth range</span>
-                    <span className={styles.sideVal}>${event.booth_price_min}-${event.booth_price_max}</span>
-                  </div>
-                  <div className={styles.sideDetail}>
-                    <span className={styles.sideLabel}>Applications</span>
-                    <span className={styles.sideVal}>{event.application_deadline}</span>
-                  </div>
+                  {event.vendor_spots_total && (
+                    <div className={styles.sideDetail}>
+                      <span className={styles.sideLabel}>Vendor spots</span>
+                      <span className={styles.sideVal}>Up to {event.vendor_spots_total}</span>
+                    </div>
+                  )}
+                  {(event.booth_price_min || event.booth_price_max) && (
+                    <div className={styles.sideDetail}>
+                      <span className={styles.sideLabel}>Vendor booth range</span>
+                      <span className={styles.sideVal}>${event.booth_price_min}-${event.booth_price_max}</span>
+                    </div>
+                  )}
+                  {event.application_deadline && (
+                    <div className={styles.sideDetail}>
+                      <span className={styles.sideLabel}>Applications</span>
+                      <span className={styles.sideVal}>{event.application_deadline}</span>
+                    </div>
+                  )}
                 </>
               )}
 
