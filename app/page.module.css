@@ -266,6 +266,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 200ms ease;
 }
 
 .fieldInput {
@@ -279,6 +280,12 @@
   width: 100%;
   outline: none;
   font-family: inherit;
+  transition: color 200ms ease;
+}
+
+.textActive {
+  color: #000000 !important;
+  font-weight: 600 !important;
 }
 
 .fieldInput::placeholder {

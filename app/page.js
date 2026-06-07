@@ -274,28 +274,28 @@ export default function HomePage() {
   const searchConfig = {
     sell: {
       fields: [
-        { id: 'location', label: 'LOCATION', value: location, icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
-        { id: 'category', label: 'CATEGORY', value: category, icon: LayoutGrid, options: ['All categories', 'Retail spaces', 'Food pop-ups', 'Vendor markets'] },
-        { id: 'date', label: 'DATE', value: dateValue, icon: CalendarDays, options: [] },
-        { id: 'budget', label: 'BUDGET', value: budget, icon: DollarSign, options: ['$75 – $250+', 'Under $100', '$100 - $500', 'Over $500'] },
+        { id: 'location', label: 'LOCATION', value: location, isDefault: location === 'Bay Area, CA', icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
+        { id: 'category', label: 'CATEGORY', value: category, isDefault: category === 'All categories', icon: LayoutGrid, options: ['All categories', 'Retail spaces', 'Food pop-ups', 'Vendor markets'] },
+        { id: 'date', label: 'DATE', value: dateValue, isDefault: selectedDates.length === 0, icon: CalendarDays, options: [] },
+        { id: 'budget', label: 'BUDGET', value: budget, isDefault: budget === '$75 – $250+', icon: DollarSign, options: ['$75 – $250+', 'Under $100', '$100 - $500', 'Over $500'] },
       ],
       href: '/signup?type=vendor'
     },
     space: {
       fields: [
-        { id: 'location', label: 'LOCATION', value: location, icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
-        { id: 'spaceType', label: 'SPACE TYPE', value: spaceType, icon: Building2, options: ['All types', 'Retail storefront', 'Event space', 'Shared space', 'Warehouse/Industrial', 'Outdoor market'] },
-        { id: 'size', label: 'SIZE', value: size, icon: LayoutGrid, options: ['Any size', 'Under 500 sq ft', '500 - 1000 sq ft', 'Over 1000 sq ft'] },
-        { id: 'duration', label: 'DURATION', value: duration, icon: Clock3, options: ['Any duration', 'Daily', 'Weekly', 'Monthly'] },
+        { id: 'location', label: 'LOCATION', value: location, isDefault: location === 'Bay Area, CA', icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
+        { id: 'spaceType', label: 'SPACE TYPE', value: spaceType, isDefault: spaceType === 'All types', icon: Building2, options: ['All types', 'Retail storefront', 'Event space', 'Shared space', 'Warehouse/Industrial', 'Outdoor market'] },
+        { id: 'size', label: 'SIZE', value: size, isDefault: size === 'Any size', icon: LayoutGrid, options: ['Any size', 'Under 500 sq ft', '500 - 1000 sq ft', 'Over 1000 sq ft'] },
+        { id: 'duration', label: 'DURATION', value: duration, isDefault: duration === 'Any duration', icon: Clock3, options: ['Any duration', 'Daily', 'Weekly', 'Monthly'] },
       ],
       href: '/signup?type=venue'
     },
     host: {
       fields: [
-        { id: 'location', label: 'LOCATION', value: location, icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
-        { id: 'eventType', label: 'EVENT TYPE', value: eventType, icon: LayoutGrid, options: ['All events', 'Vendor Market', 'Art Fair', 'Food Festival', 'Showcase'] },
-        { id: 'attendance', label: 'ATTENDANCE', value: attendance, icon: Users, options: ['Any', 'Under 100', '100-500', '500-1000', '1000+'] },
-        { id: 'fee', label: 'VENDOR FEE', value: fee, icon: DollarSign, options: ['Any fee', 'Under $50', '$50-$100', '$100-$200', '$200+'] },
+        { id: 'location', label: 'LOCATION', value: location, isDefault: location === 'Bay Area, CA', icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
+        { id: 'eventType', label: 'EVENT TYPE', value: eventType, isDefault: eventType === 'All events', icon: LayoutGrid, options: ['All events', 'Vendor Market', 'Art Fair', 'Food Festival', 'Showcase'] },
+        { id: 'attendance', label: 'ATTENDANCE', value: attendance, isDefault: attendance === 'Any', icon: Users, options: ['Any', 'Under 100', '100-500', '500-1000', '1000+'] },
+        { id: 'fee', label: 'VENDOR FEE', value: fee, isDefault: fee === 'Any fee', icon: DollarSign, options: ['Any fee', 'Under $50', '$50-$100', '$100-$200', '$200+'] },
       ],
       href: '/signup?type=host'
     }
@@ -388,11 +388,11 @@ export default function HomePage() {
                           <div className={styles.fieldContent}>
                             <span className={styles.fieldLabel}>{field.label}</span>
                             {field.id === 'location' || field.id === 'date' || field.id === 'spaceType' ? (
-                              <span className={styles.fieldValue}>{field.value}</span>
+                              <span className={`${styles.fieldValue} ${!field.isDefault ? styles.textActive : ''}`}>{field.value}</span>
                             ) : (
                               <input 
                                 type="text"
-                                className={styles.fieldInput}
+                                className={`${styles.fieldInput} ${!field.isDefault ? styles.textActive : ''}`}
                                 value={field.value}
                                 onFocus={(e) => e.target.select()}
                                 onChange={(e) => {
