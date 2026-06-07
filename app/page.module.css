@@ -65,7 +65,9 @@
 }
 
 .heroHeadline {
-  font-size: 4rem;
+  color: #ffffff;
+  font-family: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(2.8rem, 4.5vw, 4.5rem);
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -141,7 +143,7 @@
 ───────────────────────────────────────────────── */
 .heroPanel {
   position: absolute;
-  bottom: 80px;
+  bottom: 55px;
   left: 0;
   width: 100%;
   z-index: 10;
