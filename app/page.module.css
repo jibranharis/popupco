@@ -157,24 +157,53 @@
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 20px;
-  padding: 24px 32px;
+  padding: 24px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   width: 86vw;
-  max-width: 1360px;
+  max-width: 1100px;
   margin: 0 auto;
+}
+
+.searchTabs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.searchTab {
+  padding: 10px 20px;
+  border-radius: 24px;
+  border: 1px solid rgba(232, 226, 218, 0.8);
+  background: rgba(255, 255, 255, 0.5);
+  color: #5f564f;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.searchTab:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.searchTabActive {
+  background: rgba(200, 95, 44, 0.08);
+  border-color: rgba(200, 95, 44, 0.25);
+  color: #c85f2c;
 }
 
 .searchBar {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e8e2da;
   overflow: hidden;
-  min-height: 72px;
+  min-height: 76px;
 }
 
 .searchField {
@@ -190,11 +219,6 @@
 
 .searchField:hover {
   background: #faf7f3;
-}
-
-.fieldIcon {
-  color: #c85f2c;
-  flex-shrink: 0;
 }
 
 .fieldContent {
@@ -213,23 +237,16 @@
 }
 
 .fieldValue {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  color: #4a4540;
+  color: #7b7167;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.fieldChevron {
-  color: #a39e96;
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
 .searchDivider {
   width: 1px;
-  height: 36px;
   background: #e8e2da;
   flex-shrink: 0;
 }
@@ -237,23 +254,23 @@
 .searchBtn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  margin: 8px;
-  padding: 14px 24px;
-  border-radius: 10px;
+  margin: 0;
+  padding: 0 32px;
+  border-radius: 0;
   background: #c85f2c;
   color: #fff;
-  font-size: 0.9375rem;
+  font-size: 1.05rem;
   font-weight: 700;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: background 200ms ease, transform 200ms ease;
+  transition: background 200ms ease;
+  align-self: stretch;
 }
 
 .searchBtn:hover {
   background: #b55226;
-  transform: translateY(-1px);
-  color: #fff;
 }
 
 /* Trust row */

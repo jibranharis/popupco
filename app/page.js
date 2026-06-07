@@ -223,73 +223,59 @@ export default function HomePage() {
                   spaces, vendors, and events.
                 </p>
                 <div className={styles.heroCtas}>
-                  <Link href="/vendors" className={styles.ctaPrimary}>
-                    Find Opportunities
-                  </Link>
                   <Link href="#how-it-works" className={styles.ctaSecondary}>
                     <PlayCircle size={18} />
+                    How it works
+                  </Link>
+                </div>
                     How it works
                   </Link>
                 </div>
               </div>
             </div>
 
-            {/* ── Floating search + trust panel ── */}
+            {/* ── Floating search panel ── */}
             <div className={styles.heroPanel}>
               <div className={`container ${styles.searchPanelContainer}`}>
+                {/* Search Tabs */}
+                <div className={styles.searchTabs}>
+                  <button className={`${styles.searchTab} ${styles.searchTabActive}`}>Find a place to sell</button>
+                  <button className={styles.searchTab}>List your space</button>
+                  <button className={styles.searchTab}>Host a pop-up</button>
+                </div>
+
                 <div className={styles.searchBar}>
                   <div className={styles.searchField}>
-                    <MapPin size={15} className={styles.fieldIcon} />
                     <div className={styles.fieldContent}>
-                      <span className={styles.fieldLabel}>LOCATION</span>
-                      <span className={styles.fieldValue}>Bay Area, CA</span>
+                      <span className={styles.fieldLabel}>WHERE</span>
+                      <span className={styles.fieldValue}>Where do you want to sell</span>
                     </div>
-                    <ChevronDown size={14} className={styles.fieldChevron} />
                   </div>
                   <div className={styles.searchDivider} />
                   <div className={styles.searchField}>
-                    <LayoutGrid size={15} className={styles.fieldIcon} />
                     <div className={styles.fieldContent}>
                       <span className={styles.fieldLabel}>CATEGORY</span>
-                      <span className={styles.fieldValue}>All categories</span>
+                      <span className={styles.fieldValue}>What do you sell?</span>
                     </div>
-                    <ChevronDown size={14} className={styles.fieldChevron} />
                   </div>
                   <div className={styles.searchDivider} />
                   <div className={styles.searchField}>
-                    <CalendarDays size={15} className={styles.fieldIcon} />
                     <div className={styles.fieldContent}>
-                      <span className={styles.fieldLabel}>DATE</span>
+                      <span className={styles.fieldLabel}>WHEN</span>
                       <span className={styles.fieldValue}>Any weekend</span>
                     </div>
-                    <ChevronDown size={14} className={styles.fieldChevron} />
                   </div>
                   <div className={styles.searchDivider} />
                   <div className={styles.searchField}>
-                    <DollarSign size={15} className={styles.fieldIcon} />
                     <div className={styles.fieldContent}>
                       <span className={styles.fieldLabel}>BUDGET</span>
-                      <span className={styles.fieldValue}>$75 – $250+</span>
+                      <span className={styles.fieldValue}>$75-$250</span>
                     </div>
-                    <ChevronDown size={14} className={styles.fieldChevron} />
                   </div>
                   <Link href="/vendors" className={styles.searchBtn}>
                     <Search size={16} />
-                    Search
+                    Find Opportunities
                   </Link>
-                </div>
-
-                {/* Trust props row */}
-                <div className={styles.trustRow}>
-                  {trustProps.map(({ icon: Icon, title, sub }) => (
-                    <div key={title} className={styles.trustItem}>
-                      <span className={styles.trustIcon}><Icon size={16} /></span>
-                      <div>
-                        <strong>{title}</strong>
-                        <span>{sub}</span>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>
