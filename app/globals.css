@@ -349,6 +349,7 @@ hr, .divider {
   margin-bottom: 6px;
 }
 .form-label .req { color: var(--color-accent); margin-left: 2px; }
+.required { color: var(--color-accent); margin-left: 2px; }
 
 .form-input,
 .form-textarea,
