@@ -500,7 +500,7 @@ export default function HomePage() {
                   <div className={styles.filmstrip}>
                     {[...filmstrip, ...filmstrip].map(([label, type, image], index) => (
                       <div key={`${label}-${index}`} className={index % filmstrip.length === activeMoment ? styles.filmCardActive : styles.filmCard}>
-                        <Image src={image} alt={`${label} for ${type}`} width={150} height={104} className={styles.filmImage} />
+                        <Image src={image} alt={`${label} for ${type}`} width={130} height={90} className={styles.filmImage} />
                         <span>{label}</span>
                         <strong>{type}</strong>
                       </div>
