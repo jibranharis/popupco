@@ -6,7 +6,8 @@ export async function POST(request) {
     const body = await request.json();
 
     if (body.action === 'login') {
-      const password = process.env.ADMIN_PASSWORD || 'popupco-admin-2025';
+      const password = process.env.ADMIN_PASSWORD;
+      if (!password) return NextResponse.json({ success: false, error: 'Admin not configured' }, { status: 503 });
       if (body.password === password) {
         return NextResponse.json({ success: true });
       }

@@ -21,6 +21,7 @@ import Footer from './Footer';
 import SpaceCard from './SpaceCard';
 import { useAuth } from './AuthContext';
 import { loginHref } from './GatedLink';
+import { supabase } from '@/lib/supabase';
 import { SPACES_DATA } from '@/lib/spaces';
 import styles from '@/app/dashboard/page.module.css';
 
@@ -40,10 +41,6 @@ const roleCopy = {
   attendee: 'Track saved events, local pop-ups, and updates from PopUpCo.',
 };
 
-const sampleApplications = [
-  { title: 'Walnut Creek Weekend Market', status: 'Submitted', date: 'June 10, 2026', next: 'Host review in progress' },
-  { title: 'Oakland Makers Night Market', status: 'Under review', date: 'June 8, 2026', next: 'Category fit check' },
-];
 
 function EmptyState({ icon: Icon, title, copy, href, cta }) {
   return (
@@ -85,7 +82,7 @@ function Sidebar({ user, section, savedCount, logout }) {
   );
 }
 
-function Overview({ user, savedSpaces }) {
+function Overview({ user, savedSpaces, submissionCount }) {
   const nextSteps = [
     'Complete your profile',
     user.type === 'vendor' ? 'Add product photos' : user.type === 'venue' ? 'Add space photos' : 'Add event details',
@@ -107,9 +104,9 @@ function Overview({ user, savedSpaces }) {
       </section>
 
       <div className={styles.statsGrid}>
-        <div className={styles.statCard}><FileText size={20} /><strong>2</strong><span>Active applications</span></div>
+        <div className={styles.statCard}><FileText size={20} /><strong>{submissionCount}</strong><span>Active applications</span></div>
         <div className={styles.statCard}><Heart size={20} /><strong>{savedSpaces.length}</strong><span>Saved opportunities</span></div>
-        <div className={styles.statCard}><MessageSquare size={20} /><strong>1</strong><span>Unread message</span></div>
+        <div className={styles.statCard}><MessageSquare size={20} /><strong>0</strong><span>Unread messages</span></div>
       </div>
 
       <section className={styles.section}>
@@ -175,27 +172,26 @@ function Profile({ user }) {
 }
 
 function Applications({ submissions }) {
-  const submittedItems = [
+  const items = [
     ...submissions.vendor.map((item) => ({
-      title: item.selected_event_title || item.business_name || 'Vendor application',
-      status: 'Submitted',
-      date: item.submittedAt ? new Date(item.submittedAt).toLocaleDateString() : 'Recently',
+      title: item.brand_name || 'Vendor application',
+      status: item.status || 'Submitted',
+      date: item.created_at ? new Date(item.created_at).toLocaleDateString() : 'Recently',
       next: 'PopUpCo review in progress',
     })),
     ...submissions.venue.map((item) => ({
       title: item.venue_name || 'Venue submission',
-      status: 'Submitted',
-      date: item.submittedAt ? new Date(item.submittedAt).toLocaleDateString() : 'Recently',
+      status: item.status || 'Submitted',
+      date: item.created_at ? new Date(item.created_at).toLocaleDateString() : 'Recently',
       next: 'Venue fit review',
     })),
     ...submissions.host.map((item) => ({
-      title: item.event_name || 'Host request',
-      status: 'Submitted',
-      date: item.submittedAt ? new Date(item.submittedAt).toLocaleDateString() : 'Recently',
+      title: item.org_name || 'Host request',
+      status: item.status || 'Submitted',
+      date: item.created_at ? new Date(item.created_at).toLocaleDateString() : 'Recently',
       next: 'Event concept review',
     })),
   ];
-  const items = submittedItems.length ? submittedItems : sampleApplications;
 
   return (
     <section className={styles.section}>
@@ -208,17 +204,21 @@ function Applications({ submissions }) {
         <span>Draft applications</span>
         <span>Past applications</span>
       </div>
-      <div className={styles.applicationList}>
-        {items.map((item) => (
-          <div key={item.title} className={styles.appRow}>
-            <div>
-              <strong>{item.title}</strong>
-              <p>{item.date} - {item.next}</p>
+      {items.length === 0 ? (
+        <EmptyState icon={Bookmark} title="No applications yet" copy="Apply to an opportunity and it will appear here." href="/browse" cta="Browse opportunities" />
+      ) : (
+        <div className={styles.applicationList}>
+          {items.map((item, i) => (
+            <div key={`${item.title}-${i}`} className={styles.appRow}>
+              <div>
+                <strong>{item.title}</strong>
+                <p>{item.date} - {item.next}</p>
+              </div>
+              <span className={styles.statusPill}>{item.status}</span>
             </div>
-            <span className={styles.statusPill}>{item.status}</span>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -294,19 +294,30 @@ export default function DashboardWorkspace({ section = 'overview' }) {
   useEffect(() => {
     if (!user) return;
     setSavedIds(JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]'));
-    setSubmissions({
-      vendor: JSON.parse(localStorage.getItem('popupco_vendor_applications') || '[]'),
-      venue: JSON.parse(localStorage.getItem('popupco_venue_submissions') || '[]'),
-      host: JSON.parse(localStorage.getItem('popupco_host_submissions') || '[]'),
-    });
+
+    const fetchApplications = async () => {
+      const [vendorRes, venueRes, hostRes] = await Promise.all([
+        supabase.from('vendor_applications').select('brand_name, event_slug, created_at, status').eq('user_id', user.id).order('created_at', { ascending: false }),
+        supabase.from('venue_applications').select('venue_name, created_at, status').eq('user_id', user.id).order('created_at', { ascending: false }),
+        supabase.from('host_applications').select('org_name, event_concept, created_at, status').eq('user_id', user.id).order('created_at', { ascending: false }),
+      ]);
+      setSubmissions({
+        vendor: vendorRes.data || [],
+        venue: venueRes.data || [],
+        host: hostRes.data || [],
+      });
+    };
+    fetchApplications();
   }, [user]);
 
   const savedSpaces = useMemo(() => SPACES_DATA.filter((space) => savedIds.includes(space.id)), [savedIds]);
 
   if (loading || !user) return null;
 
+  const submissionCount = submissions.vendor.length + submissions.venue.length + submissions.host.length;
+
   const content = {
-    overview: <Overview user={user} savedSpaces={savedSpaces} />,
+    overview: <Overview user={user} savedSpaces={savedSpaces} submissionCount={submissionCount} />,
     profile: <Profile user={user} />,
     applications: <Applications submissions={submissions} />,
     saved: <Saved savedSpaces={savedSpaces} />,
