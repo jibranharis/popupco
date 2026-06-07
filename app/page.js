@@ -242,6 +242,7 @@ export default function HomePage() {
                       <span className={styles.fieldLabel}>LOCATION</span>
                       <span className={styles.fieldValue}>Bay Area, CA</span>
                     </div>
+                    <ChevronDown size={16} className={styles.fieldChevron} />
                   </div>
                   <div className={styles.searchDivider} />
                   <div className={styles.searchField}>
@@ -250,6 +251,7 @@ export default function HomePage() {
                       <span className={styles.fieldLabel}>CATEGORY</span>
                       <span className={styles.fieldValue}>All categories</span>
                     </div>
+                    <ChevronDown size={16} className={styles.fieldChevron} />
                   </div>
                   <div className={styles.searchDivider} />
                   <div className={styles.searchField}>
@@ -258,6 +260,7 @@ export default function HomePage() {
                       <span className={styles.fieldLabel}>DATE</span>
                       <span className={styles.fieldValue}>Any weekend</span>
                     </div>
+                    <ChevronDown size={16} className={styles.fieldChevron} />
                   </div>
                   <div className={styles.searchDivider} />
                   <div className={styles.searchField}>
@@ -266,6 +269,7 @@ export default function HomePage() {
                       <span className={styles.fieldLabel}>BUDGET</span>
                       <span className={styles.fieldValue}>$75 – $250+</span>
                     </div>
+                    <ChevronDown size={16} className={styles.fieldChevron} />
                   </div>
                   <Link href="/vendors" className={styles.searchBtn}>
                     <Search size={18} />
