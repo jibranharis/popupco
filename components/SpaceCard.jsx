@@ -6,6 +6,7 @@ import { CalendarDays, Heart, MapPin, ShieldCheck, Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthContext';
 import GatedLink, { loginHref } from './GatedLink';
+import { supabase } from '@/lib/supabase';
 import styles from './SpaceCard.module.css';
 
 export default function SpaceCard({ space }) {
@@ -22,7 +23,7 @@ export default function SpaceCard({ space }) {
     setIsSaved(saved.includes(space.id));
   }, [user, space.id]);
 
-  const toggleSave = () => {
+  const toggleSave = async () => {
     if (!user) {
       router.push(loginHref(`/spaces/${space.slug}`, 'save'));
       return;
@@ -32,6 +33,7 @@ export default function SpaceCard({ space }) {
     const nextSaved = isSaved ? saved.filter((id) => id !== space.id) : [...saved, space.id];
     localStorage.setItem(`saved_spaces_${user.id}`, JSON.stringify(nextSaved));
     setIsSaved(!isSaved);
+    await supabase.auth.updateUser({ data: { saved_space_ids: nextSaved } });
   };
 
   return (

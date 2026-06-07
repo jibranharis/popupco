@@ -379,7 +379,17 @@ export default function DashboardWorkspace({ section = 'overview' }) {
 
   useEffect(() => {
     if (!user) return;
-    setSavedIds(JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]'));
+
+    // Merge localStorage saves with Supabase metadata (cross-device sync)
+    supabase.auth.getUser().then(({ data: { user: authUser } }) => {
+      const metaSaved = authUser?.user_metadata?.saved_space_ids || [];
+      const localSaved = JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]');
+      const merged = [...new Set([...metaSaved, ...localSaved])];
+      if (merged.length !== localSaved.length) {
+        localStorage.setItem(`saved_spaces_${user.id}`, JSON.stringify(merged));
+      }
+      setSavedIds(merged);
+    });
 
     const fetchApplications = async () => {
       const [vendorRes, venueRes, hostRes] = await Promise.all([
