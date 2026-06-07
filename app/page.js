@@ -228,9 +228,6 @@ export default function HomePage() {
                     How it works
                   </Link>
                 </div>
-                    How it works
-                  </Link>
-                </div>
               </div>
             </div>
 
