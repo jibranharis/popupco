@@ -15,18 +15,14 @@ import {
   Clock3,
   Coins,
   DollarSign,
-  FileText,
   Flag,
-  Info,
   LayoutGrid,
   MapPin,
-  MessageSquare,
   Paintbrush,
   PlayCircle,
   RefreshCw,
   Search,
   ShieldCheck,
-  Send,
   Store,
   Utensils,
   Users,
@@ -162,33 +158,6 @@ const trustProps = [
   { icon: Coins,        title: 'Flexible budgets',   sub: 'Options for every size and stage' },
 ];
 
-const convSteps = [
-  {
-    num: 1,
-    icon: Info,
-    title: 'Event details',
-    desc: 'Confirm key info like dates, booth fee, and what\'s included.',
-  },
-  {
-    num: 2,
-    icon: Users,
-    title: 'Attendance',
-    desc: 'Understand expected foot traffic and your target audience.',
-  },
-  {
-    num: 3,
-    icon: FileText,
-    title: 'Permits',
-    desc: 'Learn what\'s required and who handles the paperwork.',
-  },
-  {
-    num: 4,
-    icon: CheckCircle,
-    title: 'Confirm fit',
-    desc: 'Review everything and confirm it\'s the right match.',
-  },
-];
-
 /* ─── Observer hook ───────────────────────────────────── */
 
 function useFadeInObserver(ref) {
@@ -210,7 +179,6 @@ function useFadeInObserver(ref) {
 export default function HomePage() {
   const pageRef = useRef(null);
   const [activeMoment, setActiveMoment] = useState(0);
-  const [heroOpacity, setHeroOpacity] = useState(1);
   useFadeInObserver(pageRef);
 
   useEffect(() => {
@@ -222,25 +190,6 @@ export default function HomePage() {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const fadeStart = 0;
-      const fadeEnd = window.innerHeight * 0.75;
-      
-      let opacity = 1;
-      if (scrollY > fadeStart) {
-        opacity = 1 - (scrollY - fadeStart) / (fadeEnd - fadeStart);
-      }
-      if (opacity < 0) opacity = 0;
-      setHeroOpacity(opacity);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <>
       <Header />
@@ -248,7 +197,7 @@ export default function HomePage() {
 
         {/* ── STICKY CINEMATIC HERO ───────────────────── */}
         <div className={styles.introScroll}>
-          <section className={styles.hero} style={{ opacity: heroOpacity }}>
+          <section className={styles.hero}>
             {/* Full-bleed background image */}
             <Image
               src="/hero-market.png"
@@ -414,82 +363,25 @@ export default function HomePage() {
         {/* ── MESSAGE SECTION ────────────────────────── */}
         <section className={styles.messageSection}>
           <div className={`container ${styles.messageGrid}`}>
-
-            {/* ─ Left: headline + 4-step process ─ */}
             <div className={`fade-in ${styles.messageCopy}`}>
               <span className="label">Clear conversations</span>
               <h2>Get the details before you commit.</h2>
-              <p>Ask the right questions, get real answers, and move forward with confidence.</p>
-
-              <div className={styles.convSteps}>
-                {convSteps.map(({ num, icon: Icon, title, desc }, i) => (
-                  <div
-                    key={title}
-                    className={`fade-in ${styles.convStep}`}
-                    style={{ '--step-index': i }}
-                  >
-                    {/* Numbered badge */}
-                    <div className={styles.convStepLeft}>
-                      <span className={styles.convNum}>{num}</span>
-                      {i < convSteps.length - 1 && <span className={styles.convLine} />}
-                    </div>
-                    {/* Icon + text */}
-                    <div className={styles.convStepBody}>
-                      <span className={styles.convStepIcon}><Icon size={16} /></span>
-                      <div>
-                        <strong>{title}</strong>
-                        <p>{desc}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <p>
+                PopUpCo keeps fees, attendance, setup needs, permits, and deadlines in one place so vendors and hosts can move with confidence.
+              </p>
             </div>
-
-            {/* ─ Right: chat panel ─ */}
-            <div className={`fade-in fade-in--d2 ${styles.chatPanel}`}>
-              {/* Panel header */}
-              <div className={styles.chatHeader}>
-                <div className={styles.chatTabs}>
-                  <button className={styles.chatTabActive}>Conversation</button>
-                  <button className={styles.chatTab}>Event details</button>
+            <div className={`fade-in fade-in--d2 ${styles.messageChain}`}>
+              {messages.map(([sender, text], index) => (
+                <div
+                  key={`${sender}-${index}`}
+                  className={`${styles.messageBubble} ${sender === 'Vendor' ? styles.vendorMessage : styles.hostMessage}`}
+                  style={{ '--message-index': index }}
+                >
+                  <span>{sender.toUpperCase()}</span>
+                  <p>{text}</p>
                 </div>
-              </div>
-
-              {/* Messages */}
-              <div className={styles.messageChain}>
-                {messages.map(([sender, text], index) => {
-                  const isHost = sender === 'Host';
-                  return (
-                    <div
-                      key={`${sender}-${index}`}
-                      className={`${styles.messageRow} ${isHost ? styles.messageRowHost : styles.messageRowVendor}`}
-                      style={{ '--message-index': index }}
-                    >
-                      {!isHost && (
-                        <span className={styles.avatarVendor}>V</span>
-                      )}
-                      <div className={`${styles.messageBubble} ${isHost ? styles.hostMessage : styles.vendorMessage}`}>
-                        <span>{sender.toUpperCase()}</span>
-                        <p>{text}</p>
-                      </div>
-                      {isHost && (
-                        <span className={styles.avatarHost}>H</span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Compose footer */}
-              <div className={styles.chatCompose}>
-                <span className={styles.chatComposePlaceholder}>Write a message…</span>
-                <button className={styles.chatSendBtn} aria-label="Send">
-                  <Send size={15} />
-                </button>
-              </div>
+              ))}
             </div>
-
           </div>
         </section>
 
