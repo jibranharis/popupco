@@ -8,8 +8,6 @@
 
 .introScroll {
   position: relative;
-  /* Height > 100vh so the sticky hero has room to pin */
-  height: 160vh;
   background: #1a1510;
 }
 
@@ -17,10 +15,8 @@
    CINEMATIC HERO
 ───────────────────────────────────────────────── */
 .hero {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  min-height: 840px;
+  position: relative;
+  min-height: 75vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -55,10 +51,10 @@
   position: relative;
   z-index: 2;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex: 1;
-  padding-top: 120px;
-  padding-bottom: 260px;
+  padding-top: 16vh;
+  padding-bottom: 220px;
 }
 
 /* Left copy block */
@@ -146,7 +142,7 @@
 ───────────────────────────────────────────────── */
 .heroPanel {
   position: absolute;
-  bottom: 80px;
+  bottom: 48px;
   left: 0;
   right: 0;
   z-index: 10;
