@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
 import styles from '../login/page.module.css';
 
 export default function ForgotPasswordPage() {

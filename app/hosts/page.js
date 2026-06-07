@@ -47,7 +47,7 @@ export default function HostsPage() {
               <p>Create an event, find a venue, recruit vendors, and manage applications without scattered forms and DMs.</p>
               <div className={styles.ctas}>
                 <Link href="/apply/host" className={`${styles.roleButton} ${styles.primaryButton}`}>Host a pop-up <ArrowRight size={20} /></Link>
-                <Link href="/apply/host" className={`${styles.roleButton} ${styles.secondaryButton}`}>Need a venue</Link>
+                <Link href="/venues" className={`${styles.roleButton} ${styles.secondaryButton}`}>Browse spaces</Link>
               </div>
               <div className={styles.heroChips}>
                 {chips.map(([Icon, text]) => (

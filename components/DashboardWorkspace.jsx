@@ -21,6 +21,7 @@ import Footer from './Footer';
 import SpaceCard from './SpaceCard';
 import { useAuth } from './AuthContext';
 import { loginHref } from './GatedLink';
+import { supabase } from '@/lib/supabase';
 import { SPACES_DATA } from '@/lib/spaces';
 import styles from '@/app/dashboard/page.module.css';
 
@@ -40,10 +41,6 @@ const roleCopy = {
   attendee: 'Track saved events, local pop-ups, and updates from PopUpCo.',
 };
 
-const sampleApplications = [
-  { title: 'Walnut Creek Weekend Market', status: 'Submitted', date: 'June 10, 2026', next: 'Host review in progress' },
-  { title: 'Oakland Makers Night Market', status: 'Under review', date: 'June 8, 2026', next: 'Category fit check' },
-];
 
 function EmptyState({ icon: Icon, title, copy, href, cta }) {
   return (
@@ -56,7 +53,7 @@ function EmptyState({ icon: Icon, title, copy, href, cta }) {
   );
 }
 
-function Sidebar({ user, section, savedCount, logout }) {
+function Sidebar({ user, section, savedCount, logout, profilePct }) {
   return (
     <aside className={styles.sidebar}>
       <div className={`card ${styles.profileCard}`}>
@@ -66,9 +63,9 @@ function Sidebar({ user, section, savedCount, logout }) {
         <div className={styles.progressBlock}>
           <div className={styles.progressText}>
             <span>Profile completion</span>
-            <span>70%</span>
+            <span>{profilePct}%</span>
           </div>
-          <div className={styles.progressBar}><div className={styles.progressFill} style={{ width: '70%' }} /></div>
+          <div className={styles.progressBar}><div className={styles.progressFill} style={{ width: `${profilePct}%` }} /></div>
         </div>
         <Link href="/dashboard/profile" className="btn btn--secondary btn--full btn--sm mt-4">Edit Profile</Link>
       </div>
@@ -85,7 +82,7 @@ function Sidebar({ user, section, savedCount, logout }) {
   );
 }
 
-function Overview({ user, savedSpaces }) {
+function Overview({ user, savedSpaces, submissionCount }) {
   const nextSteps = [
     'Complete your profile',
     user.type === 'vendor' ? 'Add product photos' : user.type === 'venue' ? 'Add space photos' : 'Add event details',
@@ -107,9 +104,9 @@ function Overview({ user, savedSpaces }) {
       </section>
 
       <div className={styles.statsGrid}>
-        <div className={styles.statCard}><FileText size={20} /><strong>2</strong><span>Active applications</span></div>
+        <div className={styles.statCard}><FileText size={20} /><strong>{submissionCount}</strong><span>Active applications</span></div>
         <div className={styles.statCard}><Heart size={20} /><strong>{savedSpaces.length}</strong><span>Saved opportunities</span></div>
-        <div className={styles.statCard}><MessageSquare size={20} /><strong>1</strong><span>Unread message</span></div>
+        <div className={styles.statCard}><MessageSquare size={20} /><strong>0</strong><span>Unread messages</span></div>
       </div>
 
       <section className={styles.section}>
@@ -135,14 +132,79 @@ function Overview({ user, savedSpaces }) {
   );
 }
 
-function Profile({ user }) {
+const profileFieldConfig = {
+  vendor: [
+    { label: 'Business name', key: 'business_name' },
+    { label: 'Vendor category', key: 'category' },
+    { label: 'Business description', key: 'bio', multiline: true },
+    { label: 'Website / Instagram', key: 'website' },
+    { label: 'City', key: 'city' },
+    { label: 'Setup needs', key: 'setup_needs' },
+    { label: 'Food permit status', key: 'food_permit' },
+  ],
+  venue: [
+    { label: 'Venue name', key: 'venue_name' },
+    { label: 'Space type', key: 'space_type' },
+    { label: 'Address / city', key: 'address' },
+    { label: 'Capacity', key: 'capacity' },
+    { label: 'Amenities', key: 'amenities' },
+    { label: 'Rules', key: 'rules', multiline: true },
+    { label: 'Availability', key: 'availability' },
+    { label: 'Pricing', key: 'pricing' },
+  ],
+  host: [
+    { label: 'Organization name', key: 'org_name' },
+    { label: 'Event types hosted', key: 'event_types' },
+    { label: 'Typical vendor count', key: 'vendor_count' },
+    { label: 'Preferred cities', key: 'preferred_cities' },
+    { label: 'Promotion channels', key: 'promo_channels' },
+    { label: 'Past events', key: 'past_events', multiline: true },
+    { label: 'Contact info', key: 'contact_info' },
+  ],
+  attendee: [
+    { label: 'Name', key: 'display_name' },
+    { label: 'Home city', key: 'city' },
+    { label: 'Event interests', key: 'interests' },
+    { label: 'Weekend availability', key: 'availability' },
+  ],
+};
+
+function Profile({ user, profilePct, onSaved }) {
   const role = user.type || 'vendor';
-  const profileFields = {
-    vendor: ['Business name', 'Vendor category', 'Business description', 'Website / Instagram', 'City', 'Setup needs', 'Food permit status', 'Product photos'],
-    venue: ['Venue name', 'Space type', 'Address / city', 'Capacity', 'Amenities', 'Rules', 'Availability', 'Pricing'],
-    host: ['Organization name', 'Event types hosted', 'Typical vendor count', 'Preferred cities', 'Promotion channels', 'Past events', 'Contact info'],
-    attendee: ['Name', 'Email', 'Home city', 'Event interests', 'Saved event preferences', 'Weekend availability'],
-  }[role];
+  const fieldConfig = profileFieldConfig[role] || [];
+  const [fields, setFields] = useState({});
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState('');
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user: authUser } }) => {
+      const meta = authUser?.user_metadata || {};
+      const initial = {};
+      fieldConfig.forEach(({ key }) => { initial[key] = meta[key] || ''; });
+      setFields(initial);
+      setProfileLoading(false);
+    });
+  }, []);
+
+  const handleChange = (key, value) => setFields((prev) => ({ ...prev, [key]: value }));
+
+  const handleSave = async (event) => {
+    event.preventDefault();
+    setSaving(true);
+    setSaved(false);
+    setSaveError('');
+    const { error } = await supabase.auth.updateUser({ data: fields });
+    setSaving(false);
+    if (error) { setSaveError(error.message); setSaving(false); return; }
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
+    const filled = fieldConfig.filter(({ key }) => fields[key] && String(fields[key]).trim()).length;
+    onSaved(Math.round((filled / fieldConfig.length) * 100));
+  };
+
+  const displayName = fields.business_name || fields.venue_name || fields.org_name || fields.display_name || user.name || 'Your profile';
 
   return (
     <section className={styles.profileGrid}>
@@ -151,23 +213,47 @@ function Profile({ user }) {
           <h1>Profile</h1>
           <p>Help hosts, venues, and vendors understand who you are before reviewing applications or requests.</p>
         </div>
-        <div className={styles.fieldGrid}>
-          {profileFields.map((field) => (
-            <label key={field} className={styles.fakeField}>
-              <span>{field}</span>
-              <input placeholder={`Add ${field.toLowerCase()}`} />
-            </label>
-          ))}
-        </div>
+        {profileLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <form onSubmit={handleSave} className={styles.fieldGrid}>
+            {fieldConfig.map(({ label, key, multiline }) => (
+              <label key={key} className={styles.fakeField}>
+                <span>{label}</span>
+                {multiline ? (
+                  <textarea
+                    placeholder={`Add ${label.toLowerCase()}`}
+                    value={fields[key] || ''}
+                    onChange={(e) => handleChange(key, e.target.value)}
+                    rows={3}
+                  />
+                ) : (
+                  <input
+                    placeholder={`Add ${label.toLowerCase()}`}
+                    value={fields[key] || ''}
+                    onChange={(e) => handleChange(key, e.target.value)}
+                  />
+                )}
+              </label>
+            ))}
+            {saveError && <p className="form-error">{saveError}</p>}
+            {saved && <p style={{ color: 'var(--color-sage)', fontSize: '0.875rem' }}>Profile saved.</p>}
+            <button type="submit" className="btn btn--primary" disabled={saving} style={{ marginTop: 'var(--sp-4)' }}>
+              {saving ? 'Saving...' : 'Save profile'}
+            </button>
+          </form>
+        )}
       </div>
       <aside className={styles.previewCard}>
         <span>Profile preview</span>
-        <h2>{user.name || 'Your profile'}</h2>
+        <h2>{displayName}</h2>
         <p>{roleCopy[role]}</p>
         <div className={styles.previewTags}>
           <span>{role}</span>
-          <span>Bay Area</span>
-          <span>70% complete</span>
+          {(fields.city || fields.preferred_cities || fields.address) && (
+            <span>{fields.city || fields.preferred_cities || fields.address}</span>
+          )}
+          <span>{profilePct}% complete</span>
         </div>
       </aside>
     </section>
@@ -175,27 +261,26 @@ function Profile({ user }) {
 }
 
 function Applications({ submissions }) {
-  const submittedItems = [
+  const items = [
     ...submissions.vendor.map((item) => ({
-      title: item.selected_event_title || item.business_name || 'Vendor application',
-      status: 'Submitted',
-      date: item.submittedAt ? new Date(item.submittedAt).toLocaleDateString() : 'Recently',
+      title: item.brand_name || 'Vendor application',
+      status: item.status || 'Submitted',
+      date: item.created_at ? new Date(item.created_at).toLocaleDateString() : 'Recently',
       next: 'PopUpCo review in progress',
     })),
     ...submissions.venue.map((item) => ({
       title: item.venue_name || 'Venue submission',
-      status: 'Submitted',
-      date: item.submittedAt ? new Date(item.submittedAt).toLocaleDateString() : 'Recently',
+      status: item.status || 'Submitted',
+      date: item.created_at ? new Date(item.created_at).toLocaleDateString() : 'Recently',
       next: 'Venue fit review',
     })),
     ...submissions.host.map((item) => ({
-      title: item.event_name || 'Host request',
-      status: 'Submitted',
-      date: item.submittedAt ? new Date(item.submittedAt).toLocaleDateString() : 'Recently',
+      title: item.org_name || 'Host request',
+      status: item.status || 'Submitted',
+      date: item.created_at ? new Date(item.created_at).toLocaleDateString() : 'Recently',
       next: 'Event concept review',
     })),
   ];
-  const items = submittedItems.length ? submittedItems : sampleApplications;
 
   return (
     <section className={styles.section}>
@@ -208,17 +293,21 @@ function Applications({ submissions }) {
         <span>Draft applications</span>
         <span>Past applications</span>
       </div>
-      <div className={styles.applicationList}>
-        {items.map((item) => (
-          <div key={item.title} className={styles.appRow}>
-            <div>
-              <strong>{item.title}</strong>
-              <p>{item.date} - {item.next}</p>
+      {items.length === 0 ? (
+        <EmptyState icon={Bookmark} title="No applications yet" copy="Apply to an opportunity and it will appear here." href="/browse" cta="Browse opportunities" />
+      ) : (
+        <div className={styles.applicationList}>
+          {items.map((item, i) => (
+            <div key={`${item.title}-${i}`} className={styles.appRow}>
+              <div>
+                <strong>{item.title}</strong>
+                <p>{item.date} - {item.next}</p>
+              </div>
+              <span className={styles.statusPill}>{item.status}</span>
             </div>
-            <span className={styles.statusPill}>{item.status}</span>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -286,6 +375,7 @@ export default function DashboardWorkspace({ section = 'overview' }) {
   const pathname = usePathname();
   const [savedIds, setSavedIds] = useState([]);
   const [submissions, setSubmissions] = useState({ vendor: [], venue: [], host: [] });
+  const [profilePct, setProfilePct] = useState(0);
 
   useEffect(() => {
     if (!loading && !user) router.replace(loginHref(pathname, 'dashboard'));
@@ -293,33 +383,61 @@ export default function DashboardWorkspace({ section = 'overview' }) {
 
   useEffect(() => {
     if (!user) return;
-    setSavedIds(JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]'));
-    setSubmissions({
-      vendor: JSON.parse(localStorage.getItem('popupco_vendor_applications') || '[]'),
-      venue: JSON.parse(localStorage.getItem('popupco_venue_submissions') || '[]'),
-      host: JSON.parse(localStorage.getItem('popupco_host_submissions') || '[]'),
+
+    supabase.auth.getUser().then(({ data: { user: authUser } }) => {
+      const meta = authUser?.user_metadata || {};
+
+      // Merge localStorage saves with Supabase metadata (cross-device sync)
+      const metaSaved = meta.saved_space_ids || [];
+      const localSaved = JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]');
+      const merged = [...new Set([...metaSaved, ...localSaved])];
+      if (merged.length !== localSaved.length) {
+        localStorage.setItem(`saved_spaces_${user.id}`, JSON.stringify(merged));
+      }
+      setSavedIds(merged);
+
+      // Compute real profile completion
+      const fields = profileFieldConfig[user.type] || profileFieldConfig.vendor;
+      const filled = fields.filter(({ key }) => meta[key] && String(meta[key]).trim()).length;
+      setProfilePct(Math.round((filled / fields.length) * 100));
     });
+
+    const fetchApplications = async () => {
+      const [vendorRes, venueRes, hostRes] = await Promise.all([
+        supabase.from('vendor_applications').select('brand_name, event_slug, created_at, status').eq('user_id', user.id).order('created_at', { ascending: false }),
+        supabase.from('venue_applications').select('venue_name, created_at, status').eq('user_id', user.id).order('created_at', { ascending: false }),
+        supabase.from('host_applications').select('org_name, event_concept, created_at, status').eq('user_id', user.id).order('created_at', { ascending: false }),
+      ]);
+      setSubmissions({
+        vendor: vendorRes.data || [],
+        venue: venueRes.data || [],
+        host: hostRes.data || [],
+      });
+    };
+    fetchApplications();
   }, [user]);
 
   const savedSpaces = useMemo(() => SPACES_DATA.filter((space) => savedIds.includes(space.id)), [savedIds]);
 
   if (loading || !user) return null;
 
+  const submissionCount = submissions.vendor.length + submissions.venue.length + submissions.host.length;
+
   const content = {
-    overview: <Overview user={user} savedSpaces={savedSpaces} />,
-    profile: <Profile user={user} />,
+    overview: <Overview user={user} savedSpaces={savedSpaces} submissionCount={submissionCount} />,
+    profile: <Profile user={user} profilePct={profilePct} onSaved={setProfilePct} />,
     applications: <Applications submissions={submissions} />,
     saved: <Saved savedSpaces={savedSpaces} />,
     messages: <Messages />,
     settings: <SettingsPage user={user} />,
-  }[section] || <Overview user={user} savedSpaces={savedSpaces} />;
+  }[section] || <Overview user={user} savedSpaces={savedSpaces} submissionCount={submissionCount} />;
 
   return (
     <>
       <Header />
       <main className={styles.main}>
         <div className={`container ${styles.grid}`}>
-          <Sidebar user={user} section={section} savedCount={savedSpaces.length} logout={logout} />
+          <Sidebar user={user} section={section} savedCount={savedSpaces.length} logout={logout} profilePct={profilePct} />
           <div className={styles.content}>{content}</div>
         </div>
       </main>
