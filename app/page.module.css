@@ -185,7 +185,7 @@
   transition: all 200ms ease;
 }
 
-.searchTab:hover {
+.searchTab:not(.searchTabActive):hover {
   background: rgba(255, 255, 255, 0.3);
 }
 
@@ -293,7 +293,7 @@
 
 .dropdownMenu {
   position: absolute;
-  top: calc(100% + 8px);
+  bottom: calc(100% + 8px);
   left: 0;
   width: 100%;
   min-width: 200px;
@@ -323,6 +323,121 @@
 
 .dropdownMenu button:hover {
   background: #f5f0e8;
+}
+
+/* ─── Calendar UI ─────────────────────────────────────── */
+.calendarContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px;
+}
+
+.calendarMonthYear {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #26221e;
+}
+
+.calendarNavBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #5a524a;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 150ms ease;
+}
+
+.calendarNavBtn:hover {
+  background: #f5f0e8;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  text-align: center;
+}
+
+.calendarDayHeader {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #8c827a;
+  margin-bottom: 4px;
+}
+
+.calendarDay {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #3c332d;
+  transition: all 150ms ease;
+  margin: 0 auto;
+}
+
+.calendarDay:not(.calendarDayEmpty):hover {
+  background: #f5f0e8;
+}
+
+.calendarDaySelected {
+  background: #c85f2c !important;
+  color: white !important;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(200, 95, 44, 0.3);
+}
+
+.calendarDayEmpty {
+  cursor: default;
+  background: transparent !important;
+}
+
+.calendarFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 4px 0 4px;
+  border-top: 1px solid rgba(60, 45, 35, 0.1);
+  margin-top: 4px;
+}
+
+.calendarHint {
+  font-size: 0.75rem;
+  color: #8c827a;
+}
+
+.calendarApplyBtn {
+  background: #c85f2c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.calendarApplyBtn:hover {
+  background: #b55022;
 }
 
 .searchDivider {

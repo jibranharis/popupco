@@ -12,6 +12,8 @@ import {
   CalendarDays,
   CheckCircle,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
   Coins,
   DollarSign,
@@ -29,6 +31,74 @@ import {
   Zap,
 } from 'lucide-react';
 import styles from './page.module.css';
+
+/* ─── Calendar Component ────────────────────────────────── */
+
+function CalendarPicker({ selectedDates, setSelectedDates, onClose }) {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+
+  const prevMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+  };
+  const nextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+  };
+
+  const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
+  const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
+
+  const days = [];
+  for (let i = 0; i < firstDay; i++) days.push(null);
+  for (let i = 1; i <= daysInMonth; i++) days.push(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i));
+
+  const toggleDate = (date) => {
+    if (!date) return;
+    const exists = selectedDates.find(d => d.getTime() === date.getTime());
+    if (exists) {
+      setSelectedDates(selectedDates.filter(d => d.getTime() !== date.getTime()));
+    } else {
+      if (selectedDates.length >= 3) {
+        setSelectedDates([...selectedDates.slice(1), date]);
+      } else {
+        setSelectedDates([...selectedDates, date]);
+      }
+    }
+  };
+
+  const isSelected = (date) => date && selectedDates.some(d => d.getTime() === date.getTime());
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  return (
+    <div className={styles.calendarContainer}>
+      <div className={styles.calendarHeader}>
+        <button className={styles.calendarNavBtn} onClick={(e) => { e.stopPropagation(); prevMonth(); }}><ChevronLeft size={16} /></button>
+        <div className={styles.calendarMonthYear}>
+          {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+        </div>
+        <button className={styles.calendarNavBtn} onClick={(e) => { e.stopPropagation(); nextMonth(); }}><ChevronRight size={16} /></button>
+      </div>
+      <div className={styles.calendarGrid}>
+        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => (
+          <div key={day} className={styles.calendarDayHeader}>{day}</div>
+        ))}
+        {days.map((date, idx) => (
+          <button 
+            key={idx} 
+            className={`${styles.calendarDay} ${isSelected(date) ? styles.calendarDaySelected : ''} ${!date ? styles.calendarDayEmpty : ''}`}
+            onClick={(e) => { e.stopPropagation(); toggleDate(date); }}
+            disabled={!date}
+          >
+            {date ? date.getDate() : ''}
+          </button>
+        ))}
+      </div>
+      <div className={styles.calendarFooter}>
+        <span className={styles.calendarHint}>Select up to 3 days</span>
+        <button className={styles.calendarApplyBtn} onClick={(e) => { e.stopPropagation(); onClose(); }}>Apply</button>
+      </div>
+    </div>
+  );
+}
 
 /* ─── Static data ─────────────────────────────────────── */
 
@@ -184,7 +254,7 @@ export default function HomePage() {
   // States for all tabs
   const [location, setLocation] = useState('Bay Area, CA');
   const [category, setCategory] = useState('All categories');
-  const [date, setDate] = useState('Any weekend');
+  const [selectedDates, setSelectedDates] = useState([]);
   const [budget, setBudget] = useState('$75 – $250+');
   const [spaceType, setSpaceType] = useState('All types');
   const [size, setSize] = useState('Any size');
@@ -196,13 +266,17 @@ export default function HomePage() {
   const [activeMoment, setActiveMoment] = useState(0);
   useFadeInObserver(pageRef);
 
+  const dateValue = selectedDates.length > 0 
+    ? selectedDates.map(d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })).join(', ') 
+    : 'Any weekend';
+
   // Configuration for dynamic search bar rendering
   const searchConfig = {
     sell: {
       fields: [
         { id: 'location', label: 'LOCATION', value: location, icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
         { id: 'category', label: 'CATEGORY', value: category, icon: LayoutGrid, options: ['All categories', 'Retail spaces', 'Food pop-ups', 'Vendor markets'] },
-        { id: 'date', label: 'DATE', value: date, icon: CalendarDays, options: ['Any weekend', 'This weekend', 'Next weekend', 'This month'] },
+        { id: 'date', label: 'DATE', value: dateValue, icon: CalendarDays, options: [] },
         { id: 'budget', label: 'BUDGET', value: budget, icon: DollarSign, options: ['$75 – $250+', 'Under $100', '$100 - $500', 'Over $500'] },
       ],
       href: '/signup?type=vendor'
@@ -304,23 +378,23 @@ export default function HomePage() {
                     <div key={field.id} className={styles.searchFieldGroup}>
                       <div className={styles.searchFieldWrapper}>
                         <div 
-                          className={`${styles.searchField} ${field.id !== 'location' ? styles.searchFieldTypable : ''}`}
-                          onClick={() => { if (field.id === 'location') setActiveDropdown(activeDropdown === field.id ? null : field.id); }}
+                          className={`${styles.searchField} ${field.id !== 'location' && field.id !== 'date' ? styles.searchFieldTypable : ''}`}
+                          onClick={() => { if (field.id === 'location' || field.id === 'date') setActiveDropdown(activeDropdown === field.id ? null : field.id); }}
                         >
                           <field.icon size={18} className={styles.fieldIcon} />
                           <div className={styles.fieldContent}>
                             <span className={styles.fieldLabel}>{field.label}</span>
-                            {field.id === 'location' ? (
+                            {field.id === 'location' || field.id === 'date' ? (
                               <span className={styles.fieldValue}>{field.value}</span>
                             ) : (
                               <input 
                                 type="text"
                                 className={styles.fieldInput}
                                 value={field.value}
+                                onFocus={(e) => e.target.select()}
                                 onChange={(e) => {
                                   const val = e.target.value;
                                   if (field.id === 'category') setCategory(val);
-                                  else if (field.id === 'date') setDate(val);
                                   else if (field.id === 'budget') setBudget(val);
                                   else if (field.id === 'spaceType') setSpaceType(val);
                                   else if (field.id === 'size') setSize(val);
@@ -332,7 +406,7 @@ export default function HomePage() {
                               />
                             )}
                           </div>
-                          {field.id === 'location' && <ChevronDown size={16} className={styles.fieldChevron} />}
+                          {(field.id === 'location' || field.id === 'date') && <ChevronDown size={16} className={styles.fieldChevron} />}
                         </div>
                         {activeDropdown === field.id && field.id === 'location' && (
                           <div className={styles.dropdownMenu}>
@@ -344,6 +418,15 @@ export default function HomePage() {
                                 {opt}
                               </button>
                             ))}
+                          </div>
+                        )}
+                        {activeDropdown === field.id && field.id === 'date' && (
+                          <div className={styles.dropdownMenu}>
+                            <CalendarPicker 
+                              selectedDates={selectedDates} 
+                              setSelectedDates={setSelectedDates} 
+                              onClose={() => setActiveDropdown(null)} 
+                            />
                           </div>
                         )}
                       </div>
