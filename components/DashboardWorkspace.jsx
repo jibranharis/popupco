@@ -53,7 +53,7 @@ function EmptyState({ icon: Icon, title, copy, href, cta }) {
   );
 }
 
-function Sidebar({ user, section, savedCount, logout }) {
+function Sidebar({ user, section, savedCount, logout, profilePct }) {
   return (
     <aside className={styles.sidebar}>
       <div className={`card ${styles.profileCard}`}>
@@ -63,9 +63,9 @@ function Sidebar({ user, section, savedCount, logout }) {
         <div className={styles.progressBlock}>
           <div className={styles.progressText}>
             <span>Profile completion</span>
-            <span>70%</span>
+            <span>{profilePct}%</span>
           </div>
-          <div className={styles.progressBar}><div className={styles.progressFill} style={{ width: '70%' }} /></div>
+          <div className={styles.progressBar}><div className={styles.progressFill} style={{ width: `${profilePct}%` }} /></div>
         </div>
         <Link href="/dashboard/profile" className="btn btn--secondary btn--full btn--sm mt-4">Edit Profile</Link>
       </div>
@@ -169,7 +169,7 @@ const profileFieldConfig = {
   ],
 };
 
-function Profile({ user }) {
+function Profile({ user, profilePct, onSaved }) {
   const role = user.type || 'vendor';
   const fieldConfig = profileFieldConfig[role] || [];
   const [fields, setFields] = useState({});
@@ -197,9 +197,11 @@ function Profile({ user }) {
     setSaveError('');
     const { error } = await supabase.auth.updateUser({ data: fields });
     setSaving(false);
-    if (error) { setSaveError(error.message); return; }
+    if (error) { setSaveError(error.message); setSaving(false); return; }
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
+    const filled = fieldConfig.filter(({ key }) => fields[key] && String(fields[key]).trim()).length;
+    onSaved(Math.round((filled / fieldConfig.length) * 100));
   };
 
   const displayName = fields.business_name || fields.venue_name || fields.org_name || fields.display_name || user.name || 'Your profile';
@@ -251,6 +253,7 @@ function Profile({ user }) {
           {(fields.city || fields.preferred_cities || fields.address) && (
             <span>{fields.city || fields.preferred_cities || fields.address}</span>
           )}
+          <span>{profilePct}% complete</span>
         </div>
       </aside>
     </section>
@@ -372,6 +375,7 @@ export default function DashboardWorkspace({ section = 'overview' }) {
   const pathname = usePathname();
   const [savedIds, setSavedIds] = useState([]);
   const [submissions, setSubmissions] = useState({ vendor: [], venue: [], host: [] });
+  const [profilePct, setProfilePct] = useState(0);
 
   useEffect(() => {
     if (!loading && !user) router.replace(loginHref(pathname, 'dashboard'));
@@ -380,15 +384,22 @@ export default function DashboardWorkspace({ section = 'overview' }) {
   useEffect(() => {
     if (!user) return;
 
-    // Merge localStorage saves with Supabase metadata (cross-device sync)
     supabase.auth.getUser().then(({ data: { user: authUser } }) => {
-      const metaSaved = authUser?.user_metadata?.saved_space_ids || [];
+      const meta = authUser?.user_metadata || {};
+
+      // Merge localStorage saves with Supabase metadata (cross-device sync)
+      const metaSaved = meta.saved_space_ids || [];
       const localSaved = JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]');
       const merged = [...new Set([...metaSaved, ...localSaved])];
       if (merged.length !== localSaved.length) {
         localStorage.setItem(`saved_spaces_${user.id}`, JSON.stringify(merged));
       }
       setSavedIds(merged);
+
+      // Compute real profile completion
+      const fields = profileFieldConfig[user.type] || profileFieldConfig.vendor;
+      const filled = fields.filter(({ key }) => meta[key] && String(meta[key]).trim()).length;
+      setProfilePct(Math.round((filled / fields.length) * 100));
     });
 
     const fetchApplications = async () => {
@@ -414,19 +425,19 @@ export default function DashboardWorkspace({ section = 'overview' }) {
 
   const content = {
     overview: <Overview user={user} savedSpaces={savedSpaces} submissionCount={submissionCount} />,
-    profile: <Profile user={user} />,
+    profile: <Profile user={user} profilePct={profilePct} onSaved={setProfilePct} />,
     applications: <Applications submissions={submissions} />,
     saved: <Saved savedSpaces={savedSpaces} />,
     messages: <Messages />,
     settings: <SettingsPage user={user} />,
-  }[section] || <Overview user={user} savedSpaces={savedSpaces} />;
+  }[section] || <Overview user={user} savedSpaces={savedSpaces} submissionCount={submissionCount} />;
 
   return (
     <>
       <Header />
       <main className={styles.main}>
         <div className={`container ${styles.grid}`}>
-          <Sidebar user={user} section={section} savedCount={savedSpaces.length} logout={logout} />
+          <Sidebar user={user} section={section} savedCount={savedSpaces.length} logout={logout} profilePct={profilePct} />
           <div className={styles.content}>{content}</div>
         </div>
       </main>
