@@ -348,8 +348,9 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
+      </div>
 
         {/* ── BROWSE BY MOMENT ───────────────────────── */}
         <section className={styles.momentsSection}>
