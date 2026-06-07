@@ -6,7 +6,19 @@ import styles from '../login/page.module.css';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    setLoading(false);
+    setSubmitted(true);
+  };
 
   return (
     <main className={styles.authLayout}>
@@ -16,25 +28,41 @@ export default function ForgotPasswordPage() {
       </Link>
 
       <section className={styles.authContainer}>
-        <h1 className={styles.title}>Reset your password</h1>
-        <p className={styles.subtitle}>Enter your email and we&apos;ll send password reset instructions if an account exists.</p>
-
-        {sent ? (
-          <>
-            <div className={styles.intentNotice}>
-              If an account exists for this email, we&apos;ll send password reset instructions.
-            </div>
-            <Link href="/login" className="btn btn--primary btn--full">Back to login</Link>
-          </>
+        <h1 className={styles.title}>Reset password</h1>
+        
+        {submitted ? (
+          <div style={{ textAlign: 'center', padding: '1rem 0' }}>
+            <p style={{ color: 'var(--color-text)', marginBottom: '1.5rem', lineHeight: '1.5' }}>
+              If an account exists for <strong>{email}</strong>, we’ll send password reset instructions.
+            </p>
+            <Link href="/login" className="btn btn--primary btn--full" style={{ display: 'inline-block', textDecoration: 'none' }}>
+              Return to log in
+            </Link>
+          </div>
         ) : (
-          <form onSubmit={(event) => { event.preventDefault(); setSent(true); }} className={styles.form}>
-            <div className="form-group">
-              <label className="form-label">Email</label>
-              <input type="email" className="form-input" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="hello@brand.com" required />
-            </div>
-            <button type="submit" className="btn btn--primary btn--full">Send reset link</button>
-            <p className={styles.footer}><Link href="/login">Back to login</Link></p>
-          </form>
+          <>
+            <p className={styles.subtitle}>Enter your email address and we'll send you a link to reset your password.</p>
+
+            <form onSubmit={handleSubmit} className={styles.form}>
+              <div className="form-group">
+                <label className="form-label">Email</label>
+                <input
+                  type="email"
+                  className="form-input"
+                  placeholder="hello@brand.com"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  required
+                />
+              </div>
+
+              <button type="submit" className="btn btn--primary btn--full" disabled={loading}>
+                {loading ? 'Sending...' : 'Send reset link'}
+              </button>
+            </form>
+
+            <p className={styles.footer}><Link href="/login">Back to log in</Link></p>
+          </>
         )}
       </section>
     </main>

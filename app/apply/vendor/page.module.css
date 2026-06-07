@@ -1,5 +1,5 @@
 .main {
-  padding: 140px 0 80px;
+  padding: 160px var(--sp-4) 100px;
   background: var(--color-bg);
   min-height: 100vh;
 }
@@ -83,9 +83,10 @@
 
 /* Form Card */
 .formCard {
-  padding: var(--space-2xl);
-  max-width: 760px;
+  padding: var(--sp-8);
+  max-width: 800px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .sectionTitle {
@@ -188,10 +189,12 @@
 /* Nav */
 .navBtns {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin-top: var(--space-2xl);
-  padding-top: var(--space-xl);
+  gap: var(--sp-4);
+  margin-top: var(--sp-8);
+  padding-top: var(--sp-6);
   border-top: 1px solid var(--color-border);
 }
 
@@ -253,12 +256,12 @@
 @media (max-width: 768px) {
   .twoCol {
     grid-template-columns: 1fr;
-    gap: var(--space-lg);
+    gap: var(--sp-4);
   }
   .catGrid {
     grid-template-columns: 1fr;
   }
   .formCard {
-    padding: var(--space-xl);
+    padding: var(--sp-6) var(--sp-4);
   }
 }

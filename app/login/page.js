@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CalendarDays, Map, Store, Users } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/components/AuthContext';
 import styles from './page.module.css';
 
 const intentCopy = {
@@ -24,19 +24,22 @@ const quickLinks = [
   { label: 'Browse opportunities', href: '/browse', icon: CalendarDays },
 ];
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
+  const { login: simulateLogin } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState('/dashboard');
   const [intent, setIntent] = useState('continue');
+  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setRedirect(params.get('redirect') || '/dashboard');
-    setIntent(params.get('intent') || 'continue');
+    setIntent(params.get('intent') || '');
+    setMessage(params.get('message') || '');
   }, []);
 
   const handleLogin = async (event) => {
@@ -44,18 +47,21 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 800));
 
-    if (authError) {
-      setError(authError.message);
-      setLoading(false);
-      return;
-    }
+    // For demo purposes, determine simulated role based on email or default to vendor
+    let role = 'vendor';
+    if (email.includes('venue')) role = 'venue';
+    if (email.includes('host')) role = 'host';
+    if (email.includes('attendee') || email.includes('explorer')) role = 'attendee';
+
+    simulateLogin(role, { email });
 
     router.push(redirect || '/dashboard');
   };
 
-  const signupHref = `/signup?redirect=${encodeURIComponent(redirect || '/dashboard')}&intent=${encodeURIComponent(intent)}`;
+  const signupHref = `/signup?redirect=${encodeURIComponent(redirect || '/dashboard')}${intent ? `&intent=${encodeURIComponent(intent)}` : ''}`;
 
   return (
     <main className={styles.authLayout}>
@@ -65,7 +71,12 @@ export default function LoginPage() {
       </Link>
 
       <section className={styles.authContainer}>
-        {intent && <div className={styles.intentNotice}>{intentCopy[intent] || intentCopy.continue}</div>}
+        {message ? (
+          <div className={styles.intentNotice}>{message}</div>
+        ) : intent ? (
+          <div className={styles.intentNotice}>{intentCopy[intent] || intentCopy.continue}</div>
+        ) : null}
+        
         <h1 className={styles.title}>Welcome back</h1>
         <p className={styles.subtitle}>Log in to manage your applications, saved opportunities, messages, and profile.</p>
 
@@ -117,5 +128,13 @@ export default function LoginPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }
