@@ -284,8 +284,8 @@ export default function HomePage() {
     space: {
       fields: [
         { id: 'location', label: 'LOCATION', value: location, icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
-        { id: 'spaceType', label: 'SPACE TYPE', value: spaceType, icon: Building2, options: ['All types', 'Retail', 'Event', 'Shared', 'Market'] },
-        { id: 'size', label: 'SIZE', value: size, icon: LayoutGrid, options: ['Any size', 'Under 500 sq ft', '500-1000 sq ft', 'Over 1000 sq ft'] },
+        { id: 'spaceType', label: 'SPACE TYPE', value: spaceType, icon: Building2, options: ['All types', 'Retail storefront', 'Event space', 'Shared space', 'Warehouse/Industrial', 'Outdoor market'] },
+        { id: 'size', label: 'SIZE', value: size, icon: LayoutGrid, options: ['Any size', 'Under 500 sq ft', '500 - 1000 sq ft', 'Over 1000 sq ft'] },
         { id: 'duration', label: 'DURATION', value: duration, icon: Clock3, options: ['Any duration', 'Daily', 'Weekly', 'Monthly'] },
       ],
       href: '/signup?type=venue'
@@ -378,16 +378,16 @@ export default function HomePage() {
                     <div key={field.id} className={styles.searchFieldGroup}>
                       <div 
                         className={styles.searchFieldWrapper}
-                        onMouseEnter={() => { if (field.id === 'location' || field.id === 'date') setActiveDropdown(field.id); }}
-                        onMouseLeave={() => { if (field.id === 'location' || field.id === 'date') setActiveDropdown(null); }}
+                        onMouseEnter={() => { if (field.id === 'location' || field.id === 'date' || field.id === 'spaceType') setActiveDropdown(field.id); }}
+                        onMouseLeave={() => { if (field.id === 'location' || field.id === 'date' || field.id === 'spaceType') setActiveDropdown(null); }}
                       >
                         <div 
-                          className={`${styles.searchField} ${field.id !== 'location' && field.id !== 'date' ? styles.searchFieldTypable : ''}`}
+                          className={`${styles.searchField} ${field.id !== 'location' && field.id !== 'date' && field.id !== 'spaceType' ? styles.searchFieldTypable : ''}`}
                         >
                           <field.icon size={18} className={styles.fieldIcon} />
                           <div className={styles.fieldContent}>
                             <span className={styles.fieldLabel}>{field.label}</span>
-                            {field.id === 'location' || field.id === 'date' ? (
+                            {field.id === 'location' || field.id === 'date' || field.id === 'spaceType' ? (
                               <span className={styles.fieldValue}>{field.value}</span>
                             ) : (
                               <input 
@@ -399,7 +399,6 @@ export default function HomePage() {
                                   const val = e.target.value;
                                   if (field.id === 'category') setCategory(val);
                                   else if (field.id === 'budget') setBudget(val);
-                                  else if (field.id === 'spaceType') setSpaceType(val);
                                   else if (field.id === 'size') setSize(val);
                                   else if (field.id === 'duration') setDuration(val);
                                   else if (field.id === 'eventType') setEventType(val);
@@ -409,13 +408,14 @@ export default function HomePage() {
                               />
                             )}
                           </div>
-                          {(field.id === 'location' || field.id === 'date') && <ChevronDown size={16} className={styles.fieldChevron} />}
+                          {(field.id === 'location' || field.id === 'date' || field.id === 'spaceType') && <ChevronDown size={16} className={styles.fieldChevron} />}
                         </div>
-                        {activeDropdown === field.id && field.id === 'location' && (
+                        {(activeDropdown === field.id && (field.id === 'location' || field.id === 'spaceType')) && (
                           <div className={styles.dropdownMenu}>
                             {field.options.map(opt => (
                               <button key={opt} onClick={() => { 
-                                setLocation(opt);
+                                if (field.id === 'location') setLocation(opt);
+                                if (field.id === 'spaceType') setSpaceType(opt);
                                 setActiveDropdown(null); 
                               }}>
                                 {opt}
