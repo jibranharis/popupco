@@ -178,6 +178,12 @@ function useFadeInObserver(ref) {
 
 export default function HomePage() {
   const pageRef = useRef(null);
+  const [activeTab, setActiveTab] = useState('sell');
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [location, setLocation] = useState('Bay Area, CA');
+  const [category, setCategory] = useState('All categories');
+  const [date, setDate] = useState('Any weekend');
+  const [budget, setBudget] = useState('$75 – $250+');
   const [activeMoment, setActiveMoment] = useState(0);
   useFadeInObserver(pageRef);
 
@@ -227,51 +233,115 @@ export default function HomePage() {
 
             {/* ── Floating search panel ── */}
             <div className={styles.heroPanel}>
-              <div className={`container ${styles.searchPanelContainer}`}>
-                {/* Search Tabs */}
-                <div className={styles.searchTabs}>
-                  <button className={`${styles.searchTab} ${styles.searchTabActive}`}>Find a place to sell</button>
-                  <button className={styles.searchTab}>List your space</button>
-                  <button className={styles.searchTab}>Host a pop-up</button>
-                </div>
+              <div className="container">
+                <div className={styles.searchPanelContainer}>
+                  {/* Search Tabs */}
+                  <div className={styles.searchTabs}>
+                    <button 
+                      className={`${styles.searchTab} ${activeTab === 'sell' ? styles.searchTabActive : ''}`}
+                      onClick={() => setActiveTab('sell')}
+                    >
+                      Find a place to sell
+                    </button>
+                    <button 
+                      className={`${styles.searchTab} ${activeTab === 'space' ? styles.searchTabActive : ''}`}
+                      onClick={() => setActiveTab('space')}
+                    >
+                      List your space
+                    </button>
+                    <button 
+                      className={`${styles.searchTab} ${activeTab === 'host' ? styles.searchTabActive : ''}`}
+                      onClick={() => setActiveTab('host')}
+                    >
+                      Host a pop-up
+                    </button>
+                  </div>
 
                 <div className={styles.searchBar}>
-                  <div className={styles.searchField}>
-                    <MapPin size={18} className={styles.fieldIcon} />
-                    <div className={styles.fieldContent}>
-                      <span className={styles.fieldLabel}>LOCATION</span>
-                      <span className={styles.fieldValue}>Bay Area, CA</span>
+                  
+                  {/* LOCATION */}
+                  <div className={styles.searchFieldWrapper}>
+                    <div className={styles.searchField} onClick={() => setActiveDropdown(activeDropdown === 'location' ? null : 'location')}>
+                      <MapPin size={18} className={styles.fieldIcon} />
+                      <div className={styles.fieldContent}>
+                        <span className={styles.fieldLabel}>LOCATION</span>
+                        <span className={styles.fieldValue}>{location}</span>
+                      </div>
+                      <ChevronDown size={16} className={styles.fieldChevron} />
                     </div>
-                    <ChevronDown size={16} className={styles.fieldChevron} />
+                    {activeDropdown === 'location' && (
+                      <div className={styles.dropdownMenu}>
+                        {['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'].map(opt => (
+                          <button key={opt} onClick={() => { setLocation(opt); setActiveDropdown(null); }}>{opt}</button>
+                        ))}
+                      </div>
+                    )}
                   </div>
+
                   <div className={styles.searchDivider} />
-                  <div className={styles.searchField}>
-                    <LayoutGrid size={18} className={styles.fieldIcon} />
-                    <div className={styles.fieldContent}>
-                      <span className={styles.fieldLabel}>CATEGORY</span>
-                      <span className={styles.fieldValue}>All categories</span>
+
+                  {/* CATEGORY */}
+                  <div className={styles.searchFieldWrapper}>
+                    <div className={styles.searchField} onClick={() => setActiveDropdown(activeDropdown === 'category' ? null : 'category')}>
+                      <LayoutGrid size={18} className={styles.fieldIcon} />
+                      <div className={styles.fieldContent}>
+                        <span className={styles.fieldLabel}>CATEGORY</span>
+                        <span className={styles.fieldValue}>{category}</span>
+                      </div>
+                      <ChevronDown size={16} className={styles.fieldChevron} />
                     </div>
-                    <ChevronDown size={16} className={styles.fieldChevron} />
+                    {activeDropdown === 'category' && (
+                      <div className={styles.dropdownMenu}>
+                        {['All categories', 'Retail spaces', 'Food pop-ups', 'Vendor markets'].map(opt => (
+                          <button key={opt} onClick={() => { setCategory(opt); setActiveDropdown(null); }}>{opt}</button>
+                        ))}
+                      </div>
+                    )}
                   </div>
+
                   <div className={styles.searchDivider} />
-                  <div className={styles.searchField}>
-                    <CalendarDays size={18} className={styles.fieldIcon} />
-                    <div className={styles.fieldContent}>
-                      <span className={styles.fieldLabel}>DATE</span>
-                      <span className={styles.fieldValue}>Any weekend</span>
+
+                  {/* DATE */}
+                  <div className={styles.searchFieldWrapper}>
+                    <div className={styles.searchField} onClick={() => setActiveDropdown(activeDropdown === 'date' ? null : 'date')}>
+                      <CalendarDays size={18} className={styles.fieldIcon} />
+                      <div className={styles.fieldContent}>
+                        <span className={styles.fieldLabel}>DATE</span>
+                        <span className={styles.fieldValue}>{date}</span>
+                      </div>
+                      <ChevronDown size={16} className={styles.fieldChevron} />
                     </div>
-                    <ChevronDown size={16} className={styles.fieldChevron} />
+                    {activeDropdown === 'date' && (
+                      <div className={styles.dropdownMenu}>
+                        {['Any weekend', 'This weekend', 'Next weekend', 'This month'].map(opt => (
+                          <button key={opt} onClick={() => { setDate(opt); setActiveDropdown(null); }}>{opt}</button>
+                        ))}
+                      </div>
+                    )}
                   </div>
+
                   <div className={styles.searchDivider} />
-                  <div className={styles.searchField}>
-                    <DollarSign size={18} className={styles.fieldIcon} />
-                    <div className={styles.fieldContent}>
-                      <span className={styles.fieldLabel}>BUDGET</span>
-                      <span className={styles.fieldValue}>$75 – $250+</span>
+
+                  {/* BUDGET */}
+                  <div className={styles.searchFieldWrapper}>
+                    <div className={styles.searchField} onClick={() => setActiveDropdown(activeDropdown === 'budget' ? null : 'budget')}>
+                      <DollarSign size={18} className={styles.fieldIcon} />
+                      <div className={styles.fieldContent}>
+                        <span className={styles.fieldLabel}>BUDGET</span>
+                        <span className={styles.fieldValue}>{budget}</span>
+                      </div>
+                      <ChevronDown size={16} className={styles.fieldChevron} />
                     </div>
-                    <ChevronDown size={16} className={styles.fieldChevron} />
+                    {activeDropdown === 'budget' && (
+                      <div className={styles.dropdownMenu}>
+                        {['$75 – $250+', 'Under $100', '$100 - $500', 'Over $500'].map(opt => (
+                          <button key={opt} onClick={() => { setBudget(opt); setActiveDropdown(null); }}>{opt}</button>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <Link href="/vendors" className={styles.searchBtn}>
+
+                  <Link href={`/vendors?location=${encodeURIComponent(location)}&category=${encodeURIComponent(category)}`} className={styles.searchBtn}>
                     <Search size={18} />
                     Search
                   </Link>

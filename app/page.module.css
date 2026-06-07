@@ -206,6 +206,12 @@
   padding: 6px;
 }
 
+.searchFieldWrapper {
+  position: relative;
+  display: flex;
+  flex: 1;
+}
+
 .searchField {
   padding: 0 16px;
   display: flex;
@@ -214,6 +220,7 @@
   flex: 1;
   cursor: pointer;
   transition: background 200ms ease;
+  border-radius: 8px;
 }
 
 .searchField:hover {
@@ -253,6 +260,40 @@
 .fieldChevron {
   color: #8c827a;
   margin-left: auto;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  min-width: 200px;
+  background: white;
+  border: 1px solid rgba(60, 45, 35, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dropdownMenu button {
+  background: transparent;
+  border: none;
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #3c332d;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.dropdownMenu button:hover {
+  background: #f5f0e8;
 }
 
 .searchDivider {
