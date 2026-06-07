@@ -237,35 +237,39 @@ export default function HomePage() {
 
                 <div className={styles.searchBar}>
                   <div className={styles.searchField}>
+                    <MapPin size={18} className={styles.fieldIcon} />
                     <div className={styles.fieldContent}>
-                      <span className={styles.fieldLabel}>WHERE</span>
-                      <span className={styles.fieldValue}>Where do you want to sell</span>
+                      <span className={styles.fieldLabel}>LOCATION</span>
+                      <span className={styles.fieldValue}>Bay Area, CA</span>
                     </div>
                   </div>
                   <div className={styles.searchDivider} />
                   <div className={styles.searchField}>
+                    <LayoutGrid size={18} className={styles.fieldIcon} />
                     <div className={styles.fieldContent}>
                       <span className={styles.fieldLabel}>CATEGORY</span>
-                      <span className={styles.fieldValue}>What do you sell?</span>
+                      <span className={styles.fieldValue}>All categories</span>
                     </div>
                   </div>
                   <div className={styles.searchDivider} />
                   <div className={styles.searchField}>
+                    <CalendarDays size={18} className={styles.fieldIcon} />
                     <div className={styles.fieldContent}>
-                      <span className={styles.fieldLabel}>WHEN</span>
+                      <span className={styles.fieldLabel}>DATE</span>
                       <span className={styles.fieldValue}>Any weekend</span>
                     </div>
                   </div>
                   <div className={styles.searchDivider} />
                   <div className={styles.searchField}>
+                    <DollarSign size={18} className={styles.fieldIcon} />
                     <div className={styles.fieldContent}>
                       <span className={styles.fieldLabel}>BUDGET</span>
-                      <span className={styles.fieldValue}>$75-$250</span>
+                      <span className={styles.fieldValue}>$75 – $250+</span>
                     </div>
                   </div>
                   <Link href="/vendors" className={styles.searchBtn}>
-                    <Search size={16} />
-                    Find Opportunities
+                    <Search size={18} />
+                    Search
                   </Link>
                 </div>
               </div>

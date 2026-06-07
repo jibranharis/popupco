@@ -11,7 +11,6 @@ const publicNav = [
   { label: 'For Vendors', href: '/vendors' },
   { label: 'For Venues', href: '/venues' },
   { label: 'For Hosts', href: '/hosts' },
-  { label: 'Resources', href: '#', hasDropdown: true },
 ];
 
 export default function Header() {
