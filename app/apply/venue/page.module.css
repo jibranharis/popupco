@@ -214,8 +214,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--space-sm);
-  margin-top: var(--space-md);
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
 }
 
 @media (max-width: 768px) {
