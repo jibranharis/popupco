@@ -180,12 +180,54 @@ export default function HomePage() {
   const pageRef = useRef(null);
   const [activeTab, setActiveTab] = useState('sell');
   const [activeDropdown, setActiveDropdown] = useState(null);
+  
+  // States for all tabs
   const [location, setLocation] = useState('Bay Area, CA');
   const [category, setCategory] = useState('All categories');
   const [date, setDate] = useState('Any weekend');
   const [budget, setBudget] = useState('$75 – $250+');
+  const [spaceType, setSpaceType] = useState('All types');
+  const [size, setSize] = useState('Any size');
+  const [duration, setDuration] = useState('Any duration');
+  const [eventType, setEventType] = useState('All events');
+  const [attendance, setAttendance] = useState('Any');
+  const [fee, setFee] = useState('Any fee');
+
   const [activeMoment, setActiveMoment] = useState(0);
   useFadeInObserver(pageRef);
+
+  // Configuration for dynamic search bar rendering
+  const searchConfig = {
+    sell: {
+      fields: [
+        { id: 'location', label: 'LOCATION', value: location, icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
+        { id: 'category', label: 'CATEGORY', value: category, icon: LayoutGrid, options: ['All categories', 'Retail spaces', 'Food pop-ups', 'Vendor markets'] },
+        { id: 'date', label: 'DATE', value: date, icon: CalendarDays, options: ['Any weekend', 'This weekend', 'Next weekend', 'This month'] },
+        { id: 'budget', label: 'BUDGET', value: budget, icon: DollarSign, options: ['$75 – $250+', 'Under $100', '$100 - $500', 'Over $500'] },
+      ],
+      href: '/signup?type=vendor'
+    },
+    space: {
+      fields: [
+        { id: 'location', label: 'LOCATION', value: location, icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
+        { id: 'spaceType', label: 'SPACE TYPE', value: spaceType, icon: Building2, options: ['All types', 'Retail', 'Event', 'Shared', 'Market'] },
+        { id: 'size', label: 'SIZE', value: size, icon: LayoutGrid, options: ['Any size', 'Under 500 sq ft', '500-1000 sq ft', 'Over 1000 sq ft'] },
+        { id: 'duration', label: 'DURATION', value: duration, icon: Clock3, options: ['Any duration', 'Daily', 'Weekly', 'Monthly'] },
+      ],
+      href: '/signup?type=venue'
+    },
+    host: {
+      fields: [
+        { id: 'location', label: 'LOCATION', value: location, icon: MapPin, options: ['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'] },
+        { id: 'eventType', label: 'EVENT TYPE', value: eventType, icon: LayoutGrid, options: ['All events', 'Vendor Market', 'Art Fair', 'Food Festival', 'Showcase'] },
+        { id: 'attendance', label: 'ATTENDANCE', value: attendance, icon: Users, options: ['Any', 'Under 100', '100-500', '500-1000', '1000+'] },
+        { id: 'fee', label: 'VENDOR FEE', value: fee, icon: DollarSign, options: ['Any fee', 'Under $50', '$50-$100', '$100-$200', '$200+'] },
+      ],
+      href: '/signup?type=host'
+    }
+  };
+
+  const currentConfig = searchConfig[activeTab];
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -258,90 +300,44 @@ export default function HomePage() {
                   </div>
 
                 <div className={styles.searchBar}>
-                  
-                  {/* LOCATION */}
-                  <div className={styles.searchFieldWrapper}>
-                    <div className={styles.searchField} onClick={() => setActiveDropdown(activeDropdown === 'location' ? null : 'location')}>
-                      <MapPin size={18} className={styles.fieldIcon} />
-                      <div className={styles.fieldContent}>
-                        <span className={styles.fieldLabel}>LOCATION</span>
-                        <span className={styles.fieldValue}>{location}</span>
+                  {currentConfig.fields.map((field, idx) => (
+                    <div key={field.id} className={styles.searchFieldGroup}>
+                      <div className={styles.searchFieldWrapper}>
+                        <div className={styles.searchField} onClick={() => setActiveDropdown(activeDropdown === field.id ? null : field.id)}>
+                          <field.icon size={18} className={styles.fieldIcon} />
+                          <div className={styles.fieldContent}>
+                            <span className={styles.fieldLabel}>{field.label}</span>
+                            <span className={styles.fieldValue}>{field.value}</span>
+                          </div>
+                          <ChevronDown size={16} className={styles.fieldChevron} />
+                        </div>
+                        {activeDropdown === field.id && (
+                          <div className={styles.dropdownMenu}>
+                            {field.options.map(opt => (
+                              <button key={opt} onClick={() => { 
+                                if (field.id === 'location') setLocation(opt);
+                                else if (field.id === 'category') setCategory(opt);
+                                else if (field.id === 'date') setDate(opt);
+                                else if (field.id === 'budget') setBudget(opt);
+                                else if (field.id === 'spaceType') setSpaceType(opt);
+                                else if (field.id === 'size') setSize(opt);
+                                else if (field.id === 'duration') setDuration(opt);
+                                else if (field.id === 'eventType') setEventType(opt);
+                                else if (field.id === 'attendance') setAttendance(opt);
+                                else if (field.id === 'fee') setFee(opt);
+                                setActiveDropdown(null); 
+                              }}>
+                                {opt}
+                              </button>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      <ChevronDown size={16} className={styles.fieldChevron} />
+                      {idx < currentConfig.fields.length - 1 && <div className={styles.searchDivider} />}
                     </div>
-                    {activeDropdown === 'location' && (
-                      <div className={styles.dropdownMenu}>
-                        {['Bay Area, CA', 'San Francisco', 'Oakland', 'San Jose'].map(opt => (
-                          <button key={opt} onClick={() => { setLocation(opt); setActiveDropdown(null); }}>{opt}</button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  ))}
 
-                  <div className={styles.searchDivider} />
-
-                  {/* CATEGORY */}
-                  <div className={styles.searchFieldWrapper}>
-                    <div className={styles.searchField} onClick={() => setActiveDropdown(activeDropdown === 'category' ? null : 'category')}>
-                      <LayoutGrid size={18} className={styles.fieldIcon} />
-                      <div className={styles.fieldContent}>
-                        <span className={styles.fieldLabel}>CATEGORY</span>
-                        <span className={styles.fieldValue}>{category}</span>
-                      </div>
-                      <ChevronDown size={16} className={styles.fieldChevron} />
-                    </div>
-                    {activeDropdown === 'category' && (
-                      <div className={styles.dropdownMenu}>
-                        {['All categories', 'Retail spaces', 'Food pop-ups', 'Vendor markets'].map(opt => (
-                          <button key={opt} onClick={() => { setCategory(opt); setActiveDropdown(null); }}>{opt}</button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className={styles.searchDivider} />
-
-                  {/* DATE */}
-                  <div className={styles.searchFieldWrapper}>
-                    <div className={styles.searchField} onClick={() => setActiveDropdown(activeDropdown === 'date' ? null : 'date')}>
-                      <CalendarDays size={18} className={styles.fieldIcon} />
-                      <div className={styles.fieldContent}>
-                        <span className={styles.fieldLabel}>DATE</span>
-                        <span className={styles.fieldValue}>{date}</span>
-                      </div>
-                      <ChevronDown size={16} className={styles.fieldChevron} />
-                    </div>
-                    {activeDropdown === 'date' && (
-                      <div className={styles.dropdownMenu}>
-                        {['Any weekend', 'This weekend', 'Next weekend', 'This month'].map(opt => (
-                          <button key={opt} onClick={() => { setDate(opt); setActiveDropdown(null); }}>{opt}</button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className={styles.searchDivider} />
-
-                  {/* BUDGET */}
-                  <div className={styles.searchFieldWrapper}>
-                    <div className={styles.searchField} onClick={() => setActiveDropdown(activeDropdown === 'budget' ? null : 'budget')}>
-                      <DollarSign size={18} className={styles.fieldIcon} />
-                      <div className={styles.fieldContent}>
-                        <span className={styles.fieldLabel}>BUDGET</span>
-                        <span className={styles.fieldValue}>{budget}</span>
-                      </div>
-                      <ChevronDown size={16} className={styles.fieldChevron} />
-                    </div>
-                    {activeDropdown === 'budget' && (
-                      <div className={styles.dropdownMenu}>
-                        {['$75 – $250+', 'Under $100', '$100 - $500', 'Over $500'].map(opt => (
-                          <button key={opt} onClick={() => { setBudget(opt); setActiveDropdown(null); }}>{opt}</button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <Link href={`/vendors?location=${encodeURIComponent(location)}&category=${encodeURIComponent(category)}`} className={styles.searchBtn}>
+                  <Link href={currentConfig.href} className={styles.searchBtn}>
                     <Search size={18} />
                     Search
                   </Link>
