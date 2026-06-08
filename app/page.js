@@ -366,11 +366,7 @@ export default function HomePage() {
       <main ref={pageRef} className={styles.page}>
 
         {/* ── STICKY CINEMATIC HERO ───────────────────── */}
-        {/* Transparent spacer: gives scroll travel so the hero can lock in with panel perfectly centered */}
-        {heroExtraHeight > 0 && (
-          <div style={{ height: heroExtraHeight, background: '#1a1510', flexShrink: 0 }} aria-hidden="true" />
-        )}
-        <div className={styles.introScroll} ref={heroRef}>
+        <div className={styles.introScroll} ref={heroRef} style={{ top: -heroExtraHeight }}>
           <section className={styles.hero} style={{ opacity: heroOpacity }}>
             {/* Full-bleed background image */}
             <Image
