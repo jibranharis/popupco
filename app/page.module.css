@@ -13,15 +13,6 @@
   background: #1a1510;
 }
 
-/* If the viewport is shorter than the hero's minimum height (680px),
-   stick to the bottom instead so the user can scroll to see the whole hero before it locks */
-@media (max-height: 680px) {
-  .introScroll {
-    top: auto;
-    bottom: 0;
-  }
-}
-
 /* The rest of the page scrolls over the sticky hero */
 .overContent {
   position: relative;
