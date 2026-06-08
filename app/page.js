@@ -249,9 +249,11 @@ function useFadeInObserver(ref) {
 export default function HomePage() {
   const pageRef = useRef(null);
   const heroRef = useRef(null);
+  const heroPanelRef = useRef(null);
   const [activeTab, setActiveTab] = useState('sell');
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
+  const [heroExtraHeight, setHeroExtraHeight] = useState(0);
   
   // States for all tabs
   const [location, setLocation] = useState('Bay Area, CA');
@@ -282,6 +284,38 @@ export default function HomePage() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // After mount: measure if the panel fits with equal breathing room.
+  // If yes (dad's laptop) → no extra height needed.
+  // If no (short screens) → add exactly enough height so user can pre-scroll to center the panel.
+  useEffect(() => {
+    const measure = () => {
+      if (!heroPanelRef.current || !heroRef.current) return;
+      const DESIRED_GAP = 48; // px of breathing room above and below the panel
+      const vh = window.innerHeight;
+      const panelRect = heroPanelRef.current.getBoundingClientRect();
+      const panelBottom = panelRect.bottom;
+      const panelTop = panelRect.top;
+      const gapBelow = vh - panelBottom;      // space between panel bottom and viewport bottom
+      const gapAbove = panelTop;              // space between viewport top and panel top (approx)
+
+      // If there's already enough room below (and above), do nothing
+      if (gapBelow >= DESIRED_GAP && gapAbove >= DESIRED_GAP) {
+        setHeroExtraHeight(0);
+        return;
+      }
+
+      // Otherwise, calculate how much extra scroll space to add so the panel can be perfectly centered
+      // Extra = deficit below + deficit above (whichever is worse), but capped at 120px
+      const deficit = Math.max(0, DESIRED_GAP - gapBelow);
+      setHeroExtraHeight(Math.min(deficit * 2, 120));
+    };
+
+    // Measure after fonts/images settle
+    const timer = setTimeout(measure, 300);
+    window.addEventListener('resize', measure);
+    return () => { clearTimeout(timer); window.removeEventListener('resize', measure); };
   }, []);
 
   const dateValue = selectedDates.length > 0 
@@ -336,7 +370,7 @@ export default function HomePage() {
       <main ref={pageRef} className={styles.page}>
 
         {/* ── STICKY CINEMATIC HERO ───────────────────── */}
-        <div className={styles.introScroll} ref={heroRef}>
+        <div className={styles.introScroll} ref={heroRef} style={heroExtraHeight > 0 ? { paddingBottom: heroExtraHeight } : undefined}>
           <section className={styles.hero} style={{ opacity: heroOpacity }}>
             {/* Full-bleed background image */}
             <Image
@@ -366,7 +400,7 @@ export default function HomePage() {
             </div>
 
             {/* ── Floating search panel ── */}
-            <div className={styles.heroPanel}>
+            <div className={styles.heroPanel} ref={heroPanelRef}>
               <div className="container">
                 <div className={styles.searchPanelContainer}>
                   {/* Search Tabs */}
