@@ -1,100 +1,130 @@
-import Link from 'next/link';
+'use client';
+import { useMemo, useState } from 'react';
 import Header from '@/components/Header';
-import SuccessCarousel from '@/components/SuccessCarousel';
 import Footer from '@/components/Footer';
-import {
-  ArrowRight,
-  BarChart3,
-  Bookmark,
-  CalendarDays,
-  ChevronRight,
-  ClipboardList,
-  Eye,
-  MessageSquare,
-  Search,
-  ShieldCheck,
-  Store,
-  Users,
-  MapPin,
-} from 'lucide-react';
-import styles from '../hosts/page.module.css';
+import SpaceCard from '@/components/SpaceCard';
+import { OPPORTUNITY_TABS, SPACES_DATA } from '@/lib/spaces';
+import { Search, SlidersHorizontal } from 'lucide-react';
+import styles from './page.module.css';
 
-const chips = [
-  [Store, 'Booth fees upfront'],
-  [Users, 'Host info included'],
-  [CalendarDays, 'Setup details included'],
+const filterChips = [
+  'Location',
+  'Date',
+  'Price / vendor fee',
+  'Space rental price',
+  'Event type',
+  'Indoor/outdoor',
+  'Category',
+  'Capacity',
+  'Expected attendance',
+  'Application deadline',
+  'Amenities',
+  'Parking',
+  'Food allowed',
+  'Electricity',
+  'Tables/chairs included',
+  'Kid-friendly',
+  'Pet-friendly',
+  'Weekend availability',
+  'Verified hosts',
+  'Accepting applications',
 ];
 
-const dashboardItems = [
-  [ClipboardList, '3 applications pending', 'Track where each application stands.'],
-  [Bookmark, '5 saved opportunities', 'Keep promising markets in one place.'],
-  [MapPin, '2 new markets near you', 'Get matched with nearby events.'],
-  [BarChart3, 'Profile 70% complete', 'Show hosts what you sell and how you set up.', '70%'],
-];
-
-const bottomFeatures = [
-  [Search, 'Find the right fits faster', 'Filter by location, dates, fees, setup needs, and more—so you apply with confidence.'],
-  [ShieldCheck, 'See everything up front', 'Booth fees, deadlines, electricity, load-in—no surprises, just clear details.'],
-  [MessageSquare, 'Communicate in one place', 'Message hosts, ask questions, and keep everything organized.'],
-];
+function matchesTab(space, tab) {
+  if (tab === 'All') return true;
+  const text = `${space.type} ${space.category} ${space.status}`.toLowerCase();
+  if (tab === 'Vendor Markets') return text.includes('market');
+  if (tab === 'Booth Opportunities') return text.includes('booth');
+  if (tab === 'Retail Spaces') return text.includes('retail');
+  if (tab === 'Food Pop-Ups') return text.includes('food');
+  if (tab === 'Community Events') return text.includes('community') || text.includes('nonprofit');
+  if (tab === 'Event Venues') return text.includes('venue') || text.includes('space');
+  if (tab === 'Upcoming Pop-Ups') return true;
+  return true;
+}
 
 export default function VendorsPage() {
+  const [activeTab, setActiveTab] = useState('All');
+  const [query, setQuery] = useState('');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  const opportunities = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return SPACES_DATA.filter((space) => {
+      const tabMatch = matchesTab(space, activeTab);
+      const queryMatch = !needle || `${space.name} ${space.location} ${space.type} ${space.category}`.toLowerCase().includes(needle);
+      return tabMatch && queryMatch;
+    });
+  }, [activeTab, query]);
+
   return (
     <>
       <Header />
-      <main className={`${styles.main} ${styles.vendorPage}`}>
+      <main className={styles.main}>
         <section className={styles.hero}>
-          <div className={`container ${styles.heroGrid}`}>
+          <div className="container">
             <div className={styles.heroCopy}>
-              <span className="label">For vendors</span>
-              <h1>Find pop-up opportunities without chasing DMs.</h1>
-              <p>Browse markets, booth opportunities, and local events with the details you need before you apply. Fees, deadlines, setup needs, and host info stay in one place.</p>
-              <div className={styles.ctas}>
-                <Link href="/apply/vendor" className={`${styles.roleButton} ${styles.primaryButton}`}>Apply as a vendor <ArrowRight size={20} /></Link>
-                <Link href="/browse" className={`${styles.roleButton} ${styles.secondaryButton}`}>Browse opportunities</Link>
-              </div>
-              <div className={styles.heroChips}>
-                {chips.map(([Icon, text]) => (
-                  <span key={text}><Icon size={16} /> {text}</span>
-                ))}
-              </div>
+              <span className="label">Vendor opportunities</span>
+              <h1>Find your next pop-up opportunity</h1>
+              <p>Browse markets, booth opportunities, retail spaces, and local events currently accepting vendor applications.</p>
             </div>
-            <div className={styles.visualCard}>
-              <div className={styles.visualHeader}>
-                <strong>Vendor dashboard</strong>
-                <span className={styles.visualPill}><Eye size={15} /> Preview</span>
+            <div className={styles.statsCard}>
+              <strong>{SPACES_DATA.length} active opportunities</strong>
+              <span>4 Bay Area cities</span>
+              <span>Applications open now</span>
+            </div>
+            <div className={styles.searchPanel}>
+              <div className={styles.searchBox}>
+                <Search size={18} />
+                <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by city, category, market, or space" />
               </div>
-              <div className={styles.visualRows}>
-                {dashboardItems.map(([Icon, title, copy, progress]) => (
-                  <div className={styles.visualRow} key={title}>
-                    <span className={styles.rowIcon}><Icon size={25} /></span>
-                    <span className={styles.rowText}>
-                      <strong>{title}</strong>
-                      <span>{copy}</span>
-                    </span>
-                    {progress ? <span className={styles.progressRing}>{progress}</span> : <ChevronRight className={styles.rowArrow} size={24} />}
-                  </div>
-                ))}
-              </div>
+              <button className={styles.filterToggle} onClick={() => setShowMobileFilters(!showMobileFilters)}>
+                <SlidersHorizontal size={17} /> Filters
+              </button>
             </div>
           </div>
         </section>
 
-        <SuccessCarousel />
-
-        <section className={styles.featureStripSection}>
-          <div className={`container ${styles.featureStrip}`}>
-            {bottomFeatures.map(([Icon, title, copy]) => (
-              <div className={styles.featureItem} key={title}>
-                <span className={styles.featureIcon}><Icon size={31} /></span>
-                <span>
-                  <strong>{title}</strong>
-                  <span>{copy}</span>
-                </span>
-              </div>
-              ))}
+        <div className="container">
+          <div className={styles.tabs} aria-label="Opportunity types">
+            {OPPORTUNITY_TABS.map((tab) => (
+              <button key={tab} onClick={() => setActiveTab(tab)} className={activeTab === tab ? styles.active : ''}>
+                {tab}
+              </button>
+            ))}
           </div>
-        </section>
+
+          <div className={`${styles.filterRail} ${showMobileFilters ? styles.filterRailOpen : ''}`}>
+            {filterChips.map((chip) => <button key={chip}>{chip}</button>)}
+          </div>
+
+          <div className={styles.resultsHeader}>
+            <div>
+              <h2>{opportunities.length} vendor opportunities</h2>
+              <p>Clear fees, deadlines, host details, and setup notes before you apply.</p>
+            </div>
+            <select className={styles.sortSelect} defaultValue="recommended" aria-label="Sort opportunities">
+              <option value="recommended">Recommended</option>
+              <option value="deadline">Application deadline</option>
+              <option value="fee-low">Lowest vendor fee</option>
+              <option value="attendance">Expected attendance</option>
+            </select>
+          </div>
+
+          {opportunities.length === 0 ? (
+            <div className={styles.emptyState}>
+              <h2>No matches yet.</h2>
+              <p>Try changing your filters or check back soon.</p>
+              <button type="button" onClick={() => { setActiveTab('All'); setQuery(''); }} className="btn btn--secondary">
+                Clear filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid-3">
+              {opportunities.map((space) => <SpaceCard key={space.id} space={space} />)}
+            </div>
+          )}
+        </div>
       </main>
       <Footer />
     </>

@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Mail, Menu, User, X } from 'lucide-react';
+import { ChevronDown, Mail, Menu, User, X } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import styles from './Header.module.css';
 
@@ -12,13 +12,6 @@ const publicNav = [
   { label: 'For Venues', href: '/venues' },
   { label: 'For Hosts', href: '/hosts' },
 ];
-
-const roleNav = {
-  vendor: publicNav,
-  venue: publicNav,
-  host: publicNav,
-  attendee: publicNav,
-};
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -32,7 +25,15 @@ export default function Header() {
   useEffect(() => {
     let frame = null;
     const updateScrolled = () => {
-      setScrolled(pathname !== '/' || window.scrollY > 64);
+      // On homepage, stay transparent until the overContent section scrolls up to touch the navbar
+      if (pathname === '/') {
+        // Hero is sticky, overContent scrolls over it — trigger when user has scrolled ~80% of hero height
+        const heroEl = document.querySelector('main > div:first-child');
+        const threshold = heroEl ? heroEl.offsetHeight * 0.65 : window.innerHeight * 0.65;
+        setScrolled(window.scrollY > threshold);
+      } else {
+        setScrolled(true);
+      }
     };
     const onScroll = () => {
       if (ticking.current) return;
@@ -76,12 +77,12 @@ export default function Header() {
     };
   }, [profileOpen]);
 
-  const nav = user ? roleNav[user.type] || roleNav.vendor : publicNav;
-  const dashboardHref = user ? '/dashboard' : '/signup';
+  const nav = publicNav;
   const isActiveNav = (href) => {
     if (href === '/discover') return pathname === '/discover' || pathname === '/browse' || pathname.startsWith('/upcoming');
     return pathname === href;
   };
+
   const handleLogoClick = () => {
     setMenuOpen(false);
     setProfileOpen(false);
@@ -101,11 +102,12 @@ export default function Header() {
         <nav className={styles.navCenter} aria-label="Primary">
           {nav.map((link) => (
             <Link
-              key={link.href}
+              key={link.label}
               href={link.href}
               className={`${styles.navLink} ${isActiveNav(link.href) ? styles.activeNavLink : ''}`}
             >
               {link.label}
+              {link.hasDropdown && <ChevronDown size={14} style={{ marginLeft: '4px', display: 'inline-block', verticalAlign: 'middle' }} />}
             </Link>
           ))}
         </nav>
@@ -139,7 +141,7 @@ export default function Header() {
                       <p className={styles.profileEmail}>{user.email}</p>
                     </div>
                     <div className={styles.dropdownLinks}>
-                      <Link href={dashboardHref} onClick={() => setProfileOpen(false)}>Dashboard</Link>
+                      <Link href="/dashboard" onClick={() => setProfileOpen(false)}>Dashboard</Link>
                       <Link href="/dashboard/profile" onClick={() => setProfileOpen(false)}>Profile</Link>
                       <Link href="/dashboard/applications" onClick={() => setProfileOpen(false)}>Applications</Link>
                       <Link href="/dashboard/saved" onClick={() => setProfileOpen(false)}>Saved</Link>
@@ -179,7 +181,11 @@ export default function Header() {
           ) : (
             <>
               <Link href="/dashboard/messages" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Messages (1)</Link>
-              <Link href={dashboardHref} className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Dashboard</Link>
+              <Link href="/dashboard" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Dashboard</Link>
+              <Link href="/dashboard/profile" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Profile</Link>
+              <Link href="/dashboard/applications" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Applications</Link>
+              <Link href="/dashboard/saved" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Saved</Link>
+              <Link href="/dashboard/settings" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Settings</Link>
               <button className={styles.mobileNavLink} onClick={() => { logout(); setMenuOpen(false); }}>Log out</button>
             </>
           )}

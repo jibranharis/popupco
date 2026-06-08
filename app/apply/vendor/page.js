@@ -208,7 +208,7 @@ function VendorApplicationForm() {
             </p>
             <div className={styles.successActions}>
               <Link href="/dashboard/applications" className="btn btn--primary">View dashboard</Link>
-              <Link href="/browse" className="btn btn--secondary">Browse more opportunities</Link>
+              <Link href="/vendors" className="btn btn--secondary">Browse more opportunities</Link>
               <Link href="/dashboard/profile" className="btn btn--secondary">Edit vendor profile</Link>
             </div>
           </div>

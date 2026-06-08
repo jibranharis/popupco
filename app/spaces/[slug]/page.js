@@ -122,7 +122,7 @@ export default function SpaceDetailPage({ params }) {
       <Header />
       <main className={styles.main}>
         <div className="container">
-          <Link href="/browse" className={styles.backBtn}><ChevronLeft size={19} /> Back to opportunities</Link>
+          <Link href="/vendors" className={styles.backBtn}><ChevronLeft size={19} /> Back to opportunities</Link>
 
           <div className={styles.titleArea}>
             <div>
