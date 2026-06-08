@@ -275,8 +275,8 @@ export default function HomePage() {
     const onScroll = () => {
       if (!heroRef.current) return;
       const heroH = heroRef.current.offsetHeight;
-      const scrollY = window.scrollY;
-      // Start fading at 20% through the hero, fully transparent at 70%
+      // Account for the spacer above: fade starts after spacer is scrolled through
+      const scrollY = Math.max(0, window.scrollY - heroExtraHeight);
       const start = heroH * 0.2;
       const end = heroH * 0.7;
       const opacity = scrollY <= start ? 1 : scrollY >= end ? 0 : 1 - (scrollY - start) / (end - start);
@@ -284,7 +284,7 @@ export default function HomePage() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [heroExtraHeight]);
 
   // After mount: measure if the panel fits with equal breathing room.
   // If yes (dad's laptop) → no extra height needed.
@@ -370,7 +370,11 @@ export default function HomePage() {
       <main ref={pageRef} className={styles.page}>
 
         {/* ── STICKY CINEMATIC HERO ───────────────────── */}
-        <div className={styles.introScroll} ref={heroRef} style={heroExtraHeight > 0 ? { paddingBottom: heroExtraHeight } : undefined}>
+        {/* Transparent spacer: gives scroll travel so the hero can lock in with panel perfectly centered */}
+        {heroExtraHeight > 0 && (
+          <div style={{ height: heroExtraHeight, background: '#1a1510', flexShrink: 0 }} aria-hidden="true" />
+        )}
+        <div className={styles.introScroll} ref={heroRef}>
           <section className={styles.hero} style={{ opacity: heroOpacity }}>
             {/* Full-bleed background image */}
             <Image
