@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CalendarDays, Map, Store, Users } from 'lucide-react';
-import { useAuth } from '@/components/AuthContext';
+import { supabase } from '@/lib/supabase';
 import styles from './page.module.css';
 
 const intentCopy = {
@@ -26,7 +26,6 @@ const quickLinks = [
 
 function LoginContent() {
   const router = useRouter();
-  const { login: simulateLogin } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState('/dashboard');
@@ -47,16 +46,13 @@ function LoginContent() {
     setError('');
     setLoading(true);
 
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
 
-    // For demo purposes, determine simulated role based on email or default to vendor
-    let role = 'vendor';
-    if (email.includes('venue')) role = 'venue';
-    if (email.includes('host')) role = 'host';
-    if (email.includes('attendee') || email.includes('explorer')) role = 'attendee';
-
-    simulateLogin(role, { email });
+    if (authError) {
+      setError(authError.message);
+      setLoading(false);
+      return;
+    }
 
     router.push(redirect || '/dashboard');
   };

@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CalendarDays, Building2, Store, Users } from 'lucide-react';
-import { useAuth } from '@/components/AuthContext';
+import { supabase } from '@/lib/supabase';
 import styles from '../login/page.module.css';
 
 const roles = [
@@ -23,7 +23,6 @@ const roleStartPaths = {
 
 function SignupContent() {
   const router = useRouter();
-  const { login: simulateLogin } = useAuth();
   const [type, setType] = useState('vendor');
   const [redirect, setRedirect] = useState('');
   const [form, setForm] = useState({
@@ -58,11 +57,17 @@ function SignupContent() {
 
     setLoading(true);
 
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    const { error: authError } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
+      options: { data: { name: form.name, role: type } },
+    });
 
-    // Simulate auth login
-    simulateLogin(type, { name: form.name, email: form.email });
+    if (authError) {
+      setError(authError.message);
+      setLoading(false);
+      return;
+    }
 
     router.push(redirect || roleStartPaths[type] || '/dashboard');
   };
