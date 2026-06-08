@@ -250,6 +250,7 @@ export default function HomePage() {
   const pageRef = useRef(null);
   const heroRef = useRef(null);
   const heroPanelRef = useRef(null);
+  const heroSubRef = useRef(null);
   const [activeTab, setActiveTab] = useState('sell');
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
@@ -287,35 +288,30 @@ export default function HomePage() {
   }, [heroExtraHeight]);
 
   // After mount: measure if the panel fits with equal breathing room.
-  // If yes (dad's laptop) → no extra height needed.
-  // If no (short screens) → add exactly enough height so user can pre-scroll to center the panel.
+  // Gap above = space between subtext bottom and panel top.
+  // Gap below = space between panel bottom and viewport bottom.
+  // Spacer = gapAbove - gapBelow (so scrolling through spacer equalises them).
+  // If gapBelow >= gapAbove already (dad's laptop): spacer = 0, hero sticks immediately.
   useEffect(() => {
     const measure = () => {
-      if (!heroPanelRef.current || !heroRef.current) return;
-      const DESIRED_GAP = 48; // px of breathing room above and below the panel
+      if (!heroPanelRef.current || !heroSubRef.current) return;
       const vh = window.innerHeight;
       const panelRect = heroPanelRef.current.getBoundingClientRect();
-      const panelBottom = panelRect.bottom;
-      const panelTop = panelRect.top;
-      const gapBelow = vh - panelBottom;      // space between panel bottom and viewport bottom
-      const gapAbove = panelTop;              // space between viewport top and panel top (approx)
+      const subRect = heroSubRef.current.getBoundingClientRect();
 
-      // If there's already enough room below (and above), do nothing
-      if (gapBelow >= DESIRED_GAP && gapAbove >= DESIRED_GAP) {
-        setHeroExtraHeight(0);
-        return;
-      }
+      const gapAbove = panelRect.top - subRect.bottom;   // subtext bottom → panel top
+      const gapBelow = vh - panelRect.bottom;            // panel bottom → viewport bottom
 
-      // Otherwise, calculate how much extra scroll space to add so the panel can be perfectly centered
-      // Extra = deficit below + deficit above (whichever is worse), but capped at 120px
-      const deficit = Math.max(0, DESIRED_GAP - gapBelow);
-      setHeroExtraHeight(Math.min(deficit * 2, 120));
+      // If already equal (or more space below than above): no spacer needed
+      const spacer = Math.max(0, Math.round(gapAbove - gapBelow));
+      setHeroExtraHeight(spacer);
     };
 
-    // Measure after fonts/images settle
-    const timer = setTimeout(measure, 300);
+    // Measure after fonts/images have settled
+    const t1 = setTimeout(measure, 150);
+    const t2 = setTimeout(measure, 600); // second pass in case of slow image load
     window.addEventListener('resize', measure);
-    return () => { clearTimeout(timer); window.removeEventListener('resize', measure); };
+    return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener('resize', measure); };
   }, []);
 
   const dateValue = selectedDates.length > 0 
@@ -396,7 +392,7 @@ export default function HomePage() {
                   Pop-Up<br />
                   Opportunity.
                 </h1>
-                <p className={styles.heroSub}>
+                <p className={styles.heroSub} ref={heroSubRef}>
                   The Bay Area&apos;s most trusted marketplace for pop-up<br className={styles.heroSubBr} />
                   spaces, vendors, and events.
                 </p>
