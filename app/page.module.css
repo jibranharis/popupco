@@ -7,8 +7,20 @@
 }
 
 .introScroll {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 1;
   background: #1a1510;
+}
+
+/* The rest of the page scrolls over the sticky hero */
+.overContent {
+  position: relative;
+  z-index: 10;
+  background: #f7f1e8;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.18);
+  margin-top: -24px;
 }
 
 /* ─────────────────────────────────────────────────

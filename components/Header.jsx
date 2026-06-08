@@ -22,9 +22,12 @@ export default function Header() {
 
   useEffect(() => {
     const onScroll = () => {
-      // On homepage, stay transparent until scrolled past 90% of viewport height
+      // On homepage, stay transparent until the overContent section scrolls up to touch the navbar
       if (pathname === '/') {
-        setScrolled(window.scrollY > window.innerHeight * 0.75);
+        // Hero is sticky, overContent scrolls over it — trigger when user has scrolled ~80% of hero height
+        const heroEl = document.querySelector('main > div:first-child');
+        const threshold = heroEl ? heroEl.offsetHeight * 0.65 : window.innerHeight * 0.65;
+        setScrolled(window.scrollY > threshold);
       } else {
         setScrolled(true);
       }

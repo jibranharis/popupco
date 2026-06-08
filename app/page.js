@@ -248,8 +248,10 @@ function useFadeInObserver(ref) {
 
 export default function HomePage() {
   const pageRef = useRef(null);
+  const heroRef = useRef(null);
   const [activeTab, setActiveTab] = useState('sell');
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [heroOpacity, setHeroOpacity] = useState(1);
   
   // States for all tabs
   const [location, setLocation] = useState('Bay Area, CA');
@@ -265,6 +267,22 @@ export default function HomePage() {
 
   const [activeMoment, setActiveMoment] = useState(0);
   useFadeInObserver(pageRef);
+
+  // Fade hero out as user scrolls
+  useEffect(() => {
+    const onScroll = () => {
+      if (!heroRef.current) return;
+      const heroH = heroRef.current.offsetHeight;
+      const scrollY = window.scrollY;
+      // Start fading at 20% through the hero, fully transparent at 70%
+      const start = heroH * 0.2;
+      const end = heroH * 0.7;
+      const opacity = scrollY <= start ? 1 : scrollY >= end ? 0 : 1 - (scrollY - start) / (end - start);
+      setHeroOpacity(opacity);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const dateValue = selectedDates.length > 0 
     ? selectedDates.map(d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })).join(', ') 
@@ -318,8 +336,8 @@ export default function HomePage() {
       <main ref={pageRef} className={styles.page}>
 
         {/* ── STICKY CINEMATIC HERO ───────────────────── */}
-        <div className={styles.introScroll}>
-          <section className={styles.hero}>
+        <div className={styles.introScroll} ref={heroRef}>
+          <section className={styles.hero} style={{ opacity: heroOpacity }}>
             {/* Full-bleed background image */}
             <Image
               src="/images/hero-market-cinematic.jpg"
@@ -447,6 +465,8 @@ export default function HomePage() {
           </div>
         </section>
       </div>
+
+      <div className={styles.overContent}>
 
         {/* ── BROWSE BY MOMENT ───────────────────────── */}
         <section className={styles.momentsSection}>
@@ -631,6 +651,8 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+      </div>{/* end overContent */}
 
       </main>
       <Footer />
