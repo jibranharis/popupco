@@ -21,14 +21,6 @@ export default function AdminDashboard() {
 
   const [expandedRow, setExpandedRow] = useState(null);
 
-  useEffect(() => {
-    const isAuthed = localStorage.getItem('popupco_admin_auth') === 'true';
-    if (isAuthed) {
-      setAuth(true);
-      fetchData();
-    }
-  }, []);
-
   async function handleLogin(e) {
     e.preventDefault();
     setLoading(true);
@@ -41,7 +33,6 @@ export default function AdminDashboard() {
       });
       const resData = await res.json();
       if (resData.success) {
-        localStorage.setItem('popupco_admin_auth', 'true');
         setAuth(true);
         fetchData(password);
       } else {
@@ -55,8 +46,8 @@ export default function AdminDashboard() {
   }
 
   function handleLogout() {
-    localStorage.removeItem('popupco_admin_auth');
     setAuth(false);
+    setPassword('');
     setData({ vendors: [], venues: [], hosts: [], contacts: [] });
   }
 

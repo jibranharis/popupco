@@ -249,6 +249,7 @@ function useFadeInObserver(ref) {
 export default function HomePage() {
   const pageRef = useRef(null);
   const heroRef = useRef(null);
+  const dateFieldRef = useRef(null);
   const [activeTab, setActiveTab] = useState('sell');
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
@@ -296,7 +297,7 @@ export default function HomePage() {
         { id: 'date', label: 'DATE', value: dateValue, isDefault: selectedDates.length === 0, icon: CalendarDays, options: [] },
         { id: 'budget', label: 'BUDGET', value: budget, isDefault: budget === '$75 – $250+', icon: DollarSign, options: ['$75 – $250+', 'Under $100', '$100 - $500', 'Over $500'] },
       ],
-      href: '/signup?type=vendor'
+      href: `/vendors?location=${encodeURIComponent(location)}&category=${encodeURIComponent(category)}`
     },
     space: {
       fields: [
@@ -305,7 +306,7 @@ export default function HomePage() {
         { id: 'size', label: 'SIZE', value: size, isDefault: size === 'Any size', icon: LayoutGrid, options: ['Any size', 'Under 500 sq ft', '500 - 1000 sq ft', 'Over 1000 sq ft'] },
         { id: 'duration', label: 'DURATION', value: duration, isDefault: duration === 'Any duration', icon: Clock3, options: ['Any duration', 'Daily', 'Weekly', 'Monthly'] },
       ],
-      href: '/signup?type=venue'
+      href: `/vendors?type=space&spaceType=${encodeURIComponent(spaceType)}`
     },
     host: {
       fields: [
@@ -314,11 +315,31 @@ export default function HomePage() {
         { id: 'attendance', label: 'ATTENDANCE', value: attendance, isDefault: attendance === 'Any', icon: Users, options: ['Any', 'Under 100', '100-500', '500-1000', '1000+'] },
         { id: 'fee', label: 'VENDOR FEE', value: fee, isDefault: fee === 'Any fee', icon: DollarSign, options: ['Any fee', 'Under $50', '$50-$100', '$100-$200', '$200+'] },
       ],
-      href: '/signup?type=host'
+      href: '/apply/host'
     }
   };
 
   const currentConfig = searchConfig[activeTab];
+
+  useEffect(() => {
+    if (activeDropdown !== 'date') return undefined;
+
+    const onMouseDown = (event) => {
+      if (dateFieldRef.current && !dateFieldRef.current.contains(event.target)) {
+        setActiveDropdown(null);
+      }
+    };
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setActiveDropdown(null);
+    };
+
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [activeDropdown]);
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -393,13 +414,15 @@ export default function HomePage() {
                 <div className={styles.searchBar}>
                   {currentConfig.fields.map((field, idx) => (
                     <div key={field.id} className={styles.searchFieldGroup}>
-                      <div 
+                      <div
                         className={styles.searchFieldWrapper}
-                        onMouseEnter={() => { if (field.id === 'location' || field.id === 'date' || field.id === 'spaceType') setActiveDropdown(field.id); }}
-                        onMouseLeave={() => { if (field.id === 'location' || field.id === 'date' || field.id === 'spaceType') setActiveDropdown(null); }}
+                        ref={field.id === 'date' ? dateFieldRef : null}
+                        onMouseEnter={() => { if (field.id === 'location' || field.id === 'spaceType') setActiveDropdown(field.id); }}
+                        onMouseLeave={() => { if (field.id === 'location' || field.id === 'spaceType') setActiveDropdown(null); }}
                       >
-                        <div 
+                        <div
                           className={`${styles.searchField} ${field.id !== 'location' && field.id !== 'date' && field.id !== 'spaceType' ? styles.searchFieldTypable : ''}`}
+                          onClick={() => { if (field.id === 'date') setActiveDropdown((current) => (current === 'date' ? null : 'date')); }}
                         >
                           <field.icon size={18} className={styles.fieldIcon} />
                           <div className={styles.fieldContent}>

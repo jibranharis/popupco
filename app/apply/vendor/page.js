@@ -149,7 +149,29 @@ function VendorApplicationForm() {
     }));
   }
 
+  function validateSection(index) {
+    if (index === 0 && (!form.first_name || !form.last_name || !form.email)) {
+      return 'Please fill in your name and email before continuing.';
+    }
+    if (index === 1 && !form.business_name) {
+      return 'Please enter your business name before continuing.';
+    }
+    if (index === 2 && form.categories.length === 0) {
+      return 'Please select at least one product category before continuing.';
+    }
+    if (index === 3 && !form.product_description) {
+      return 'Please describe what you sell before continuing.';
+    }
+    return '';
+  }
+
   function nextSection() {
+    const validationError = validateSection(section);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+    setError('');
     setSection((s) => Math.min(s + 1, SECTIONS.length - 1));
     scrollTop();
   }
@@ -718,8 +740,6 @@ function VendorApplicationForm() {
                   Applying to PopUpCo is free unless a specific event clearly lists an application or booth fee. Any required fee will be shown before a vendor confirms participation.
                 </div>
 
-                {error && <p className="form-error">{error}</p>}
-
                 <button
                   type="button"
                   onClick={handleSubmit}
@@ -730,6 +750,8 @@ function VendorApplicationForm() {
                 </button>
               </div>
             )}
+
+            {error && <p className="form-error">{error}</p>}
 
             {/* Navigation */}
             <div className={styles.navBtns}>

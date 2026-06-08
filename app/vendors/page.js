@@ -7,28 +7,29 @@ import { OPPORTUNITY_TABS, SPACES_DATA } from '@/lib/spaces';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import styles from './page.module.css';
 
-const filterChips = [
-  'Location',
-  'Date',
-  'Price / vendor fee',
-  'Space rental price',
-  'Event type',
-  'Indoor/outdoor',
-  'Category',
-  'Capacity',
-  'Expected attendance',
-  'Application deadline',
-  'Amenities',
-  'Parking',
-  'Food allowed',
-  'Electricity',
-  'Tables/chairs included',
-  'Kid-friendly',
-  'Pet-friendly',
-  'Weekend availability',
-  'Verified hosts',
-  'Accepting applications',
+const PRICE_RANGES = [
+  { value: 'all', label: 'Any vendor fee' },
+  { value: 'under-100', label: 'Under $100' },
+  { value: '100-150', label: '$100 – $150' },
+  { value: 'request', label: 'Request pricing' },
 ];
+
+const INDOOR_OUTDOOR_OPTIONS = ['All', 'Indoor', 'Outdoor', 'Indoor/outdoor'];
+
+function parsePrice(price) {
+  const match = price.match(/\$(\d+)/);
+  return match ? Number(match[1]) : null;
+}
+
+function parseAttendance(text) {
+  const match = text.match(/(\d+)/);
+  return match ? Number(match[1]) : 0;
+}
+
+function parseDeadline(deadline) {
+  const parsed = new Date(deadline);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
 
 function matchesTab(space, tab) {
   if (tab === 'All') return true;
@@ -43,19 +44,75 @@ function matchesTab(space, tab) {
   return true;
 }
 
+const LOCATIONS = ['All', ...new Set(SPACES_DATA.map((space) => space.location))];
+
 export default function VendorsPage() {
   const [activeTab, setActiveTab] = useState('All');
   const [query, setQuery] = useState('');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
+  const [location, setLocation] = useState('All');
+  const [appliedBy, setAppliedBy] = useState('');
+  const [priceRange, setPriceRange] = useState('all');
+  const [indoorOutdoor, setIndoorOutdoor] = useState('All');
+  const [sort, setSort] = useState('recommended');
+
   const opportunities = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return SPACES_DATA.filter((space) => {
+    const appliedByDate = appliedBy ? new Date(appliedBy) : null;
+
+    const filtered = SPACES_DATA.filter((space) => {
       const tabMatch = matchesTab(space, activeTab);
       const queryMatch = !needle || `${space.name} ${space.location} ${space.type} ${space.category}`.toLowerCase().includes(needle);
-      return tabMatch && queryMatch;
+      const locationMatch = location === 'All' || space.location === location;
+      const indoorMatch = indoorOutdoor === 'All' || space.indoorOutdoor === indoorOutdoor;
+
+      const price = parsePrice(space.price);
+      let priceMatch = true;
+      if (priceRange === 'under-100') priceMatch = price !== null && price < 100;
+      else if (priceRange === '100-150') priceMatch = price !== null && price >= 100 && price <= 150;
+      else if (priceRange === 'request') priceMatch = price === null;
+
+      const deadline = parseDeadline(space.deadline);
+      const dateMatch = !appliedByDate || deadline === null || deadline <= appliedByDate;
+
+      return tabMatch && queryMatch && locationMatch && indoorMatch && priceMatch && dateMatch;
     });
-  }, [activeTab, query]);
+
+    if (sort === 'recommended') return filtered;
+
+    return [...filtered].sort((a, b) => {
+      if (sort === 'deadline') {
+        const dateA = parseDeadline(a.deadline);
+        const dateB = parseDeadline(b.deadline);
+        if (!dateA && !dateB) return 0;
+        if (!dateA) return 1;
+        if (!dateB) return -1;
+        return dateA - dateB;
+      }
+      if (sort === 'fee-low') {
+        const priceA = parsePrice(a.price);
+        const priceB = parsePrice(b.price);
+        if (priceA === null && priceB === null) return 0;
+        if (priceA === null) return 1;
+        if (priceB === null) return -1;
+        return priceA - priceB;
+      }
+      if (sort === 'attendance') {
+        return parseAttendance(b.expectedAttendance) - parseAttendance(a.expectedAttendance);
+      }
+      return 0;
+    });
+  }, [activeTab, query, location, appliedBy, priceRange, indoorOutdoor, sort]);
+
+  const clearFilters = () => {
+    setActiveTab('All');
+    setQuery('');
+    setLocation('All');
+    setAppliedBy('');
+    setPriceRange('all');
+    setIndoorOutdoor('All');
+  };
 
   return (
     <>
@@ -95,7 +152,22 @@ export default function VendorsPage() {
           </div>
 
           <div className={`${styles.filterRail} ${showMobileFilters ? styles.filterRailOpen : ''}`}>
-            {filterChips.map((chip) => <button key={chip}>{chip}</button>)}
+            <select className={styles.sortSelect} value={location} onChange={(event) => setLocation(event.target.value)} aria-label="Filter by location">
+              {LOCATIONS.map((loc) => <option key={loc} value={loc}>{loc === 'All' ? 'Any location' : loc}</option>)}
+            </select>
+            <input
+              type="date"
+              className={styles.sortSelect}
+              value={appliedBy}
+              onChange={(event) => setAppliedBy(event.target.value)}
+              aria-label="Show opportunities with applications due by this date"
+            />
+            <select className={styles.sortSelect} value={priceRange} onChange={(event) => setPriceRange(event.target.value)} aria-label="Filter by vendor fee">
+              {PRICE_RANGES.map((range) => <option key={range.value} value={range.value}>{range.label}</option>)}
+            </select>
+            <select className={styles.sortSelect} value={indoorOutdoor} onChange={(event) => setIndoorOutdoor(event.target.value)} aria-label="Filter by indoor or outdoor">
+              {INDOOR_OUTDOOR_OPTIONS.map((option) => <option key={option} value={option}>{option === 'All' ? 'Indoor or outdoor' : option}</option>)}
+            </select>
           </div>
 
           <div className={styles.resultsHeader}>
@@ -103,7 +175,7 @@ export default function VendorsPage() {
               <h2>{opportunities.length} vendor opportunities</h2>
               <p>Clear fees, deadlines, host details, and setup notes before you apply.</p>
             </div>
-            <select className={styles.sortSelect} defaultValue="recommended" aria-label="Sort opportunities">
+            <select className={styles.sortSelect} value={sort} onChange={(event) => setSort(event.target.value)} aria-label="Sort opportunities">
               <option value="recommended">Recommended</option>
               <option value="deadline">Application deadline</option>
               <option value="fee-low">Lowest vendor fee</option>
@@ -115,7 +187,7 @@ export default function VendorsPage() {
             <div className={styles.emptyState}>
               <h2>No matches yet.</h2>
               <p>Try changing your filters or check back soon.</p>
-              <button type="button" onClick={() => { setActiveTab('All'); setQuery(''); }} className="btn btn--secondary">
+              <button type="button" onClick={clearFilters} className="btn btn--secondary">
                 Clear filters
               </button>
             </div>

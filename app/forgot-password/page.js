@@ -9,15 +9,22 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
+    setError('');
 
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/reset-password`,
+    });
 
     setLoading(false);
+    if (resetError) {
+      setError(resetError.message);
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -56,6 +63,8 @@ export default function ForgotPasswordPage() {
                   required
                 />
               </div>
+
+              {error && <p className="form-error">{error}</p>}
 
               <button type="submit" className="btn btn--primary btn--full" disabled={loading}>
                 {loading ? 'Sending...' : 'Send reset link'}

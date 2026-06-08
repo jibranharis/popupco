@@ -1,11 +1,33 @@
 'use client';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/components/AuthContext';
+import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { FileText, Heart, Mail, CheckCircle2, Circle, ArrowRight } from 'lucide-react';
 import styles from './dashboard.module.css';
 
 export default function DashboardOverviewPage() {
   const { user } = useAuth();
+  const [applicationCount, setApplicationCount] = useState(0);
+  const [savedCount, setSavedCount] = useState(0);
+
+  useEffect(() => {
+    if (!user) return;
+
+    supabase
+      .from('vendor_applications')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .then(({ count }) => setApplicationCount(count || 0));
+
+    try {
+      const savedSpaces = JSON.parse(localStorage.getItem(`saved_spaces_${user.id}`) || '[]');
+      const savedEvents = JSON.parse(localStorage.getItem(`saved_events_${user.id}`) || '[]');
+      setSavedCount(savedSpaces.length + savedEvents.length);
+    } catch {
+      setSavedCount(0);
+    }
+  }, [user]);
 
   if (!user) return null; // handled by layout AuthGuard
 
@@ -35,7 +57,7 @@ export default function DashboardOverviewPage() {
             <span className={styles.cardTitle}>Active Applications</span>
             <FileText size={20} className={styles.cardIcon} />
           </div>
-          <div className={styles.statValue}>0</div>
+          <div className={styles.statValue}>{applicationCount}</div>
           <div className={styles.statLabel}>Pending review</div>
           <Link href="/dashboard/applications" style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '16px', color: 'var(--color-accent)', fontWeight: '600', fontSize: '0.9rem' }}>
             View applications <ArrowRight size={14} />
@@ -47,7 +69,7 @@ export default function DashboardOverviewPage() {
             <span className={styles.cardTitle}>Saved</span>
             <Heart size={20} className={styles.cardIcon} />
           </div>
-          <div className={styles.statValue}>2</div>
+          <div className={styles.statValue}>{savedCount}</div>
           <div className={styles.statLabel}>Opportunities saved</div>
           <Link href="/dashboard/saved" style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '16px', color: 'var(--color-accent)', fontWeight: '600', fontSize: '0.9rem' }}>
             View saved <ArrowRight size={14} />
@@ -59,8 +81,8 @@ export default function DashboardOverviewPage() {
             <span className={styles.cardTitle}>Messages</span>
             <Mail size={20} className={styles.cardIcon} />
           </div>
-          <div className={styles.statValue}>1</div>
-          <div className={styles.statLabel}>Unread message</div>
+          <div className={styles.statValue}>0</div>
+          <div className={styles.statLabel}>Unread messages</div>
           <Link href="/dashboard/messages" style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '16px', color: 'var(--color-accent)', fontWeight: '600', fontSize: '0.9rem' }}>
             Open inbox <ArrowRight size={14} />
           </Link>

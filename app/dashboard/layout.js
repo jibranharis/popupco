@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { LayoutDashboard, User, FileText, Heart, Mail, Settings, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '@/components/AuthContext';
 import AuthGuard from '@/components/AuthGuard';
+import { supabase } from '@/lib/supabase';
 import styles from './dashboard.module.css';
 
 const navItems = [
@@ -20,15 +21,24 @@ export default function DashboardLayout({ children }) {
   const { user, logout } = useAuth();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [completionPercent, setCompletionPercent] = useState(20);
 
   // Close mobile menu when route changes
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  if (!user) return null; // AuthGuard will handle redirect
+  useEffect(() => {
+    if (!user) return;
+    supabase.auth.getUser().then(({ data: { user: authUser } }) => {
+      const meta = authUser?.user_metadata || {};
+      const steps = [true, Boolean(meta.name), Boolean(meta.business_name), Boolean(meta.bio), Boolean(meta.photo_url)];
+      const completedSteps = steps.filter(Boolean).length;
+      setCompletionPercent(Math.round((completedSteps / steps.length) * 100));
+    });
+  }, [user]);
 
-  const completionPercent = user.type === 'vendor' ? 60 : 85;
+  if (!user) return null; // AuthGuard will handle redirect
 
   return (
     <AuthGuard>

@@ -70,6 +70,7 @@ export default function SpaceDetailPage({ params }) {
   const [space, setSpace] = useState(staticSpace);
   const [notFoundState, setNotFoundState] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     supabase.from('opportunities').select('*').eq('slug', slug).single()
@@ -111,7 +112,8 @@ export default function SpaceDetailPage({ params }) {
     }
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
       await navigator.clipboard.writeText(shareUrl);
-      alert('Listing link copied.');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -135,7 +137,7 @@ export default function SpaceDetailPage({ params }) {
               </div>
             </div>
             <div className={styles.actions}>
-              <button type="button" onClick={handleShare}><Share size={16} /> Share</button>
+              <button type="button" onClick={handleShare}><Share size={16} /> {copied ? 'Copied!' : 'Share'}</button>
               <button onClick={toggleSave}><Heart size={16} fill={isSaved ? '#E53E3E' : 'none'} color={isSaved ? '#E53E3E' : 'currentColor'} /> {isSaved ? 'Saved' : 'Save'}</button>
             </div>
           </div>

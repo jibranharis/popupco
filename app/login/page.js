@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, Suspense } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CalendarDays, Map, Store, Users } from 'lucide-react';
@@ -62,7 +63,7 @@ function LoginContent() {
   return (
     <main className={styles.authLayout}>
       <Link href="/" className={styles.backHome}>
-        <img src="/images/popupco-logo-mark.png" alt="" />
+        <Image src="/images/popupco-logo-mark.png" alt="PopUpCo" width={32} height={32} />
         <span>PopUpCo</span>
       </Link>
 

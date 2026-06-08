@@ -27,14 +27,16 @@ export default function EventDetailPage({ params }) {
   const { user } = useAuth();
   const event = getPublicEventBySlug(slug);
   const [isSaved, setIsSaved] = useState(false);
-
-  if (!event) notFound();
+  const [copied, setCopied] = useState(false);
+  const [notFoundState] = useState(!event);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !event) return;
     const saved = JSON.parse(localStorage.getItem(`saved_events_${user.id}`) || '[]');
     setIsSaved(saved.includes(event.id));
-  }, [user, event.id]);
+  }, [user, event?.id]);
+
+  if (notFoundState) return notFound();
 
   const toggleSave = () => {
     if (!user) {
@@ -55,7 +57,8 @@ export default function EventDetailPage({ params }) {
     }
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
       await navigator.clipboard.writeText(shareUrl);
-      alert('Listing link copied.');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -64,7 +67,7 @@ export default function EventDetailPage({ params }) {
       <Header />
       <main className={styles.main}>
         <div className="container">
-          <Link href="/vendors" className={styles.backBtn}><ChevronLeft size={19} /> Back to opportunities</Link>
+          <Link href="/upcoming" className={styles.backBtn}><ChevronLeft size={19} /> Back to opportunities</Link>
 
           <div className={styles.titleArea}>
             <div>
@@ -77,7 +80,7 @@ export default function EventDetailPage({ params }) {
               </div>
             </div>
             <div className={styles.actions}>
-              <button type="button" onClick={handleShare}><Share size={16} /> Share</button>
+              <button type="button" onClick={handleShare}><Share size={16} /> {copied ? 'Copied!' : 'Share'}</button>
               <button onClick={toggleSave}><Heart size={16} fill={isSaved ? '#E53E3E' : 'none'} color={isSaved ? '#E53E3E' : 'currentColor'} /> {isSaved ? 'Saved' : 'Save'}</button>
             </div>
           </div>

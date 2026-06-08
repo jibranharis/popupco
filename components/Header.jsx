@@ -122,7 +122,6 @@ export default function Header() {
             <>
               <Link href="/dashboard/messages" className={styles.messageBtn} aria-label="Messages">
                 <Mail size={18} />
-                <span>1</span>
               </Link>
               <div className={styles.profileMenuContainer} ref={profileRef}>
                 <button
@@ -180,7 +179,7 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link href="/dashboard/messages" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Messages (1)</Link>
+              <Link href="/dashboard/messages" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Messages</Link>
               <Link href="/dashboard" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Dashboard</Link>
               <Link href="/dashboard/profile" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Profile</Link>
               <Link href="/dashboard/applications" className={styles.mobileNavLink} onClick={() => setMenuOpen(false)}>Applications</Link>

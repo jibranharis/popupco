@@ -7,7 +7,7 @@ import { useAuth } from '@/components/AuthContext';
 import { loginHref } from '@/components/GatedLink';
 import { CheckCircle, ChevronRight } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import styles from '../venue/page.module.css';
+import styles from './page.module.css';
 
 const SECTIONS = [
   'Organizer Info',
@@ -51,7 +51,7 @@ function HostApplicationContent() {
     preferred_city: '', venue_preference: '', expected_size: '', date_flexibility: '', budget_range: '',
     preferred_date: '', alternate_dates: '', event_start: '', event_end: '', setup_time: '', breakdown_time: '', flexible_date: '',
     vendor_spots: '', vendor_categories: [], booth_fee_charged: '', booth_fee_amount: '', curated_vendors: '',
-    logistics_notes: '', food_vendors_allowed: '', equipment_available: '',
+    logistics_notes: '', deposit_required: '', food_vendors_allowed: '', equipment_available: '',
     support_needed: [], additional_notes: '', consent: false,
   });
 
@@ -401,8 +401,8 @@ function HostApplicationContent() {
               <div className={styles.fields}>
                 <div className={styles.twoCol}>
                   <div className="form-group">
-                    <label className="form-label">Booth fee amount or range</label>
-                    <input className="form-input" value={form.booth_fee_amount} onChange={(e) => setField('booth_fee_amount', e.target.value)} />
+                    <label className="form-label">Deposit required?</label>
+                    <input className="form-input" value={form.deposit_required} onChange={(e) => setField('deposit_required', e.target.value)} />
                   </div>
                   <div className="form-group">
                     <label className="form-label">Parking/load-in details</label>
