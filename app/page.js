@@ -108,7 +108,7 @@ const moments = [
     copy: 'Find weekend markets, vendor fairs, and community events where your products can meet real local customers.',
     cta: 'Find markets',
     href: '/vendors?type=vendor-markets',
-    image: '/hero-market.png',
+    image: '/images/use-case-1.jpg',
     icon: Store,
   },
   {
@@ -116,7 +116,7 @@ const moments = [
     copy: 'Test a new product with real shoppers before committing to a storefront, lease, or long-term retail plan.',
     cta: 'Find launch spaces',
     href: '/vendors?type=retail-spaces',
-    image: '/images/media__1779838728727.jpg',
+    image: '/images/use-case-2.jpg',
     icon: Zap,
   },
   {
@@ -124,7 +124,7 @@ const moments = [
     copy: 'Discover art markets, maker fairs, gallery nights, and local events built for creative sellers.',
     cta: 'Find creative markets',
     href: '/vendors?category=artists-makers',
-    image: '/cat-jewelry.png',
+    image: '/images/use-case-3.jpg',
     icon: Paintbrush,
   },
   {
@@ -132,7 +132,7 @@ const moments = [
     copy: 'Find markets, halls, patios, and event spaces that welcome food vendors, tastings, and small food concepts.',
     cta: 'Find food spaces',
     href: '/vendors?category=food',
-    image: '/cat-food.png',
+    image: '/images/use-case-4.jpg',
     icon: Utensils,
   },
   {
@@ -140,7 +140,7 @@ const moments = [
     copy: 'Reserve halls, courtyards, storefronts, and local venues for pop-ups, workshops, and community events.',
     cta: 'Browse spaces',
     href: '/vendors?type=event-venues',
-    image: '/images/media__1779838851661.jpg',
+    image: '/images/use-case-5.jpg',
     icon: Users,
   },
   {
@@ -148,7 +148,7 @@ const moments = [
     copy: 'Bring vendors, artists, food sellers, and shoppers together with tools to collect applications and manage interest.',
     cta: 'Start hosting',
     href: '/apply/host',
-    image: '/event-1.png',
+    image: '/images/use-case-6.jpg',
     icon: Building2,
   },
   {
@@ -156,7 +156,7 @@ const moments = [
     copy: 'Turn empty space into local activity by making your venue available for pop-ups, markets, and community events.',
     cta: 'List your space',
     href: '/apply/venue',
-    image: '/images/media__1779840173203.jpg',
+    image: '/images/use-case-7.jpg',
     icon: MapPin,
   },
 ];
@@ -193,13 +193,13 @@ const roles = [
 ];
 
 const filmstrip = [
-  ['Weekend vendor fair', 'Local makers selling in person', '/hero-market.png'],
-  ['Product launch table', 'A new brand testing demand', '/images/media__1779838728727.jpg'],
-  ['Artist market', 'Original work, prints, and handmade goods', '/cat-jewelry.png'],
-  ['Food vendor setup', 'Pop-up food, tastings, and prepared goods', '/cat-food.png'],
-  ['Community hall', 'A flexible space for local events', '/images/media__1779838851661.jpg'],
-  ['Host-led market', 'Applications, vendors, and foot traffic', '/event-1.png'],
-  ['Available venue', 'Empty space turned into opportunity', '/images/media__1779840173203.jpg'],
+  ['Weekend vendor fair', 'Local makers selling in person', '/images/use-case-1.jpg'],
+  ['Product launch table', 'A new brand testing demand', '/images/use-case-2.jpg'],
+  ['Artist market', 'Original work, prints, and handmade goods', '/images/use-case-3.jpg'],
+  ['Food vendor setup', 'Pop-up food, tastings, and prepared goods', '/images/use-case-4.jpg'],
+  ['Community hall', 'A flexible space for local events', '/images/use-case-5.jpg'],
+  ['Host-led market', 'Applications, vendors, and foot traffic', '/images/use-case-6.jpg'],
+  ['Available venue', 'Empty space turned into opportunity', '/images/use-case-7.jpg'],
 ];
 
 const messages = [
