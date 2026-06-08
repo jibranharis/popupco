@@ -798,6 +798,10 @@
     transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 940ms;
 }
 
+.momentContent h3 {
+  font-family: var(--font-display);
+}
+
 .momentContent p {
   margin: var(--sp-3) 0 var(--sp-4);
   color: #6f665f;
