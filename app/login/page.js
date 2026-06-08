@@ -21,7 +21,7 @@ const quickLinks = [
   { label: 'Apply as a vendor', href: '/login?redirect=/apply/vendor&intent=apply', icon: Store },
   { label: 'Submit a venue', href: '/login?redirect=/apply/venue&intent=venue', icon: Map },
   { label: 'Host an event', href: '/login?redirect=/apply/host&intent=host', icon: Users },
-  { label: 'Browse opportunities', href: '/browse', icon: CalendarDays },
+  { label: 'Browse opportunities', href: '/vendors', icon: CalendarDays },
 ];
 
 function LoginContent() {

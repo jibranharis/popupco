@@ -17,7 +17,7 @@ const plans = [
     copy: 'For vendors joining curated markets, community events, food pop-ups, and shared selling opportunities.',
     features: ['Booth or table space', 'Event details before applying', 'Application review', 'Setup instructions', 'Host messaging when accepted'],
     cta: 'Find opportunities',
-    href: '/browse',
+    href: '/vendors',
   },
   {
     title: 'Featured vendor placement',
@@ -138,7 +138,7 @@ export default function PricingPage() {
               <h2>Not sure what your pop-up should cost?</h2>
               <p>Tell us what you are trying to do and we will help route you to the right vendor, venue, or host path.</p>
               <div className={styles.ctaBtns}>
-                <Link href="/browse" className="btn btn--primary btn--lg">Browse opportunities</Link>
+                <Link href="/vendors" className="btn btn--primary btn--lg">Browse opportunities</Link>
                 <Link href="/contact" className="btn btn--secondary btn--lg">Ask about pricing</Link>
               </div>
             </div>

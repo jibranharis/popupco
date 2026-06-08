@@ -54,7 +54,7 @@ export default function Footer() {
             <span className={styles.ctaEyebrow}>Start with what you need</span>
             <strong>Find a booth, list a space, or host a pop-up.</strong>
             <div className={styles.ctaActions}>
-              <Link href="/browse">Find opportunities</Link>
+              <Link href="/vendors">Find opportunities</Link>
               <Link href="/apply/venue">List your space</Link>
             </div>
           </div>

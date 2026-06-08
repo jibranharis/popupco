@@ -98,7 +98,7 @@ function Overview({ user, savedSpaces, submissionCount }) {
           <h1>Welcome back, {user.name || 'there'}.</h1>
           <p>{roleCopy[user.type] || roleCopy.vendor}</p>
         </div>
-        <Link href={user.type === 'venue' ? '/apply/venue' : user.type === 'host' ? '/apply/host' : '/browse'} className="btn btn--primary">
+        <Link href={user.type === 'venue' ? '/apply/venue' : user.type === 'host' ? '/apply/host' : '/vendors'} className="btn btn--primary">
           {user.type === 'venue' ? 'Submit venue' : user.type === 'host' ? 'Host an event' : 'Browse opportunities'}
         </Link>
       </section>
@@ -294,7 +294,7 @@ function Applications({ submissions }) {
         <span>Past applications</span>
       </div>
       {items.length === 0 ? (
-        <EmptyState icon={Bookmark} title="No applications yet" copy="Apply to an opportunity and it will appear here." href="/browse" cta="Browse opportunities" />
+        <EmptyState icon={Bookmark} title="No applications yet" copy="Apply to an opportunity and it will appear here." href="/vendors" cta="Browse opportunities" />
       ) : (
         <div className={styles.applicationList}>
           {items.map((item, i) => (
@@ -314,7 +314,7 @@ function Applications({ submissions }) {
 
 function Saved({ savedSpaces }) {
   if (!savedSpaces.length) {
-    return <EmptyState icon={Heart} title="No saved opportunities yet" copy="Click the heart icon on any listing to save it here." href="/browse" cta="Browse opportunities" />;
+    return <EmptyState icon={Heart} title="No saved opportunities yet" copy="Click the heart icon on any listing to save it here." href="/vendors" cta="Browse opportunities" />;
   }
   return (
     <section className={styles.section}>

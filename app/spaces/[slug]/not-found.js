@@ -14,7 +14,7 @@ export default function OpportunityNotFound() {
             Browse all vendor opportunities instead, or contact PopUpCo if you were looking for a specific listing.
           </p>
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-            <Link href="/browse" className="btn btn--primary">Browse opportunities</Link>
+            <Link href="/vendors" className="btn btn--primary">Browse opportunities</Link>
             <Link href="/contact" className="btn btn--secondary">Contact PopUpCo</Link>
           </div>
         </div>

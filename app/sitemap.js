@@ -7,7 +7,6 @@ export default function sitemap() {
   const staticRoutes = [
     '',
     '/discover',
-    '/browse',
     '/upcoming',
     '/forgot-password',
     '/dashboard',
@@ -39,7 +38,7 @@ export default function sitemap() {
   return [...staticRoutes, ...opportunityRoutes, ...eventRoutes].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
-    changeFrequency: route.startsWith('/spaces') || route === '/browse' ? 'weekly' : 'monthly',
-    priority: route === '' ? 1 : route === '/browse' ? 0.9 : 0.7,
+    changeFrequency: route.startsWith('/spaces') || route === '/vendors' ? 'weekly' : 'monthly',
+    priority: route === '' ? 1 : route === '/vendors' ? 0.9 : 0.7,
   }));
 }

@@ -49,7 +49,7 @@ export default function VenuesPage() {
               <p>List a storefront, hall, cafe, studio, lot, gallery, school, or community space. PopUpCo helps match it with the right hosts, vendors, and events.</p>
               <div className={styles.ctas}>
                 <Link href="/apply/venue" className={`${styles.roleButton} ${styles.primaryButton}`}>List your space <ArrowRight size={20} /></Link>
-                <Link href="/browse" className={`${styles.roleButton} ${styles.secondaryButton}`}>See marketplace</Link>
+                <Link href="/vendors" className={`${styles.roleButton} ${styles.secondaryButton}`}>See marketplace</Link>
               </div>
               <div className={styles.heroChips}>
                 {chips.map(([Icon, text]) => (

@@ -79,7 +79,7 @@ export default function Header() {
 
   const nav = publicNav;
   const isActiveNav = (href) => {
-    if (href === '/discover') return pathname === '/discover' || pathname === '/browse' || pathname.startsWith('/upcoming');
+    if (href === '/discover') return pathname === '/discover' || pathname.startsWith('/upcoming');
     return pathname === href;
   };
 

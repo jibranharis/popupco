@@ -62,7 +62,7 @@ export default function AboutPage() {
                 PopUpCo started from a simple frustration: local vendors have talent, ambition, and products people want, but finding the next place to sell is still scattered across DMs, flyers, forms, and word of mouth.
               </p>
               <div className={styles.heroCtas}>
-                <Link href="/browse" className="btn btn--primary btn--lg">Explore opportunities</Link>
+                <Link href="/vendors" className="btn btn--primary btn--lg">Explore opportunities</Link>
                 <Link href="/contact" className="btn btn--secondary btn--lg">Talk to us</Link>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function AboutPage() {
               <p>
                 The Bay Area is full of people making things, selling things, organizing things, and trying to bring neighborhoods together. PopUpCo starts here because this is where we can learn directly from the people we are building for.
               </p>
-              <Link href="/browse" className={styles.textLink}>See Bay Area opportunities <ArrowRight size={17} /></Link>
+              <Link href="/vendors" className={styles.textLink}>See Bay Area opportunities <ArrowRight size={17} /></Link>
             </div>
           </div>
         </section>

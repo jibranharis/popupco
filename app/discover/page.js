@@ -31,7 +31,7 @@ const pathCards = [
   {
     title: 'I want to sell at an event',
     copy: 'Browse vendor markets, booth opportunities, food pop-ups, and spaces currently accepting vendor interest.',
-    href: '/browse',
+    href: '/vendors',
     cta: 'Browse vendor opportunities',
     Icon: Store,
   },
