@@ -518,21 +518,58 @@ export default function HomePage() {
             <div className={`fade-in ${styles.messageCopy}`}>
               <span className="label">Clear conversations</span>
               <h2>Get the details before you commit.</h2>
-              <p>
-                PopUpCo keeps fees, attendance, setup needs, permits, and deadlines in one place so vendors and hosts can move with confidence.
-              </p>
+              <p>Ask the right questions, get real answers, and move forward with confidence.</p>
+              <ol className={styles.msgFeatures}>
+                <li>
+                  <span className={styles.msgFeatureNum}>1</span>
+                  <div>
+                    <strong>Event details</strong>
+                    <p>Confirm key info like dates, booth fee, and what&apos;s included.</p>
+                  </div>
+                </li>
+                <li>
+                  <span className={styles.msgFeatureNum}>2</span>
+                  <div>
+                    <strong>Attendance</strong>
+                    <p>Understand expected foot traffic and your target audience.</p>
+                  </div>
+                </li>
+                <li>
+                  <span className={styles.msgFeatureNum}>3</span>
+                  <div>
+                    <strong>Permits</strong>
+                    <p>Learn what&apos;s required and who handles the paperwork.</p>
+                  </div>
+                </li>
+                <li>
+                  <span className={styles.msgFeatureNum}>4</span>
+                  <div>
+                    <strong>Confirm fit</strong>
+                    <p>Review everything and confirm it&apos;s the right match.</p>
+                  </div>
+                </li>
+              </ol>
             </div>
             <div className={`fade-in fade-in--d2 ${styles.messageChain}`}>
-              {messages.map(([sender, text], index) => (
-                <div
-                  key={`${sender}-${index}`}
-                  className={`${styles.messageBubble} ${sender === 'Vendor' ? styles.vendorMessage : styles.hostMessage}`}
-                  style={{ '--message-index': index }}
-                >
-                  <span>{sender.toUpperCase()}</span>
-                  <p>{text}</p>
-                </div>
-              ))}
+              {messages.map(([sender, text], index) => {
+                const isVendor = sender === 'Vendor';
+                const times = ['10:22 AM','10:23 AM','10:34 AM','10:36 AM','10:44 AM','10:46 AM','10:47 AM'];
+                return (
+                  <div
+                    key={`${sender}-${index}`}
+                    className={`${styles.messageBubble} ${isVendor ? styles.vendorMessage : styles.hostMessage}`}
+                    style={{ '--message-index': index }}
+                  >
+                    {isVendor && <div className={styles.msgAvatar} data-role="V">V</div>}
+                    <div className={styles.msgBubbleInner}>
+                      <span className={styles.msgLabel}>{sender.toUpperCase()}</span>
+                      <p>{text}</p>
+                      <span className={styles.msgTime}>{times[index]}</span>
+                    </div>
+                    {!isVendor && <div className={styles.msgAvatar} data-role="H">H</div>}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
