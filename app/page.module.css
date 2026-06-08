@@ -63,10 +63,10 @@
   position: relative;
   z-index: 2;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   flex: 1;
-  padding-top: max(140px, 15vh);
-  padding-bottom: clamp(20px, 5vh, 45px);
+  padding-top: clamp(72px, 8vh, 120px);
+  padding-bottom: clamp(20px, 4vh, 40px);
 }
 
 /* Left copy block */
