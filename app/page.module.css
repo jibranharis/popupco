@@ -66,7 +66,7 @@
   align-items: center;
   flex: 1;
   padding-top: max(80px, 12vh);
-  padding-bottom: clamp(140px, 20vh, 220px);
+  padding-bottom: 40px; /* Creates a natural minimum gap above the search panel */
 }
 
 /* Left copy block */
@@ -153,9 +153,8 @@
    FLOATING SEARCH + TRUST PANEL
 ───────────────────────────────────────────────── */
 .heroPanel {
-  position: absolute;
-  bottom: 55px;
-  left: 0;
+  position: relative;
+  padding-bottom: clamp(30px, 5vh, 55px);
   width: 100%;
   z-index: 10;
 }
