@@ -249,12 +249,9 @@ function useFadeInObserver(ref) {
 export default function HomePage() {
   const pageRef = useRef(null);
   const heroRef = useRef(null);
-  const heroPanelRef = useRef(null);
-  const heroSubRef = useRef(null);
   const [activeTab, setActiveTab] = useState('sell');
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
-  const [heroExtraHeight, setHeroExtraHeight] = useState(0);
   
   // States for all tabs
   const [location, setLocation] = useState('Bay Area, CA');
@@ -276,8 +273,7 @@ export default function HomePage() {
     const onScroll = () => {
       if (!heroRef.current) return;
       const heroH = heroRef.current.offsetHeight;
-      // Account for the spacer above: fade starts after spacer is scrolled through
-      const scrollY = Math.max(0, window.scrollY - heroExtraHeight);
+      const scrollY = window.scrollY;
       const start = heroH * 0.2;
       const end = heroH * 0.7;
       const opacity = scrollY <= start ? 1 : scrollY >= end ? 0 : 1 - (scrollY - start) / (end - start);
@@ -285,33 +281,6 @@ export default function HomePage() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [heroExtraHeight]);
-
-  // After mount: measure if the panel fits with equal breathing room.
-  // Gap above = space between subtext bottom and panel top.
-  // Gap below = space between panel bottom and viewport bottom.
-  // Spacer = gapAbove - gapBelow (so scrolling through spacer equalises them).
-  // If gapBelow >= gapAbove already (dad's laptop): spacer = 0, hero sticks immediately.
-  useEffect(() => {
-    const measure = () => {
-      if (!heroPanelRef.current || !heroSubRef.current) return;
-      const vh = window.innerHeight;
-      const panelRect = heroPanelRef.current.getBoundingClientRect();
-      const subRect = heroSubRef.current.getBoundingClientRect();
-
-      const gapAbove = panelRect.top - subRect.bottom;   // subtext bottom → panel top
-      const gapBelow = vh - panelRect.bottom;            // panel bottom → viewport bottom
-
-      // If already equal (or more space below than above): no spacer needed
-      const spacer = Math.max(0, Math.round(gapAbove - gapBelow));
-      setHeroExtraHeight(spacer);
-    };
-
-    // Measure after fonts/images have settled
-    const t1 = setTimeout(measure, 150);
-    const t2 = setTimeout(measure, 600); // second pass in case of slow image load
-    window.addEventListener('resize', measure);
-    return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener('resize', measure); };
   }, []);
 
   const dateValue = selectedDates.length > 0 
@@ -366,10 +335,6 @@ export default function HomePage() {
       <main ref={pageRef} className={styles.page}>
 
         {/* ── STICKY CINEMATIC HERO ───────────────────── */}
-        {/* Transparent spacer: gives scroll travel so the hero can lock in with panel perfectly centered */}
-        {heroExtraHeight > 0 && (
-          <div style={{ height: heroExtraHeight, background: '#1a1510', flexShrink: 0 }} aria-hidden="true" />
-        )}
         <div className={styles.introScroll} ref={heroRef}>
           <section className={styles.hero} style={{ opacity: heroOpacity }}>
             {/* Full-bleed background image */}
@@ -392,7 +357,7 @@ export default function HomePage() {
                   Pop-Up<br />
                   Opportunity.
                 </h1>
-                <p className={styles.heroSub} ref={heroSubRef}>
+                <p className={styles.heroSub}>
                   The Bay Area&apos;s most trusted marketplace for pop-up<br className={styles.heroSubBr} />
                   spaces, vendors, and events.
                 </p>
@@ -400,7 +365,7 @@ export default function HomePage() {
             </div>
 
             {/* ── Floating search panel ── */}
-            <div className={styles.heroPanel} ref={heroPanelRef}>
+            <div className={styles.heroPanel}>
               <div className="container">
                 <div className={styles.searchPanelContainer}>
                   {/* Search Tabs */}
