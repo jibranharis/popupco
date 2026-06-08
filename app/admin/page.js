@@ -43,7 +43,7 @@ export default function AdminDashboard() {
       if (resData.success) {
         localStorage.setItem('popupco_admin_auth', 'true');
         setAuth(true);
-        fetchData();
+        fetchData(password);
       } else {
         setError('Invalid password');
       }
@@ -60,13 +60,13 @@ export default function AdminDashboard() {
     setData({ vendors: [], venues: [], hosts: [], contacts: [] });
   }
 
-  async function fetchData() {
+  async function fetchData(adminPassword = password) {
     setRefreshing(true);
     try {
       const res = await fetch('/api/admin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'fetch' }),
+        body: JSON.stringify({ action: 'fetch', password: adminPassword }),
       });
       const resData = await res.json();
       if (resData.success) {

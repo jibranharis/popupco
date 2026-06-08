@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -8,7 +8,7 @@ import { loginHref } from '@/components/GatedLink';
 import { PLACEHOLDER_EVENTS, getPublicEventBySlug } from '@/lib/data';
 import { SPACES_DATA, getOpportunityBySlug } from '@/lib/spaces';
 import { ChevronRight, CheckCircle } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
 const SECTIONS = [
@@ -53,6 +53,7 @@ const FOOD_CATEGORIES = ['Packaged food', 'Beverage', 'Food truck'];
 
 function VendorApplicationForm() {
   const { user } = useAuth();
+  const searchParams = useSearchParams();
   const [section, setSection] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -89,7 +90,7 @@ function VendorApplicationForm() {
   const isFoodVendor = form.categories.some((c) => FOOD_CATEGORIES.includes(c));
 
   useEffect(() => {
-    const eventSlug = new URLSearchParams(window.location.search).get('event');
+    const eventSlug = searchParams.get('event');
     if (!eventSlug) return;
 
     const publicEvent = getPublicEventBySlug(eventSlug);
@@ -108,7 +109,7 @@ function VendorApplicationForm() {
     }
 
     setEventWarning("We couldn't find that event, but you can still apply as a vendor.");
-  }, []);
+  }, [searchParams]);
 
   function scrollTop() {
     topRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -172,10 +173,6 @@ function VendorApplicationForm() {
     setError('');
     const payload = { ...form, user_id: user?.id || null, submittedAt: new Date().toISOString() };
     try {
-      if (typeof window !== 'undefined') {
-        const stored = JSON.parse(localStorage.getItem('popupco_vendor_applications') || '[]');
-        localStorage.setItem('popupco_vendor_applications', JSON.stringify([...stored, payload]));
-      }
       const res = await fetch('/api/apply/vendor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -755,17 +752,28 @@ function VendorApplicationForm() {
   );
 }
 
-export default function VendorApplicationPage() {
+function VendorApplicationContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace(loginHref(`${window.location.pathname}${window.location.search}`, 'apply'));
+      const query = searchParams.toString();
+      router.replace(loginHref(`${pathname}${query ? `?${query}` : ''}`, 'apply'));
     }
-  }, [loading, router, user]);
+  }, [loading, pathname, router, searchParams, user]);
 
   if (loading || !user) return null;
 
   return <VendorApplicationForm />;
+}
+
+export default function VendorApplicationPage() {
+  return (
+    <Suspense fallback={null}>
+      <VendorApplicationContent />
+    </Suspense>
+  );
 }

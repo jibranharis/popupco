@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import OpportunityCard from '@/components/OpportunityCard';
+import useFadeIn from '@/hooks/useFadeIn';
 import {
   ArrowRight,
   Building2,
@@ -171,25 +172,10 @@ const opportunityRows = [
   ['Cancellation', 'Refundable up to 7 days before', RefreshCw],
 ];
 
-function useFadeInObserver(ref) {
-  useEffect(() => {
-    if (!ref.current) return undefined;
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      }),
-      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-    );
-    ref.current.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [ref]);
-}
-
 export default function HomePage() {
-  const pageRef = useRef(null);
+  const pageRef = useFadeIn();
   const [activeMode, setActiveMode] = useState(searchModes[0]);
   const [activeMoment, setActiveMoment] = useState(0);
-  useFadeInObserver(pageRef);
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

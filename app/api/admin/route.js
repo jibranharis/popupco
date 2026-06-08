@@ -15,6 +15,13 @@ export async function POST(request) {
     }
 
     if (body.action === 'fetch') {
+      if (!process.env.ADMIN_PASSWORD) {
+        return NextResponse.json({ success: false, error: 'Admin not configured' }, { status: 503 });
+      }
+      if (body.password !== process.env.ADMIN_PASSWORD) {
+        return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      }
+
       const db = getServiceClient();
       if (!db) {
         return NextResponse.json({ success: true, data: { vendors: [], venues: [], hosts: [], contacts: [] } });

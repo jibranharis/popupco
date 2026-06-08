@@ -1,17 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getServiceClient } from '@/lib/supabase';
+import { validateFields } from '@/lib/validate';
 
 export async function POST(request) {
   try {
     const data = await request.json();
-    const db = getServiceClient();
-
-    if (!db) {
-      console.log('[Host Application - no DB]', JSON.stringify(data, null, 2));
-      return NextResponse.json({ success: true });
-    }
-
-    const { error } = await db.from('host_applications').insert({
+    const submission = {
       user_id: data.user_id || null,
       name: data.name,
       email: data.email,
@@ -28,7 +22,32 @@ export async function POST(request) {
       experience: data.experience || null,
       goals: data.additional_notes || data.goals || null,
       status: 'pending',
+    };
+    const validationError = validateFields(submission, {
+      name: { required: true, max: 200, label: 'Name' },
+      email: { required: true, max: 320, email: true, label: 'Email' },
+      phone: { max: 100, label: 'Phone' },
+      org_name: { max: 200, label: 'Organization' },
+      role: { max: 200, label: 'Role' },
+      event_concept: { max: 5000, label: 'Event concept' },
+      venue_status: { required: true, max: 200, label: 'Venue status' },
+      expected_attendance: { max: 200, label: 'Expected attendance' },
+      event_date: { max: 200, label: 'Event date' },
+      location: { max: 200, label: 'Location' },
+      budget: { max: 200, label: 'Budget' },
+      experience: { max: 5000, label: 'Experience' },
+      goals: { max: 5000, label: 'Goals' },
     });
+    if (validationError) return NextResponse.json({ error: validationError }, { status: 400 });
+
+    const db = getServiceClient();
+
+    if (!db) {
+      console.log('[Host Application - no DB]', JSON.stringify(data, null, 2));
+      return NextResponse.json({ success: true });
+    }
+
+    const { error } = await db.from('host_applications').insert(submission);
 
     if (error) throw error;
     return NextResponse.json({ success: true });

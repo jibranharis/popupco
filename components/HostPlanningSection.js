@@ -97,15 +97,21 @@ export default function HostPlanningSection() {
 
   /* ── Event Rotation Effect ── */
   useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return undefined;
+    let timeout = null;
     const interval = setInterval(() => {
       setAnimating(true);
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setActiveEventIdx(prev => (prev + 1) % EVENT_STATES.length);
         setAnimating(false);
       }, 400); // Wait for fade out
     }, 10000); // Rotate every 10s
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (timeout) clearTimeout(timeout);
+    };
   }, []);
 
   /* ── Checklist Logic ── */

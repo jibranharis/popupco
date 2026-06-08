@@ -165,8 +165,20 @@ export default function DiscoverPathsCarousel() {
 
   const next = () => setActiveIndex((current) => (current + 1) % paths.length);
   const prev = () => setActiveIndex((current) => (current === 0 ? paths.length - 1 : current - 1));
+  const activateSlide = (positionClass) => {
+    if (positionClass === styles.prevSlide) prev();
+    if (positionClass === styles.nextSlide) next();
+  };
+  const handleSlideKeyDown = (event, positionClass) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      activateSlide(positionClass);
+    }
+  };
 
   useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return undefined;
     const timer = setInterval(() => {
       setActiveIndex((current) => (current + 1) % paths.length);
     }, 6000);
@@ -208,12 +220,18 @@ export default function DiscoverPathsCarousel() {
               else positionClass = styles.hiddenSlide;
 
               if (positionClass === styles.hiddenSlide) return null;
+              const isInteractiveSlide = positionClass === styles.prevSlide || positionClass === styles.nextSlide;
 
               return (
-                <div key={path.id} className={`${styles.slide} ${positionClass}`} onClick={() => {
-                  if (positionClass === styles.prevSlide) prev();
-                  if (positionClass === styles.nextSlide) next();
-                }}>
+                <div
+                  key={path.id}
+                  className={`${styles.slide} ${positionClass}`}
+                  onClick={() => activateSlide(positionClass)}
+                  role={isInteractiveSlide ? 'button' : undefined}
+                  tabIndex={isInteractiveSlide ? 0 : undefined}
+                  onKeyDown={isInteractiveSlide ? (event) => handleSlideKeyDown(event, positionClass) : undefined}
+                  aria-label={isInteractiveSlide ? `Show ${path.tabLabel}` : undefined}
+                >
                    <div className={styles.contentPanel}>
                      <span className={styles.eyebrow}>{path.eyebrow}</span>
                      <h3>{path.heading}</h3>

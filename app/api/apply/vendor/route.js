@@ -1,20 +1,13 @@
 import { NextResponse } from 'next/server';
 import { getServiceClient } from '@/lib/supabase';
+import { validateFields } from '@/lib/validate';
 
 export async function POST(request) {
   try {
     const data = await request.json();
-    const db = getServiceClient();
-
-    if (!db) {
-      console.log('[Vendor Application - no DB]', JSON.stringify(data, null, 2));
-      return NextResponse.json({ success: true });
-    }
-
     const contactName = data.contact_name || data.contactName || data.name ||
       [data.first_name, data.last_name].filter(Boolean).join(' ') || null;
-
-    const { error } = await db.from('vendor_applications').insert({
+    const submission = {
       user_id: data.user_id || null,
       event_slug: data.event_preference || data.eventSlug || data.event_slug || null,
       brand_name: data.business_name || data.brandName || data.brand_name || null,
@@ -31,7 +24,32 @@ export async function POST(request) {
       previous_events: data.sold_before_where || data.previousEvents || data.previous_events || null,
       message: data.additional_notes || data.message || null,
       status: 'pending',
+    };
+    const validationError = validateFields(submission, {
+      brand_name: { required: true, max: 200, label: 'Business name' },
+      contact_name: { required: true, max: 200, label: 'Contact name' },
+      email: { required: true, max: 320, email: true, label: 'Email' },
+      phone: { max: 100, label: 'Phone' },
+      website: { max: 500, label: 'Website' },
+      instagram: { max: 200, label: 'Instagram' },
+      categories: { type: 'array', required: true, label: 'Category' },
+      description: { required: true, max: 5000, label: 'Description' },
+      price_range: { max: 200, label: 'Price range' },
+      booth_needs: { max: 500, label: 'Booth needs' },
+      food_permit: { max: 500, label: 'Food permit' },
+      previous_events: { max: 5000, label: 'Previous events' },
+      message: { max: 5000, label: 'Message' },
     });
+    if (validationError) return NextResponse.json({ error: validationError }, { status: 400 });
+
+    const db = getServiceClient();
+
+    if (!db) {
+      console.log('[Vendor Application - no DB]', JSON.stringify(data, null, 2));
+      return NextResponse.json({ success: true });
+    }
+
+    const { error } = await db.from('vendor_applications').insert(submission);
 
     if (error) throw error;
     return NextResponse.json({ success: true });

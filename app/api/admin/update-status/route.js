@@ -1,14 +1,17 @@
 import { NextResponse } from 'next/server';
 import { getServiceClient } from '@/lib/supabase';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'popupco-admin-2025';
 const ALLOWED_TABLES = ['vendor_applications', 'venue_applications', 'host_applications', 'contacts'];
 
 export async function POST(request) {
   try {
     const { password, table, id, status } = await request.json();
 
-    if (password !== ADMIN_PASSWORD) {
+    if (!process.env.ADMIN_PASSWORD) {
+      return NextResponse.json({ error: 'Admin not configured' }, { status: 503 });
+    }
+
+    if (password !== process.env.ADMIN_PASSWORD) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

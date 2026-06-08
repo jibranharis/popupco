@@ -44,8 +44,20 @@ export default function SuccessCarousel() {
   const n = cases.length;
   const next = () => setActiveIndex((current) => (current + 1) % n);
   const prev = () => setActiveIndex((current) => (current - 1 + n) % n);
+  const activateCard = (index, prevIndex, nextIndex) => {
+    if (index === prevIndex) prev();
+    if (index === nextIndex) next();
+  };
+  const handleCardKeyDown = (event, index, prevIndex, nextIndex) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      activateCard(index, prevIndex, nextIndex);
+    }
+  };
 
   useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return undefined;
     const timer = setInterval(() => {
       setActiveIndex((current) => (current + 1) % n);
     }, 5000);
@@ -78,15 +90,17 @@ export default function SuccessCarousel() {
             else if (index === prevIndex) positionClass = styles.prev;
             else if (index === nextIndex) positionClass = styles.next;
             else return null; // the other 2 are hidden
+            const isInteractiveCard = index === prevIndex || index === nextIndex;
 
             return (
               <div
                 key={item.id}
                 className={`${styles.card} ${positionClass}`}
-                onClick={() => {
-                  if (index === prevIndex) prev();
-                  if (index === nextIndex) next();
-                }}
+                onClick={() => activateCard(index, prevIndex, nextIndex)}
+                role={isInteractiveCard ? 'button' : undefined}
+                tabIndex={isInteractiveCard ? 0 : undefined}
+                onKeyDown={isInteractiveCard ? (event) => handleCardKeyDown(event, index, prevIndex, nextIndex) : undefined}
+                aria-label={isInteractiveCard ? `Show ${item.title}` : undefined}
               >
                 <div className={styles.cardInner}>
                   <Image

@@ -1,12 +1,12 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/components/AuthContext';
 import { loginHref } from '@/components/GatedLink';
 import { CheckCircle, ChevronRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import styles from '../venue/page.module.css';
 
 const SECTIONS = [
@@ -33,9 +33,11 @@ const SUPPORT_OPTIONS = [
   'Other',
 ];
 
-export default function HostApplicationPage() {
+function HostApplicationContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [section, setSection] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -55,9 +57,10 @@ export default function HostApplicationPage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace(loginHref(`${window.location.pathname}${window.location.search}`, 'host'));
+      const query = searchParams.toString();
+      router.replace(loginHref(`${pathname}${query ? `?${query}` : ''}`, 'host'));
     }
-  }, [loading, router, user]);
+  }, [loading, pathname, router, searchParams, user]);
 
   if (loading || !user) return null;
 
@@ -95,11 +98,6 @@ export default function HostApplicationPage() {
     const payload = { ...form, submittedAt: new Date().toISOString(), user_id: user?.id || null };
 
     try {
-      if (typeof window !== 'undefined') {
-        const stored = JSON.parse(localStorage.getItem('popupco_host_submissions') || '[]');
-        localStorage.setItem('popupco_host_submissions', JSON.stringify([...stored, payload]));
-      }
-
       const res = await fetch('/api/apply/host', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -485,5 +483,13 @@ export default function HostApplicationPage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function HostApplicationPage() {
+  return (
+    <Suspense fallback={null}>
+      <HostApplicationContent />
+    </Suspense>
   );
 }

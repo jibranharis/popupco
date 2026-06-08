@@ -1,12 +1,12 @@
 'use client';
-import { useEffect, useState, useRef } from 'react';
+import { Suspense, useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/components/AuthContext';
 import { loginHref } from '@/components/GatedLink';
 import { ChevronRight, CheckCircle } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
 const SECTIONS = [
@@ -67,9 +67,11 @@ const PRICING_MODELS = [
   'Open to discussion',
 ];
 
-export default function VenueApplicationPage() {
+function VenueApplicationContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [section, setSection] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -91,9 +93,10 @@ export default function VenueApplicationPage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace(loginHref(`${window.location.pathname}${window.location.search}`, 'venue'));
+      const query = searchParams.toString();
+      router.replace(loginHref(`${pathname}${query ? `?${query}` : ''}`, 'venue'));
     }
-  }, [loading, router, user]);
+  }, [loading, pathname, router, searchParams, user]);
 
   if (loading || !user) return null;
 
@@ -138,10 +141,6 @@ export default function VenueApplicationPage() {
     setError('');
     const payload = { ...form, user_id: user?.id || null, submittedAt: new Date().toISOString() };
     try {
-      if (typeof window !== 'undefined') {
-        const stored = JSON.parse(localStorage.getItem('popupco_venue_submissions') || '[]');
-        localStorage.setItem('popupco_venue_submissions', JSON.stringify([...stored, payload]));
-      }
       const res = await fetch('/api/apply/venue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -498,5 +497,13 @@ export default function VenueApplicationPage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function VenueApplicationPage() {
+  return (
+    <Suspense fallback={null}>
+      <VenueApplicationContent />
+    </Suspense>
   );
 }

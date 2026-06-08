@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { CalendarDays, Map, Store, Users } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import styles from './page.module.css';
@@ -24,20 +24,15 @@ const quickLinks = [
   { label: 'Browse opportunities', href: '/browse', icon: CalendarDays },
 ];
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [redirect, setRedirect] = useState('/dashboard');
-  const [intent, setIntent] = useState('continue');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setRedirect(params.get('redirect') || '/dashboard');
-    setIntent(params.get('intent') || 'continue');
-  }, []);
+  const redirect = searchParams.get('redirect') || '/dashboard';
+  const intent = searchParams.get('intent') || 'continue';
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -117,5 +112,13 @@ export default function LoginPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginContent />
+    </Suspense>
   );
 }

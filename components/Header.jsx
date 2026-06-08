@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Mail, Menu, User, X } from 'lucide-react';
@@ -26,20 +26,55 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef(null);
+  const ticking = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => {
+    let frame = null;
+    const updateScrolled = () => {
       setScrolled(pathname !== '/' || window.scrollY > 64);
     };
-    onScroll();
+    const onScroll = () => {
+      if (ticking.current) return;
+      ticking.current = true;
+      frame = window.requestAnimationFrame(() => {
+        updateScrolled();
+        ticking.current = false;
+      });
+    };
+    updateScrolled();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+      ticking.current = false;
+    };
   }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!profileOpen) return undefined;
+
+    const onMouseDown = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setProfileOpen(false);
+      }
+    };
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setProfileOpen(false);
+    };
+
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [profileOpen]);
 
   const nav = user ? roleNav[user.type] || roleNav.vendor : publicNav;
   const dashboardHref = user ? '/dashboard' : '/signup';
@@ -87,8 +122,14 @@ export default function Header() {
                 <Mail size={18} />
                 <span>1</span>
               </Link>
-              <div className={styles.profileMenuContainer}>
-                <button className={styles.profileBtn} onClick={() => setProfileOpen(!profileOpen)} aria-label="Open profile menu">
+              <div className={styles.profileMenuContainer} ref={profileRef}>
+                <button
+                  className={styles.profileBtn}
+                  onClick={() => setProfileOpen((open) => !open)}
+                  aria-label="Open profile menu"
+                  aria-expanded={profileOpen}
+                  aria-haspopup="menu"
+                >
                   <div className={styles.avatar}>{user.name ? user.name.charAt(0).toUpperCase() : <User size={16} />}</div>
                 </button>
                 {profileOpen && (
