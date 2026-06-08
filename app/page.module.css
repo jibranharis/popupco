@@ -63,10 +63,10 @@
   position: relative;
   z-index: 2;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   flex: 1;
-  padding-top: max(80px, 12vh);
-  padding-bottom: 40px; /* Creates a natural minimum gap above the search panel */
+  padding-top: max(140px, 15vh);
+  padding-bottom: clamp(20px, 5vh, 45px);
 }
 
 /* Left copy block */
@@ -91,7 +91,7 @@
   font-size: clamp(1rem, 1.5vw, 1.15rem);
   line-height: 1.5;
   font-weight: 400;
-  margin-bottom: var(--sp-6);
+  margin-bottom: 0;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
