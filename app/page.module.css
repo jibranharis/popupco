@@ -13,6 +13,15 @@
   background: #1a1510;
 }
 
+/* If the viewport is shorter than the hero's minimum height (680px),
+   stick to the bottom instead so the user can scroll to see the whole hero before it locks */
+@media (max-height: 680px) {
+  .introScroll {
+    top: auto;
+    bottom: 0;
+  }
+}
+
 /* The rest of the page scrolls over the sticky hero */
 .overContent {
   position: relative;
@@ -28,7 +37,7 @@
 ───────────────────────────────────────────────── */
 .hero {
   position: relative;
-  min-height: max(680px, 70vh);
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -63,10 +72,10 @@
   position: relative;
   z-index: 2;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex: 1;
-  padding-top: max(16vh, 140px);
-  padding-bottom: 240px;
+  padding-top: max(80px, 12vh);
+  padding-bottom: clamp(140px, 20vh, 220px);
 }
 
 /* Left copy block */
