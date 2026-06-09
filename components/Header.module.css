@@ -149,6 +149,11 @@
   background: var(--color-accent-hover);
 }
 
+.scrolled .signupLink,
+.scrolled .signupLink:hover {
+  color: #fff;
+}
+
 .activeNavLink {
   color: #fff;
 }
