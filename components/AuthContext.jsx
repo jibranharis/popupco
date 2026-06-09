@@ -11,6 +11,7 @@ function mapUser(supabaseUser) {
     email: supabaseUser.email,
     name: supabaseUser.user_metadata?.name || supabaseUser.email?.split('@')[0] || 'User',
     type: supabaseUser.user_metadata?.role || 'vendor',
+    avatar_url: supabaseUser.user_metadata?.avatar_url || null,
   };
 }
 

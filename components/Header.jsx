@@ -132,7 +132,13 @@ export default function Header() {
                   aria-expanded={profileOpen}
                   aria-haspopup="menu"
                 >
-                  <div className={styles.avatar}>{user.name ? user.name.charAt(0).toUpperCase() : <User size={16} />}</div>
+                  <div className={styles.avatar}>
+                    {user.avatar_url ? (
+                      <img src={user.avatar_url} alt={user.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                    ) : (
+                      user.name ? user.name.charAt(0).toUpperCase() : <User size={16} />
+                    )}
+                  </div>
                 </button>
                 {profileOpen && (
                   <div className={styles.profileDropdown}>
