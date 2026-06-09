@@ -11,18 +11,16 @@ export const metadata = {
 
 const founders = [
   {
-    name: "Your Name",
+    name: "Jibran Haris",
     role: "Co-founder & CEO",
     bio: "I’m passionate about empowering local vendors and helping communities grow through real connections.",
-    // Placeholder image
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    image: "/images/jibran.png"
   },
   {
-    name: "Partner Name",
+    name: "Tarun Yadgikar",
     role: "Co-founder & CTO",
     bio: "I love building technology that solves real problems and creates seamless marketplace experiences.",
-    // Placeholder image
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    image: "/images/tarun.png"
   }
 ];
 
@@ -30,7 +28,7 @@ const values = [
   {
     title: 'Why We Started',
     Icon: Users,
-    text: 'We saw incredible local talent and amazing spaces — but no easy way to bring them together.'
+    text: 'We saw incredible local talent and amazing spaces but no easy way to bring them together.'
   },
   {
     title: 'What We Believe',
@@ -40,7 +38,7 @@ const values = [
   {
     title: 'Where We’re Going',
     Icon: Flag,
-    text: 'We’re just getting started. The best pop-ups — and the best communities — are ahead.'
+    text: 'We’re just getting started. The best pop-ups and the best communities are ahead.'
   }
 ];
 
@@ -93,11 +91,13 @@ export default function AboutPage() {
       <div className={`${shellStyles.card} ${styles.valuesContainer}`}>
         {values.map((val) => (
           <div key={val.title} className={styles.valueCard}>
-            <div className={styles.valueHeader}>
+            <div className={styles.valueIconWrapper}>
               <val.Icon size={24} className={styles.valueIcon} />
-              <h3 className={styles.valueTitle}>{val.title}</h3>
             </div>
-            <p className={styles.valueText}>{val.text}</p>
+            <div className={styles.valueContent}>
+              <h3 className={styles.valueTitle}>{val.title}</h3>
+              <p className={styles.valueText}>{val.text}</p>
+            </div>
           </div>
         ))}
       </div>
