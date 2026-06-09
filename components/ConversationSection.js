@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { Lock, MessageCircle } from 'lucide-react';
 import styles from './ConversationSection.module.css';
 
@@ -56,20 +56,24 @@ const STEPS = [
   },
 ];
 
-/* ─── Helper: offset relative to a scroll container ─────── */
-function getOffsetInContainer(el, container) {
-  const elRect = el.getBoundingClientRect();
-  const cRect  = container.getBoundingClientRect();
-  return elRect.top - cRect.top + container.scrollTop;
+/* ─── Util: top of element relative to start of scrollable container ─ */
+function elTopInContainer(el, container) {
+  // getBoundingClientRect gives viewport-relative coords.
+  // Subtract container top, then add scrollTop to get offset from container start.
+  return (
+    el.getBoundingClientRect().top -
+    container.getBoundingClientRect().top +
+    container.scrollTop
+  );
 }
 
 /* ─── Component ──────────────────────────────────────────── */
 export default function ConversationSection() {
   const panelBodyRef   = useRef(null);
-  const stepMarkerRefs = useRef({});   // stepIdx → DOM el
-  const msgElRefs      = useRef({});   // "stepIdx-msgIdx" → DOM el
+  const stepMarkerRefs = useRef({});  // stepIdx → DOM el
+  const msgElRefs      = useRef({});  // "stepIdx-msgIdx" → DOM el
 
-  // All step-0 messages start revealed
+  // Step-0 messages revealed from the start
   const [revealed, setRevealed] = useState(() => {
     const s = new Set();
     STEPS[0].messages.forEach((_, i) => s.add(`0-${i}`));
@@ -77,61 +81,55 @@ export default function ConversationSection() {
   });
   const [activeStep, setActiveStep] = useState(0);
 
-  /* ── Scroll listener on panelBody: updates activeStep ── */
-  useEffect(() => {
+  /* ── Combined scroll handler: reveal messages + update activeStep ── */
+  const handleScroll = useCallback(() => {
     const body = panelBodyRef.current;
     if (!body) return;
 
-    const onScroll = () => {
-      const bodyRect = body.getBoundingClientRect();
-      let current = 0;
-      Object.entries(stepMarkerRefs.current).forEach(([idxStr, el]) => {
-        if (!el) return;
-        const elRect = el.getBoundingClientRect();
-        // If the marker is at or above 40px from the visible top of the panel → it's "passed"
-        if (elRect.top - bodyRect.top <= 40) {
-          current = Number(idxStr);
+    const scrollTop     = body.scrollTop;
+    const clientHeight  = body.clientHeight;
+    const visibleBottom = scrollTop + clientHeight;
+
+    // ── Reveal messages that have scrolled into view ──
+    setRevealed(prev => {
+      let changed = false;
+      const next = new Set(prev);
+      Object.entries(msgElRefs.current).forEach(([key, el]) => {
+        if (!el || next.has(key)) return;
+        // elTop is the element's distance from the top of the scrollable content
+        const elTop = elTopInContainer(el, body);
+        // Reveal when the top of the element is within the visible window (+32px lookahead)
+        if (elTop < visibleBottom + 32) {
+          next.add(key);
+          changed = true;
         }
       });
-      setActiveStep(current);
-    };
+      return changed ? next : prev;
+    });
 
-    body.addEventListener('scroll', onScroll, { passive: true });
-    return () => body.removeEventListener('scroll', onScroll);
+    // ── Update active step ──
+    let current = 0;
+    Object.entries(stepMarkerRefs.current).forEach(([idxStr, el]) => {
+      if (!el) return;
+      const markerTop = elTopInContainer(el, body);
+      // A step is "active" when its marker has scrolled past the top of the visible area
+      if (markerTop <= scrollTop + 48) {
+        current = Number(idxStr);
+      }
+    });
+    setActiveStep(current);
   }, []);
 
-  /* ── IntersectionObserver on panelBody: reveals messages as they enter the panel viewport ── */
   useEffect(() => {
     const body = panelBodyRef.current;
     if (!body) return;
 
-    const observers = [];
+    // Run immediately so the initial view is correct
+    handleScroll();
 
-    Object.entries(msgElRefs.current).forEach(([key, el]) => {
-      if (!el) return;
-      // Skip step-0 messages — they're already revealed
-      if (key.startsWith('0-')) return;
-
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setRevealed(prev => {
-              if (prev.has(key)) return prev;
-              const next = new Set(prev);
-              next.add(key);
-              return next;
-            });
-            obs.disconnect();
-          }
-        },
-        { root: body, threshold: 0.05 }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-
-    return () => observers.forEach(o => o.disconnect());
-  }, []);
+    body.addEventListener('scroll', handleScroll, { passive: true });
+    return () => body.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   return (
     <section className={styles.outer} id="clear-conversations">
@@ -145,7 +143,7 @@ export default function ConversationSection() {
             before you commit<span className={styles.headlineDot}>.</span>
           </h2>
           <p className={styles.subtext}>
-            Ask the right questions, get real answers,<br className={styles.br} />
+            Ask the right questions, get real answers,
             and move forward with confidence.
           </p>
 
@@ -156,7 +154,11 @@ export default function ConversationSection() {
               return (
                 <li
                   key={step.id}
-                  className={`${styles.trackerStep} ${isActive ? styles.stepActive : ''} ${isDone ? styles.stepDone : ''}`}
+                  className={[
+                    styles.trackerStep,
+                    isActive ? styles.stepActive : '',
+                    isDone   ? styles.stepDone   : '',
+                  ].join(' ')}
                 >
                   <div className={styles.stepSpine}>
                     <div className={styles.stepCircle}><span>{step.id}</span></div>
@@ -183,7 +185,9 @@ export default function ConversationSection() {
             {/* Sticky "Now discussing" header */}
             <div className={styles.panelHeader}>
               <div className={styles.headerLeft}>
-                <div className={styles.headerIcon}><MessageCircle size={15} strokeWidth={2} /></div>
+                <div className={styles.headerIcon}>
+                  <MessageCircle size={14} strokeWidth={2} />
+                </div>
                 <div className={styles.headerText}>
                   <span className={styles.headerLabel}>Now discussing</span>
                   <span className={styles.headerTopic}>{STEPS[activeStep].title}</span>
@@ -193,10 +197,7 @@ export default function ConversationSection() {
                 <span className={styles.headerStepCount}>Step {activeStep + 1} of {STEPS.length}</span>
                 <div className={styles.headerDots}>
                   {STEPS.map((_, i) => (
-                    <span
-                      key={i}
-                      className={`${styles.dot} ${i <= activeStep ? styles.dotActive : ''}`}
-                    />
+                    <span key={i} className={`${styles.dot} ${i <= activeStep ? styles.dotActive : ''}`} />
                   ))}
                 </div>
               </div>
@@ -204,39 +205,53 @@ export default function ConversationSection() {
 
             {/* Scrollable message thread */}
             <div className={styles.panelBody} ref={panelBodyRef}>
+
               {STEPS.map((step, stepIdx) => (
-                <div key={stepIdx}>
-                  {/* Invisible step marker — watched by scroll listener */}
+                /* stepGroup must be a flex column so align-self works on bubble children */
+                <div key={stepIdx} className={styles.stepGroup}>
+
+                  {/* 0-height anchor watched by scroll listener */}
                   <div
                     ref={el => { stepMarkerRefs.current[stepIdx] = el; }}
                     className={styles.stepMarker}
                     aria-hidden="true"
                   />
 
-                  {/* Messages */}
                   {step.messages.map((msg, msgIdx) => {
                     const key      = `${stepIdx}-${msgIdx}`;
                     const isVendor = msg.role === 'vendor';
                     const isVisible = revealed.has(key);
+
                     return (
                       <div
                         key={key}
                         ref={el => { msgElRefs.current[key] = el; }}
-                        className={`${styles.bubble} ${isVendor ? styles.bubbleVendor : styles.bubbleHost} ${isVisible ? styles.bubbleVisible : ''}`}
+                        className={[
+                          styles.bubble,
+                          isVendor ? styles.bubbleVendor : styles.bubbleHost,
+                          isVisible ? styles.bubbleVisible : '',
+                        ].join(' ')}
                       >
-                        {isVendor && <div className={styles.avatar} data-vendor>V</div>}
+                        {isVendor && (
+                          <div className={styles.avatar} data-vendor="true">V</div>
+                        )}
                         <div className={styles.bubbleCard}>
-                          <span className={styles.bubbleLabel}>{isVendor ? 'VENDOR' : 'HOST'}</span>
+                          <span className={styles.bubbleLabel}>
+                            {isVendor ? 'VENDOR' : 'HOST'}
+                          </span>
                           <p className={styles.bubbleText}>{msg.text}</p>
                           <span className={styles.bubbleTime}>{msg.time}</span>
                         </div>
-                        {!isVendor && <div className={styles.avatar} data-host>H</div>}
+                        {!isVendor && (
+                          <div className={styles.avatar} data-host="true">H</div>
+                        )}
                       </div>
                     );
                   })}
                 </div>
               ))}
-              <div className={styles.panelBodyPad} />
+
+              <div className={styles.bodyPad} />
             </div>
 
             {/* Footer */}
@@ -244,7 +259,6 @@ export default function ConversationSection() {
               <Lock size={13} strokeWidth={2} />
               <span>Private between you and the host. No commitment until you apply.</span>
             </div>
-
           </div>
         </div>
 
