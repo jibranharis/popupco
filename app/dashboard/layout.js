@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, User, FileText, Heart, Mail, Settings, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, User, FileText, Heart, Mail, Settings, LogOut, Menu, X, ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/components/AuthContext';
 import AuthGuard from '@/components/AuthGuard';
 import { supabase } from '@/lib/supabase';
@@ -51,6 +51,11 @@ export default function DashboardLayout({ children }) {
 
         {/* Sidebar */}
         <aside className={`${styles.sidebar} ${mobileOpen ? styles.sidebarOpen : ''}`}>
+          <Link href="/" className={styles.backLink}>
+            <ArrowLeft size={16} />
+            <span>Back to PopUpCo</span>
+          </Link>
+
           <div className={styles.profileCard}>
             <div className={styles.avatarLarge}>
               {user.name ? user.name.charAt(0).toUpperCase() : <User size={32} />}

@@ -30,6 +30,22 @@
   flex-shrink: 0;
 }
 
+.backLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 200ms ease;
+  padding-bottom: 8px;
+}
+
+.backLink:hover {
+  color: var(--color-accent);
+}
+
 .profileCard {
   display: flex;
   flex-direction: column;
