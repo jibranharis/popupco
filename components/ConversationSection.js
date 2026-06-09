@@ -9,7 +9,7 @@ const STEPS = [
   {
     id: 1,
     title: 'Event details',
-    description: 'Confirm key info like dates, booth fee, and what's included.',
+    description: 'Confirm key info like dates, booth fee, and what\'s included.',
     messages: [
       { sender: 'V', role: 'vendor', text: 'Is the booth fee fixed, or does it depend on category?', time: '10:28 AM' },
       { sender: 'H', role: 'host',   text: 'Booths start at $75. Food vendors need a permit, but handmade goods are ready to apply.', time: '10:30 AM' },
@@ -33,7 +33,7 @@ const STEPS = [
   {
     id: 3,
     title: 'Permits',
-    description: 'Learn what's required and who handles the paperwork.',
+    description: 'Learn what\'s required and who handles the paperwork.',
     messages: [
       { sender: 'V', role: 'vendor', text: 'Do I need a permit to sell food at this event?', time: '10:44 AM' },
       { sender: 'H', role: 'host',   text: 'Yes, food vendors need a temporary food permit before the market.', time: '10:46 AM' },
