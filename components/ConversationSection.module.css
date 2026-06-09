@@ -1,64 +1,55 @@
 /* ═══════════════════════════════════════════════════════════
    ConversationSection.module.css
-   Scroll-driven sticky conversation section
+   Normal-height section, scroll-within-panel conversation
 ═══════════════════════════════════════════════════════════ */
 
-/* ─── Outer scroll container ────────────────────────────── */
+/* ─── Section wrapper ───────────────────────────────────── */
 .outer {
   position: relative;
-  height: 400vh;    /* 4× viewport = room for 4 story beats */
+  padding: clamp(5rem, 8vw, 8rem) 0;
   background:
-    radial-gradient(ellipse at 88% 6%,  rgba(221,125,71,0.18), transparent 36%),
-    radial-gradient(ellipse at 10% 94%, rgba(219,198,168,0.2), transparent 44%),
+    radial-gradient(ellipse at 86% 8%,  rgba(221,125,71,0.15), transparent 36%),
+    radial-gradient(ellipse at 8%  92%, rgba(219,198,168,0.18), transparent 44%),
     linear-gradient(180deg, #fffaf4 0%, #fff7ef 100%);
 }
 
-/* ─── Sticky inner ──────────────────────────────────────── */
-.sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-}
-
-/* ─── Two-column grid ───────────────────────────────────── */
-.container {
-  width: 100%;
-  max-width: 1200px;
+/* ─── Two-column layout ─────────────────────────────────── */
+.inner {
+  max-width: 1180px;
   margin: 0 auto;
   padding: 0 clamp(24px, 5vw, 80px);
   display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: clamp(3rem, 6vw, 6rem);
-  align-items: center;
+  grid-template-columns: 340px 1fr;
+  gap: clamp(3.5rem, 6vw, 6rem);
+  align-items: start;
 }
 
 /* ─── LEFT COLUMN ───────────────────────────────────────── */
 .left {
   display: flex;
   flex-direction: column;
+  position: sticky;
+  top: clamp(80px, 10vh, 120px); /* stays visible while user scrolls chat */
 }
 
 .sectionLabel {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   color: #c85f2c;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   text-transform: uppercase;
 }
 
 .headline {
   font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(2rem, 3.2vw, 3.2rem);
+  font-size: clamp(2rem, 3vw, 3rem);
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.02em;
   color: #26221e;
-  margin: 0 0 18px;
+  margin: 0 0 16px;
 }
 
 .headlineDot {
@@ -66,11 +57,13 @@
 }
 
 .subtext {
-  font-size: 0.975rem;
+  font-size: 0.95rem;
   color: #7b7168;
-  line-height: 1.6;
+  line-height: 1.65;
   margin: 0 0 36px;
 }
+
+.br { display: block; }
 
 /* ─── Progress tracker ──────────────────────────────────── */
 .tracker {
@@ -79,17 +72,15 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 .trackerStep {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: flex-start;
 }
 
-/* Left spine: circle + line */
-.stepLeft {
+.stepSpine {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -97,21 +88,21 @@
 }
 
 .stepCircle {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: 2px solid #ddd3c8;
   background: #f9f4ee;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   color: #b8a898;
-  transition: border-color 350ms ease, background 350ms ease, color 350ms ease;
+  flex-shrink: 0;
+  transition: border-color 400ms ease, background 400ms ease, color 400ms ease;
   position: relative;
   z-index: 1;
-  flex-shrink: 0;
 }
 
 .stepActive .stepCircle {
@@ -122,49 +113,51 @@
 
 .stepDone .stepCircle {
   border-color: #c85f2c;
-  background: rgba(200, 95, 44, 0.1);
+  background: rgba(200,95,44,0.1);
   color: #c85f2c;
 }
 
-/* Connector line */
 .stepLine {
-  width: 2px;
   flex: 1;
-  min-height: 36px;
+  width: 2px;
+  min-height: 40px;
   background: #e8ddd4;
   border-radius: 2px;
   overflow: hidden;
-  margin: 3px 0;
   position: relative;
+  margin: 2px 0;
 }
 
 .stepLineFill {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100%;
+  height: 0%;
   background: #c85f2c;
   border-radius: 2px;
-  transition: height 80ms linear;
+  transition: height 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Step text */
-.stepRight {
-  padding-bottom: 32px;
+.lineFull {
+  height: 100%;
+}
+
+.stepText {
   padding-top: 4px;
+  padding-bottom: 36px;
 }
 
-.trackerStep:last-child .stepRight {
+.trackerStep:last-child .stepText {
   padding-bottom: 0;
 }
 
 .stepTitle {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 700;
-  color: #b8a898;
+  color: #cac0b8;
   margin-bottom: 3px;
-  transition: color 350ms ease;
+  transition: color 400ms ease;
 }
 
 .stepActive .stepTitle,
@@ -173,11 +166,11 @@
 }
 
 .stepDesc {
-  font-size: 0.8rem;
-  color: #c4b5a8;
+  font-size: 0.78rem;
+  color: #cac0b8;
   line-height: 1.45;
   margin: 0;
-  transition: color 350ms ease;
+  transition: color 400ms ease;
 }
 
 .stepActive .stepDesc {
@@ -191,86 +184,179 @@
 /* ─── RIGHT COLUMN ──────────────────────────────────────── */
 .right {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  align-items: flex-start;
 }
 
-/* ─── Conversation panel ────────────────────────────────── */
+/* ─── Panel card ────────────────────────────────────────── */
 .panel {
   width: 100%;
-  max-width: 600px;
-  background: rgba(255, 252, 247, 0.88);
-  border: 1px solid rgba(80, 60, 45, 0.1);
-  border-radius: 22px;
+  background: rgba(255,252,247,0.95);
+  border: 1px solid rgba(80,60,45,0.1);
+  border-radius: 20px;
   box-shadow:
-    0 24px 70px rgba(38, 34, 30, 0.08),
-    0 4px 16px rgba(38, 34, 30, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+    0 20px 60px rgba(38,34,30,0.08),
+    0 4px 16px rgba(38,34,30,0.04);
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-.panelMessages {
-  padding: 36px 36px 24px;
+/* ─── "Now discussing" header ───────────────────────────── */
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(80,60,45,0.08);
+  background: rgba(255,252,247,0.98);
+  flex-shrink: 0;
+  /* sticky inside the panel */
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(200,95,44,0.1);
+  color: #c85f2c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.headerText {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  min-height: 360px;
+  gap: 1px;
+}
+
+.headerLabel {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #b8a898;
+  text-transform: uppercase;
+}
+
+.headerTopic {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #3c342f;
+  transition: all 300ms ease;
+}
+
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.headerStepCount {
+  font-size: 0.68rem;
+  color: #b8a898;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.headerDots {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.dot {
+  width: 20px;
+  height: 3px;
+  border-radius: 3px;
+  background: #e5d8ca;
+  transition: background 400ms ease;
+}
+
+.dotActive {
+  background: #c85f2c;
+}
+
+/* ─── Scrollable message body ───────────────────────────── */
+.panelBody {
+  flex: 1;
+  overflow-y: auto;
+  height: 480px;
+  padding: 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
+  /* Subtle custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200,150,120,0.3) transparent;
+}
+
+.panelBody::-webkit-scrollbar { width: 4px; }
+.panelBody::-webkit-scrollbar-track { background: transparent; }
+.panelBody::-webkit-scrollbar-thumb {
+  background: rgba(200,150,120,0.3);
+  border-radius: 4px;
+}
+
+.panelBodyPad {
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Invisible step marker (watched by scroll listener) */
+.stepMarker {
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 /* ─── Message bubbles ───────────────────────────────────── */
 .bubble {
   display: flex;
   align-items: flex-end;
-  gap: 10px;
+  gap: 9px;
+  /* Start invisible, no layout shift (still takes up space) */
   opacity: 0;
-  transform: translateY(14px) scale(0.98);
-  transition:
-    opacity 380ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: opacity 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .bubbleVisible {
   opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-/* Stagger: each bubble has its own slight delay */
-.bubble:nth-child(1) { transition-delay:   0ms; }
-.bubble:nth-child(2) { transition-delay:  60ms; }
-.bubble:nth-child(3) { transition-delay: 120ms; }
-.bubble:nth-child(4) { transition-delay: 180ms; }
-.bubble:nth-child(5) { transition-delay: 240ms; }
-
-.noMotion,
-.noMotion.bubbleVisible {
-  transition: none !important;
-  opacity: 1 !important;
-  transform: none !important;
 }
 
 .bubbleVendor {
   flex-direction: row;
   align-self: flex-start;
-  max-width: 62%;
+  max-width: 64%;
 }
 
 .bubbleHost {
   flex-direction: row-reverse;
   align-self: flex-end;
-  max-width: 62%;
+  max-width: 64%;
 }
 
-/* Avatar circles */
 .avatar {
   flex-shrink: 0;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   display: flex;
@@ -281,7 +367,7 @@
 }
 
 .avatar[data-vendor] {
-  background: rgba(200, 95, 44, 0.12);
+  background: rgba(200,95,44,0.1);
   color: #c85f2c;
 }
 
@@ -290,29 +376,27 @@
   color: #fff;
 }
 
-/* Bubble inner card */
-.bubbleInner {
-  padding: 10px 14px 8px;
-  border-radius: 16px;
+.bubbleCard {
+  padding: 10px 13px 8px;
+  border-radius: 14px;
   min-width: 0;
 }
 
-.bubbleVendor .bubbleInner {
-  background: #fffbf5;
-  border: 1px solid #e5d8ca;
-  box-shadow: 0 4px 16px rgba(38, 34, 30, 0.06);
+.bubbleVendor .bubbleCard {
+  background: #fff;
+  border: 1px solid rgba(80,60,45,0.12);
+  box-shadow: 0 2px 10px rgba(38,34,30,0.06);
 }
 
-.bubbleHost .bubbleInner {
+.bubbleHost .bubbleCard {
   background: #c85f2c;
-  border: 1px solid rgba(200, 95, 44, 0.2);
-  box-shadow: 0 8px 24px rgba(200, 95, 44, 0.2);
-  color: #fff8ef;
+  border: 1px solid rgba(200,95,44,0.2);
+  box-shadow: 0 6px 20px rgba(200,95,44,0.2);
 }
 
 .bubbleLabel {
   display: block;
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 900;
   letter-spacing: 0.1em;
   margin-bottom: 4px;
@@ -320,17 +404,17 @@
 }
 
 .bubbleHost .bubbleLabel {
-  color: rgba(255, 248, 239, 0.7);
+  color: rgba(255,248,239,0.65);
 }
 
-.bubbleInner p {
+.bubbleText {
   font-size: 0.875rem;
   line-height: 1.45;
-  margin: 0 0 4px;
+  margin: 0 0 5px;
   color: #3c342f;
 }
 
-.bubbleHost .bubbleInner p {
+.bubbleHost .bubbleText {
   color: #fff8ef;
 }
 
@@ -342,126 +426,77 @@
 }
 
 .bubbleHost .bubbleTime {
-  color: rgba(255, 248, 239, 0.5);
+  color: rgba(255,248,239,0.5);
 }
 
-/* ─── Panel footer ──────────────────────────────────────── */
+/* ─── Footer ────────────────────────────────────────────── */
 .panelFooter {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 36px;
-  border-top: 1px solid rgba(80, 60, 45, 0.08);
+  padding: 12px 20px;
+  border-top: 1px solid rgba(80,60,45,0.08);
+  background: rgba(255,248,239,0.6);
+  font-size: 0.73rem;
   color: #b6a99a;
-  font-size: 0.75rem;
-  background: rgba(255, 248, 239, 0.5);
+  flex-shrink: 0;
 }
 
 .panelFooter svg {
   flex-shrink: 0;
   color: #c85f2c;
-  opacity: 0.75;
+  opacity: 0.65;
 }
 
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════════════════════ */
 
-/* Tablet */
 @media (max-width: 1024px) {
-  .container {
+  .inner {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
-    padding-top: 64px;
-    padding-bottom: 64px;
-    align-items: start;
+    gap: 3rem;
   }
 
-  .sticky {
-    height: auto;
-    min-height: 100vh;
+  .left {
+    position: static;
+  }
+
+  .tracker {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .trackerStep {
+    flex: 1;
+    min-width: 140px;
+    flex-direction: column;
     align-items: flex-start;
-    padding-top: 0;
+    gap: 6px;
   }
 
-  .outer {
-    height: auto; /* disable scroll-driven on tablet – show as static */
-  }
-
-  .bubble {
-    opacity: 1;
-    transform: none;
-  }
-
-  .panelMessages {
-    min-height: 0;
-    padding: 24px;
+  .stepSpine {
+    flex-direction: row;
   }
 
   .stepLine {
     display: none;
   }
 
-  .tracker {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .trackerStep {
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    flex: 1;
-    min-width: 100px;
-  }
-
-  .stepLeft {
-    flex-direction: row;
-    gap: 0;
-  }
-
-  .stepRight {
-    text-align: center;
+  .stepText {
     padding-bottom: 0;
-    padding-top: 0;
   }
 }
 
-/* Mobile */
 @media (max-width: 640px) {
-  .headline {
-    font-size: 1.9rem;
-  }
+  .headline { font-size: 1.85rem; }
 
-  .panelMessages {
-    padding: 20px 16px;
-    gap: 8px;
-  }
+  .panelBody { height: 400px; padding: 16px 14px 0; }
 
-  .panel {
-    border-radius: 16px;
-  }
+  .bubbleVendor, .bubbleHost { max-width: 85%; }
 
-  .panelFooter {
-    padding: 12px 16px;
-    font-size: 0.7rem;
-  }
+  .panelHeader { padding: 12px 14px; }
 
-  .bubbleVendor,
-  .bubbleHost {
-    max-width: 85%;
-  }
-
-  .tracker {
-    flex-direction: column;
-  }
-
-  .trackerStep {
-    flex-direction: row;
-  }
-
-  .stepLeft {
-    flex-direction: column;
-  }
+  .headerTopic { font-size: 0.82rem; }
 }
