@@ -14,13 +14,13 @@ const founders = [
     name: "Jibran Haris",
     role: "Co-founder & CEO",
     bio: "I’m passionate about empowering local vendors and helping communities grow through real connections.",
-    image: "/images/jibran.png"
+    image: "/images/Jibran.png"
   },
   {
     name: "Tarun Yadgikar",
     role: "Co-founder & CTO",
     bio: "I love building technology that solves real problems and creates seamless marketplace experiences.",
-    image: "/images/tarun.png"
+    image: "/images/tarun.jpg"
   }
 ];
 
