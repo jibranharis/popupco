@@ -563,7 +563,7 @@ export default function HomePage() {
           <div className="container">
             <div className={`fade-in ${styles.sectionIntro} ${styles.roleIntro}`}>
               <span className="label">Start where you are</span>
-              <h2>Choose how you want to use PopUpCo.</h2>
+              <h2>Choose How You Want To Use PopUpCo.</h2>
             </div>
             <div className={styles.roleGrid}>
               {roles.map((role, index) => {

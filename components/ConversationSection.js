@@ -104,7 +104,7 @@ export default function ConversationSection() {
           <span className={styles.sectionLabel}>CLEAR CONVERSATIONS</span>
           <h2 className={styles.headline}>
             Get the details<br />
-            before you commit<span className={styles.headlineDot}>.</span>
+            Before you Commit<span className={styles.headlineDot}>.</span>
           </h2>
           <p className={styles.subtext}>
             Ask the right questions, get real answers,
