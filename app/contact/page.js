@@ -1,186 +1,113 @@
-'use client';
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { ArrowRight, Building2, Mail, MapPin, MessageSquare, Store, Users } from 'lucide-react';
+import UtilityPageShell from '@/components/UtilityPageShell';
+import { Store, Building2, CalendarDays, HelpCircle, Mail, MapPin } from 'lucide-react';
+import shellStyles from '@/components/UtilityPageShell.module.css';
 import styles from './page.module.css';
 
-const paths = [
-  {
-    id: 'vendor',
-    title: 'Vendor or small business',
-    copy: 'Ask about opportunities, booth fees, applications, setup needs, or your vendor profile.',
-    href: '/apply/vendor',
-    cta: 'Start vendor application',
-    icon: Store,
-  },
-  {
-    id: 'venue',
-    title: 'Venue or space owner',
-    copy: 'Tell us about a storefront, cafe, hall, studio, school, lot, gallery, or community space.',
-    href: '/apply/venue',
-    cta: 'List your space',
-    icon: Building2,
-  },
-  {
-    id: 'host',
-    title: 'Host or organizer',
-    copy: 'Plan a vendor market, school fundraiser, boutique takeover, food pop-up, or local event.',
-    href: '/apply/host',
-    cta: 'Host a pop-up',
-    icon: Users,
-  },
-];
-
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', type: '', subject: '', message: '' });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const subject = params.get('subject');
-    if (subject) setForm((prev) => ({ ...prev, subject }));
-  }, []);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setSubmitting(true);
-    setError('');
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (data.success) setSubmitted(true);
-      else setError('Something went wrong. Please try again or email us directly.');
-    } catch {
-      setError('Something went wrong. Please try again or email us directly.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   return (
-    <>
-      <Header />
-      <main>
-        <section className={styles.hero}>
-          <div className={`container ${styles.heroGrid}`}>
-            <div>
-              <span className="label">Contact</span>
-              <h1>Tell us what you are trying to build.</h1>
-              <p>
-                Whether you sell products, own a space, organize events, or want to partner with PopUpCo, send the details and we will route you to the right next step.
-              </p>
-            </div>
-            <div className={styles.heroCard}>
-              <Mail size={22} />
-              <span>Email</span>
-              <a href="mailto:hello@popupco.com">hello@popupco.com</a>
-              <div />
-              <MapPin size={22} />
-              <span>Based in</span>
-              <strong>Bay Area, California</strong>
-            </div>
-          </div>
-        </section>
-
-        <section className="section bg-alt">
-          <div className="container">
-            <div className={styles.pathGrid}>
-              {paths.map(({ icon: Icon, title, copy, href, cta }) => (
-                <Link key={title} href={href} className={styles.pathCard}>
-                  <Icon size={24} />
-                  <h2>{title}</h2>
-                  <p>{copy}</p>
-                  <span>{cta} <ArrowRight size={17} /></span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section">
-          <div className={`container ${styles.contactGrid}`}>
-            <div className={styles.contactCopy}>
-              <span className="label">Send a message</span>
-              <h2>Good details help us respond faster.</h2>
-              <p>
-                Include your city, what you sell or what kind of space/event you have, timing, budget range, and any setup requirements. Food vendors should mention permit status if relevant.
-              </p>
-              <div className={styles.responseBox}>
-                <MessageSquare size={20} />
-                <div>
-                  <strong>What happens next</strong>
-                  <p>We read every message and use your role to send the most useful next step, not a generic reply.</p>
-                </div>
+    <UtilityPageShell
+      label="CONTACT"
+      headline="Tell us what you are trying to build."
+      subtext="Whether you sell products, own a space, organize events, or want to partner with PopUpCo, send the details and we’ll route you to the right next step."
+    >
+      <div className={styles.contactGrid}>
+        
+        <div className={styles.leftCol}>
+          <div className={styles.intents}>
+            <div className={styles.intentCard}>
+              <div className={styles.intentIcon}><Store size={24} /></div>
+              <div className={styles.intentContent}>
+                <h3>Vendor or small business</h3>
+                <p>Ask about opportunities, booth fees, applications, setup needs, or your vendor profile.</p>
+                <Link href="/apply/vendor" className={styles.intentLink}>Start vendor application &rarr;</Link>
               </div>
             </div>
-
-            <div className={styles.formWrap} id="contact-form">
-              {submitted ? (
-                <div className={styles.success}>
-                  <div className={styles.successIcon}>✓</div>
-                  <h2>Message sent.</h2>
-                  <p>Thanks for reaching out. We will get back to you as soon as we can.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className={styles.form}>
-                  <h2>Contact PopUpCo</h2>
-
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="contact-name">Name <span className="req">*</span></label>
-                    <input id="contact-name" className="form-input" required value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} placeholder="Your name" />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="contact-email">Email <span className="req">*</span></label>
-                    <input id="contact-email" className="form-input" type="email" required value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="you@example.com" />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="contact-phone">Phone, optional</label>
-                    <input id="contact-phone" className="form-input" type="tel" value={form.phone} onChange={(event) => setForm({ ...form, phone: event.target.value })} placeholder="(555) 000-0000" />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="contact-type">I am a <span className="req">*</span></label>
-                    <select id="contact-type" className="form-select" required value={form.type} onChange={(event) => setForm({ ...form, type: event.target.value })}>
-                      <option value="">Select one...</option>
-                      <option value="vendor">Vendor</option>
-                      <option value="venue">Venue owner</option>
-                      <option value="host">Host or organizer</option>
-                      <option value="attendee">Attendee or explorer</option>
-                      <option value="nonprofit">Nonprofit or community organization</option>
-                      <option value="partner">Potential partner</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="contact-subject">Subject <span className="req">*</span></label>
-                    <input id="contact-subject" className="form-input" required value={form.subject} onChange={(event) => setForm({ ...form, subject: event.target.value })} placeholder="What is this about?" />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="contact-message">Message <span className="req">*</span></label>
-                    <textarea id="contact-message" className="form-textarea" required value={form.message} onChange={(event) => setForm({ ...form, message: event.target.value })} placeholder="What are you trying to do?" rows={6} />
-                  </div>
-
-                  {error && <p className="form-error">{error}</p>}
-                  <button type="submit" className="btn btn--primary btn--full" disabled={submitting}>{submitting ? 'Sending...' : 'Send message'}</button>
-                </form>
-              )}
+            
+            <div className={styles.intentCard}>
+              <div className={styles.intentIcon}><Building2 size={24} /></div>
+              <div className={styles.intentContent}>
+                <h3>Venue or space owner</h3>
+                <p>Tell us about a storefront, cafe, hall, studio, school, lot, gallery, or community space.</p>
+                <Link href="/apply/venue" className={styles.intentLink}>List your space &rarr;</Link>
+              </div>
+            </div>
+            
+            <div className={styles.intentCard}>
+              <div className={styles.intentIcon}><CalendarDays size={24} /></div>
+              <div className={styles.intentContent}>
+                <h3>Host or organizer</h3>
+                <p>Plan a vendor market, school fundraiser, boutique takeover, food pop-up, or local event.</p>
+                <Link href="/apply/host" className={styles.intentLink}>Host a pop-up &rarr;</Link>
+              </div>
             </div>
           </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+
+          <div className={styles.helperCard}>
+            <HelpCircle size={24} color="#c85f2c" style={{ flexShrink: 0 }} />
+            <div>
+              <h4>Good details help us respond faster.</h4>
+              <p>Include your city, what you sell or what kind of space/event you have, timing, budget range, and any setup requirements.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className={styles.rightCol}>
+          <div className={`${shellStyles.card} ${styles.formContainer}`}>
+            <h2>Contact PopUpCo</h2>
+            <form className={styles.contactForm}>
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="name">Name *</label>
+                  <input type="text" id="name" className={styles.formInput} placeholder="Your name" required />
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="email">Email *</label>
+                  <input type="email" id="email" className={styles.formInput} placeholder="you@example.com" required />
+                </div>
+              </div>
+              
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="phone">Phone <span>(optional)</span></label>
+                  <input type="tel" id="phone" className={styles.formInput} placeholder="(555) 000-0000" />
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="intent">What are you working on? *</label>
+                  <select id="intent" className={`${styles.formInput} ${styles.formSelect}`} required>
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="vendor">I am a vendor</option>
+                    <option value="venue">I own a venue or space</option>
+                    <option value="host">I want to host an event</option>
+                    <option value="attendee">I am attending an event</option>
+                    <option value="other">Partnership / other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="message">Message *</label>
+                <textarea id="message" className={`${styles.formInput} ${styles.formTextarea}`} placeholder="What are you planning or looking for?" required></textarea>
+              </div>
+
+              <button type="button" className="btn btn--primary btn--full btn--lg">Send message</button>
+              <p className={styles.submitNote}>We typically respond within 1–2 business days.</p>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+      <div className={styles.bottomStrip}>
+        <div className={styles.contactInfo}>
+          <Mail size={16} />
+          <a href="mailto:hello@popupco.com">hello@popupco.com</a>
+        </div>
+        <div className={styles.contactInfo}>
+          <MapPin size={16} />
+          <span>Based in: Bay Area, California</span>
+        </div>
+      </div>
+    </UtilityPageShell>
   );
 }
