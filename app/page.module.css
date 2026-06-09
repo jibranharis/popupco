@@ -647,12 +647,13 @@
 .messageCopy h2,
 .trustCopy h2,
 .finalInner h2 {
-  font-family: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
-  margin-top: var(--sp-2);
-  font-size: clamp(2rem, 3.5vw, 3.35rem);
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.9rem, 3vw, 3rem);
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.02em;
+  color: #26221e;
+  margin-top: var(--sp-2);
 }
 
 .sectionIntro p,
@@ -1185,10 +1186,6 @@
 .roleIntro h2 {
   margin-top: 22px;
   max-width: 800px;
-  font-size: clamp(3rem, 4.4vw, 4.35rem);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.045em;
   white-space: normal;
 }
 
@@ -1362,12 +1359,6 @@
 .trustCopy h2 {
   max-width: 600px;
   margin-top: var(--sp-6);
-  font-family: var(--font-display);
-  font-size: clamp(4.9rem, 5.7vw, 6.25rem);
-  font-weight: 900;
-  line-height: 1.04;
-  letter-spacing: -0.065em;
-  color: #26221e;
 }
 
 .trustCopy h2 span {
@@ -1571,12 +1562,6 @@
 .trustSection .trustCopy h2 {
   max-width: 620px;
   margin-top: var(--sp-2);
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 3.35rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  color: #26221e;
 }
 
 .trustSection .trustCopy p {
@@ -2276,8 +2261,6 @@
 
 .finalInner h2 {
   max-width: none;
-  font-size: clamp(2.15rem, 3.2vw, 2.75rem);
-  line-height: 1.08;
   white-space: nowrap;
 }
 
@@ -2590,7 +2573,7 @@
   }
 
   .trustCopy h2 {
-    font-size: clamp(2rem, 11vw, 3.35rem);
+    /* removed font override */
   }
 
   .clarityTiles {
