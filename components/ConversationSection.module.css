@@ -1,15 +1,14 @@
 /* ═══════════════════════════════════════════════════════════
    ConversationSection.module.css
-   Normal-height section, scroll-within-panel conversation
 ═══════════════════════════════════════════════════════════ */
 
-/* ─── Section wrapper ───────────────────────────────────── */
+/* ─── Section ───────────────────────────────────────────── */
 .outer {
   position: relative;
   padding: clamp(5rem, 8vw, 8rem) 0;
   background:
-    radial-gradient(ellipse at 86% 8%,  rgba(221,125,71,0.15), transparent 36%),
-    radial-gradient(ellipse at 8%  92%, rgba(219,198,168,0.18), transparent 44%),
+    radial-gradient(ellipse at 86% 8%,  rgba(221,125,71,0.14), transparent 36%),
+    radial-gradient(ellipse at 8%  94%, rgba(219,198,168,0.16), transparent 44%),
     linear-gradient(180deg, #fffaf4 0%, #fff7ef 100%);
 }
 
@@ -19,8 +18,8 @@
   margin: 0 auto;
   padding: 0 clamp(24px, 5vw, 80px);
   display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: clamp(3.5rem, 6vw, 6rem);
+  grid-template-columns: 320px 1fr;
+  gap: clamp(3rem, 6vw, 6rem);
   align-items: start;
 }
 
@@ -28,8 +27,9 @@
 .left {
   display: flex;
   flex-direction: column;
+  /* Stays in view while user scrolls the page */
   position: sticky;
-  top: clamp(80px, 10vh, 120px); /* stays visible while user scrolls chat */
+  top: clamp(80px, 10vh, 112px);
 }
 
 .sectionLabel {
@@ -38,45 +38,39 @@
   font-weight: 800;
   letter-spacing: 0.12em;
   color: #c85f2c;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   text-transform: uppercase;
 }
 
 .headline {
   font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(2rem, 3vw, 3rem);
+  font-size: clamp(1.9rem, 3vw, 3rem);
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.02em;
   color: #26221e;
-  margin: 0 0 16px;
+  margin: 0 0 14px;
 }
 
-.headlineDot {
-  color: #c85f2c;
-}
+.headlineDot { color: #c85f2c; }
 
 .subtext {
-  font-size: 0.95rem;
+  font-size: 0.94rem;
   color: #7b7168;
   line-height: 1.65;
-  margin: 0 0 36px;
+  margin: 0 0 32px;
 }
-
-.br { display: block; }
 
 /* ─── Progress tracker ──────────────────────────────────── */
 .tracker {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
 }
 
 .trackerStep {
   display: flex;
-  gap: 14px;
+  gap: 13px;
   align-items: flex-start;
 }
 
@@ -96,31 +90,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  color: #b8a898;
+  color: #c4b5a6;
   flex-shrink: 0;
   transition: border-color 400ms ease, background 400ms ease, color 400ms ease;
   position: relative;
   z-index: 1;
 }
 
+/* Active: filled orange circle */
 .stepActive .stepCircle {
   border-color: #c85f2c;
   background: #c85f2c;
   color: #fff;
 }
 
+/* Done: orange outline circle */
 .stepDone .stepCircle {
   border-color: #c85f2c;
-  background: rgba(200,95,44,0.1);
+  background: rgba(200,95,44,0.08);
   color: #c85f2c;
 }
 
+/* Connector line */
 .stepLine {
   flex: 1;
   width: 2px;
-  min-height: 40px;
+  min-height: 38px;
   background: #e8ddd4;
   border-radius: 2px;
   overflow: hidden;
@@ -130,7 +127,8 @@
 
 .stepLineFill {
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 0%;
   background: #c85f2c;
@@ -138,13 +136,12 @@
   transition: height 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.lineFull {
-  height: 100%;
-}
+.lineFull { height: 100%; }
 
+/* Step text */
 .stepText {
   padding-top: 4px;
-  padding-bottom: 36px;
+  padding-bottom: 32px;
 }
 
 .trackerStep:last-child .stepText {
@@ -155,15 +152,13 @@
   display: block;
   font-size: 0.875rem;
   font-weight: 700;
-  color: #cac0b8;
+  color: #c8bbb2;
   margin-bottom: 3px;
   transition: color 400ms ease;
 }
 
 .stepActive .stepTitle,
-.stepDone .stepTitle {
-  color: #3c342f;
-}
+.stepDone .stepTitle { color: #3c342f; }
 
 .stepDesc {
   font-size: 0.78rem;
@@ -173,13 +168,8 @@
   transition: color 400ms ease;
 }
 
-.stepActive .stepDesc {
-  color: #7b7168;
-}
-
-.stepDone .stepDesc {
-  color: #9e9188;
-}
+.stepActive .stepDesc { color: #7b7168; }
+.stepDone  .stepDesc  { color: #9e9188; }
 
 /* ─── RIGHT COLUMN ──────────────────────────────────────── */
 .right {
@@ -187,10 +177,10 @@
   align-items: flex-start;
 }
 
-/* ─── Panel card ────────────────────────────────────────── */
+/* ─── Panel ─────────────────────────────────────────────── */
 .panel {
   width: 100%;
-  background: rgba(255,252,247,0.95);
+  background: rgba(255,252,247,0.96);
   border: 1px solid rgba(80,60,45,0.1);
   border-radius: 20px;
   box-shadow:
@@ -202,6 +192,7 @@
 }
 
 /* ─── "Now discussing" header ───────────────────────────── */
+/* Lives OUTSIDE the scroll container so it never moves */
 .panelHeader {
   display: flex;
   align-items: center;
@@ -209,12 +200,8 @@
   gap: 12px;
   padding: 14px 20px;
   border-bottom: 1px solid rgba(80,60,45,0.08);
-  background: rgba(255,252,247,0.98);
+  background: rgba(255,252,247,0.99);
   flex-shrink: 0;
-  /* sticky inside the panel */
-  position: sticky;
-  top: 0;
-  z-index: 2;
 }
 
 .headerLeft {
@@ -242,15 +229,15 @@
 }
 
 .headerLabel {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: #b8a898;
   text-transform: uppercase;
 }
 
 .headerTopic {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #3c342f;
   transition: all 300ms ease;
@@ -260,7 +247,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 4px;
+  gap: 5px;
   flex-shrink: 0;
 }
 
@@ -278,83 +265,78 @@
 }
 
 .dot {
-  width: 20px;
+  width: 18px;
   height: 3px;
   border-radius: 3px;
   background: #e5d8ca;
   transition: background 400ms ease;
 }
 
-.dotActive {
-  background: #c85f2c;
-}
+.dotActive { background: #c85f2c; }
 
-/* ─── Scrollable message body ───────────────────────────── */
+/* ─── Scrollable body ───────────────────────────────────── */
 .panelBody {
-  flex: 1;
+  height: 460px;
   overflow-y: auto;
-  height: 480px;
-  padding: 20px 20px 0;
+  padding: 18px 18px 0;
   display: flex;
   flex-direction: column;
   gap: 0;
+
+  /*
+   * KEY FIX: prevents scroll from propagating to the page
+   * when the panel reaches its top or bottom limit.
+   * This means page scroll only happens when cursor is NOT over the panel.
+   */
+  overscroll-behavior: contain;
+
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: rgba(200,150,120,0.3) transparent;
+  scrollbar-color: rgba(200,150,120,0.28) transparent;
 }
 
 .panelBody::-webkit-scrollbar { width: 4px; }
 .panelBody::-webkit-scrollbar-track { background: transparent; }
 .panelBody::-webkit-scrollbar-thumb {
-  background: rgba(200,150,120,0.3);
+  background: rgba(200,150,120,0.28);
   border-radius: 4px;
 }
 
-.panelBodyPad {
-  height: 20px;
-  flex-shrink: 0;
-}
-
-/* Invisible step marker */
-.stepMarker {
-  height: 0;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* Each step's messages are in a flex column so align-self works */
+/* Each step's messages in a flex-column so align-self works on bubbles */
 .stepGroup {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
-/* ─── Message bubbles ───────────────────────────────────── */
+.stepMarker {
+  height: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.bodyPad { height: 20px; flex-shrink: 0; }
+
+/* ─── Bubbles ───────────────────────────────────────────── */
 .bubble {
   display: flex;
   align-items: flex-end;
   gap: 9px;
   width: fit-content;
-  opacity: 0;
-  transition: opacity 450ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.bubbleVisible {
-  opacity: 1;
 }
 
 .bubbleVendor {
   flex-direction: row;
   align-self: flex-start;
-  max-width: 62%;
+  max-width: 63%;
 }
 
 .bubbleHost {
   flex-direction: row-reverse;
   align-self: flex-end;
-  max-width: 62%;
+  max-width: 63%;
 }
 
 .avatar {
@@ -390,14 +372,14 @@
 
 .bubbleVendor .bubbleCard {
   background: #fff;
-  border: 1px solid rgba(80,60,45,0.12);
-  box-shadow: 0 2px 10px rgba(38,34,30,0.06);
+  border: 1px solid rgba(80,60,45,0.11);
+  box-shadow: 0 2px 10px rgba(38,34,30,0.05);
 }
 
 .bubbleHost .bubbleCard {
   background: #c85f2c;
   border: 1px solid rgba(200,95,44,0.2);
-  box-shadow: 0 6px 20px rgba(200,95,44,0.2);
+  box-shadow: 0 6px 20px rgba(200,95,44,0.18);
 }
 
 .bubbleLabel {
@@ -420,9 +402,7 @@
   color: #3c342f;
 }
 
-.bubbleHost .bubbleText {
-  color: #fff8ef;
-}
+.bubbleHost .bubbleText { color: #fff8ef; }
 
 .bubbleTime {
   display: block;
@@ -431,9 +411,7 @@
   text-align: right;
 }
 
-.bubbleHost .bubbleTime {
-  color: rgba(255,248,239,0.5);
-}
+.bubbleHost .bubbleTime { color: rgba(255,248,239,0.5); }
 
 /* ─── Footer ────────────────────────────────────────────── */
 .panelFooter {
@@ -442,7 +420,7 @@
   gap: 8px;
   padding: 12px 20px;
   border-top: 1px solid rgba(80,60,45,0.08);
-  background: rgba(255,248,239,0.6);
+  background: rgba(255,248,239,0.5);
   font-size: 0.73rem;
   color: #b6a99a;
   flex-shrink: 0;
@@ -454,55 +432,19 @@
   opacity: 0.65;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════════════════ */
-
+/* ─── Responsive ────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .inner {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
   }
-
-  .left {
-    position: static;
-  }
-
-  .tracker {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
-  .trackerStep {
-    flex: 1;
-    min-width: 140px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .stepSpine {
-    flex-direction: row;
-  }
-
-  .stepLine {
-    display: none;
-  }
-
-  .stepText {
-    padding-bottom: 0;
-  }
+  .left { position: static; }
+  .panelBody { height: 380px; }
 }
 
 @media (max-width: 640px) {
   .headline { font-size: 1.85rem; }
-
-  .panelBody { height: 400px; padding: 16px 14px 0; }
-
-  .bubbleVendor, .bubbleHost { max-width: 85%; }
-
+  .panelBody { height: 340px; padding: 14px 12px 0; }
+  .bubbleVendor, .bubbleHost { max-width: 86%; }
   .panelHeader { padding: 12px 14px; }
-
-  .headerTopic { font-size: 0.82rem; }
 }

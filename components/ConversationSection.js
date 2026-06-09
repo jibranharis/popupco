@@ -56,86 +56,46 @@ const STEPS = [
   },
 ];
 
-/* ─── Util: top of element relative to start of scrollable container ─ */
-function elTopInContainer(el, container) {
-  // getBoundingClientRect gives viewport-relative coords.
-  // Subtract container top, then add scrollTop to get offset from container start.
-  return (
-    el.getBoundingClientRect().top -
-    container.getBoundingClientRect().top +
-    container.scrollTop
-  );
-}
-
-/* ─── Component ──────────────────────────────────────────── */
 export default function ConversationSection() {
   const panelBodyRef   = useRef(null);
-  const stepMarkerRefs = useRef({});  // stepIdx → DOM el
-  const msgElRefs      = useRef({});  // "stepIdx-msgIdx" → DOM el
+  const stepMarkerRefs = useRef({});   // stepIdx → DOM el
 
-  // Step-0 messages revealed from the start
-  const [revealed, setRevealed] = useState(() => {
-    const s = new Set();
-    STEPS[0].messages.forEach((_, i) => s.add(`0-${i}`));
-    return s;
-  });
   const [activeStep, setActiveStep] = useState(0);
 
-  /* ── Combined scroll handler: reveal messages + update activeStep ── */
-  const handleScroll = useCallback(() => {
+  /* ── Scroll listener: only updates left-side tracker based on which
+     step marker has scrolled past the top of the visible panel area ── */
+  const handlePanelScroll = useCallback(() => {
     const body = panelBodyRef.current;
     if (!body) return;
 
-    const scrollTop     = body.scrollTop;
-    const clientHeight  = body.clientHeight;
-    const visibleBottom = scrollTop + clientHeight;
-
-    // ── Reveal messages that have scrolled into view ──
-    setRevealed(prev => {
-      let changed = false;
-      const next = new Set(prev);
-      Object.entries(msgElRefs.current).forEach(([key, el]) => {
-        if (!el || next.has(key)) return;
-        // elTop is the element's distance from the top of the scrollable content
-        const elTop = elTopInContainer(el, body);
-        // Reveal when the top of the element is within the visible window (+32px lookahead)
-        if (elTop < visibleBottom + 32) {
-          next.add(key);
-          changed = true;
-        }
-      });
-      return changed ? next : prev;
-    });
-
-    // ── Update active step ──
+    const bodyTop = body.getBoundingClientRect().top;
     let current = 0;
+
     Object.entries(stepMarkerRefs.current).forEach(([idxStr, el]) => {
       if (!el) return;
-      const markerTop = elTopInContainer(el, body);
-      // A step is "active" when its marker has scrolled past the top of the visible area
-      if (markerTop <= scrollTop + 48) {
+      // Element's position relative to the panel's visible top
+      const elVisibleTop = el.getBoundingClientRect().top - bodyTop;
+      // If the marker has scrolled to within 60px of the top of the panel, it's "active"
+      if (elVisibleTop <= 60) {
         current = Number(idxStr);
       }
     });
+
     setActiveStep(current);
   }, []);
 
   useEffect(() => {
     const body = panelBodyRef.current;
     if (!body) return;
-
-    // Run immediately so the initial view is correct
-    handleScroll();
-
-    body.addEventListener('scroll', handleScroll, { passive: true });
-    return () => body.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
+    body.addEventListener('scroll', handlePanelScroll, { passive: true });
+    return () => body.removeEventListener('scroll', handlePanelScroll);
+  }, [handlePanelScroll]);
 
   return (
     <section className={styles.outer} id="clear-conversations">
       <div className={styles.inner}>
 
-        {/* ── LEFT: copy + tracker ── */}
+        {/* ── LEFT ── */}
         <div className={styles.left}>
           <span className={styles.sectionLabel}>CLEAR CONVERSATIONS</span>
           <h2 className={styles.headline}>
@@ -161,10 +121,17 @@ export default function ConversationSection() {
                   ].join(' ')}
                 >
                   <div className={styles.stepSpine}>
-                    <div className={styles.stepCircle}><span>{step.id}</span></div>
+                    <div className={styles.stepCircle}>
+                      <span>{step.id}</span>
+                    </div>
                     {i < STEPS.length - 1 && (
                       <div className={styles.stepLine}>
-                        <div className={`${styles.stepLineFill} ${isDone ? styles.lineFull : ''}`} />
+                        <div
+                          className={[
+                            styles.stepLineFill,
+                            isDone ? styles.lineFull : '',
+                          ].join(' ')}
+                        />
                       </div>
                     )}
                   </div>
@@ -178,11 +145,11 @@ export default function ConversationSection() {
           </ol>
         </div>
 
-        {/* ── RIGHT: conversation panel ── */}
+        {/* ── RIGHT ── */}
         <div className={styles.right}>
           <div className={styles.panel}>
 
-            {/* Sticky "Now discussing" header */}
+            {/* Header — sits outside the scroll area so it never moves */}
             <div className={styles.panelHeader}>
               <div className={styles.headerLeft}>
                 <div className={styles.headerIcon}>
@@ -194,23 +161,25 @@ export default function ConversationSection() {
                 </div>
               </div>
               <div className={styles.headerRight}>
-                <span className={styles.headerStepCount}>Step {activeStep + 1} of {STEPS.length}</span>
+                <span className={styles.headerStepCount}>
+                  Step {activeStep + 1} of {STEPS.length}
+                </span>
                 <div className={styles.headerDots}>
                   {STEPS.map((_, i) => (
-                    <span key={i} className={`${styles.dot} ${i <= activeStep ? styles.dotActive : ''}`} />
+                    <span
+                      key={i}
+                      className={[styles.dot, i <= activeStep ? styles.dotActive : ''].join(' ')}
+                    />
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Scrollable message thread */}
+            {/* Scrollable body — overscroll-behavior: contain keeps page scroll intact */}
             <div className={styles.panelBody} ref={panelBodyRef}>
-
               {STEPS.map((step, stepIdx) => (
-                /* stepGroup must be a flex column so align-self works on bubble children */
                 <div key={stepIdx} className={styles.stepGroup}>
-
-                  {/* 0-height anchor watched by scroll listener */}
+                  {/* Invisible anchor for scroll-position detection */}
                   <div
                     ref={el => { stepMarkerRefs.current[stepIdx] = el; }}
                     className={styles.stepMarker}
@@ -218,18 +187,13 @@ export default function ConversationSection() {
                   />
 
                   {step.messages.map((msg, msgIdx) => {
-                    const key      = `${stepIdx}-${msgIdx}`;
                     const isVendor = msg.role === 'vendor';
-                    const isVisible = revealed.has(key);
-
                     return (
                       <div
-                        key={key}
-                        ref={el => { msgElRefs.current[key] = el; }}
+                        key={`${stepIdx}-${msgIdx}`}
                         className={[
                           styles.bubble,
                           isVendor ? styles.bubbleVendor : styles.bubbleHost,
-                          isVisible ? styles.bubbleVisible : '',
                         ].join(' ')}
                       >
                         {isVendor && (
@@ -250,18 +214,16 @@ export default function ConversationSection() {
                   })}
                 </div>
               ))}
-
               <div className={styles.bodyPad} />
             </div>
 
-            {/* Footer */}
             <div className={styles.panelFooter}>
               <Lock size={13} strokeWidth={2} />
               <span>Private between you and the host. No commitment until you apply.</span>
             </div>
+
           </div>
         </div>
-
       </div>
     </section>
   );
