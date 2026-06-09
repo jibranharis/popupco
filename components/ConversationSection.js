@@ -9,6 +9,7 @@ const STEPS = [
   {
     id: 1,
     title: 'Event details',
+    separator: 'Yesterday  10:28 AM',
     description: "Confirm key info like dates, booth fee, and what's included.",
     messages: [
       { role: 'vendor', text: 'Is the booth fee fixed, or does it depend on category?', time: '10:28 AM' },
@@ -21,6 +22,7 @@ const STEPS = [
   {
     id: 2,
     title: 'Attendance',
+    separator: 'Yesterday  3:14 PM',
     description: 'Understand expected foot traffic and your target audience.',
     messages: [
       { role: 'vendor', text: 'How many people usually attend?', time: '10:36 AM' },
@@ -33,6 +35,7 @@ const STEPS = [
   {
     id: 3,
     title: 'Permits',
+    separator: 'Today  9:44 AM',
     description: "Learn what's required and who handles the paperwork.",
     messages: [
       { role: 'vendor', text: 'Do I need a permit to sell food at this event?', time: '10:44 AM' },
@@ -45,6 +48,7 @@ const STEPS = [
   {
     id: 4,
     title: 'Confirm fit',
+    separator: 'Today  11:52 AM',
     description: "Review everything and confirm it's the right match.",
     messages: [
       { role: 'vendor', text: 'Can I apply for the Saturday slot?', time: '10:52 AM' },
@@ -179,12 +183,17 @@ export default function ConversationSection() {
             <div className={styles.panelBody} ref={panelBodyRef}>
               {STEPS.map((step, stepIdx) => (
                 <div key={stepIdx} className={styles.stepGroup}>
-                  {/* Invisible anchor for scroll-position detection */}
+              {/* Invisible anchor for scroll-position detection */}
                   <div
                     ref={el => { stepMarkerRefs.current[stepIdx] = el; }}
                     className={styles.stepMarker}
                     aria-hidden="true"
                   />
+
+                  {/* iMessage-style date separator */}
+                  <div className={styles.dateSeparator}>
+                    <span>{step.separator}</span>
+                  </div>
 
                   {step.messages.map((msg, msgIdx) => {
                     const isVendor = msg.role === 'vendor';
