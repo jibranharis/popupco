@@ -494,14 +494,14 @@ export default function HomePage() {
         {/* ── BROWSE BY MOMENT ───────────────────────── */}
         <section className={styles.momentsSection}>
           <div className={`container ${styles.momentsShell}`}>
-            <div className={`fade-in ${styles.sectionIntro}`}>
+            <div className={styles.sectionIntro}>
               <span className="label">Browse by moment</span>
               <h2>A Pop-Up For Every Idea.</h2>
               <p>Explore the different ways vendors, venues, and hosts can bring local commerce to life.</p>
             </div>
 
             <div className={styles.momentsGrid}>
-              <div className={`fade-in ${styles.momentTabs}`}>
+              <div className={styles.momentTabs}>
                 {moments.map((moment, index) => {
                   const MomentIcon = moment.icon;
                   return (
@@ -522,7 +522,7 @@ export default function HomePage() {
                 })}
               </div>
 
-              <div className={`fade-in fade-in--d2 ${styles.momentStage}`}>
+              <div className={styles.momentStage}>
                 <div className={styles.momentVisual}>
                   <Image
                     key={moments[activeMoment].image}
