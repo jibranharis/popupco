@@ -1,157 +1,114 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { ArrowRight, HeartHandshake, MapPin, Store, Users } from 'lucide-react';
+import UtilityPageShell from '@/components/UtilityPageShell';
+import { Users, Sun, Flag } from 'lucide-react';
+import shellStyles from '@/components/UtilityPageShell.module.css';
 import styles from './page.module.css';
 
 export const metadata = {
-  title: 'Building the home for local pop-up commerce',
-  description: 'Meet PopUpCo, a Bay Area marketplace helping vendors, venues, and hosts create better local pop-up experiences.',
+  title: 'About Us | PopUpCo',
+  description: 'Two founders. One mission. We’re on a mission to make pop-up opportunities more accessible, organized, and impactful for everyone.',
 };
-
-const values = [
-  {
-    icon: Store,
-    title: 'Small businesses deserve better access',
-    copy: 'A great product should not need a long lease, expensive buildout, or the right connection just to meet customers in person.',
-  },
-  {
-    icon: Users,
-    title: 'Events should feel curated',
-    copy: 'The best pop-ups have the right vendor mix, clear rules, smooth setup, and a reason for people to stay.',
-  },
-  {
-    icon: MapPin,
-    title: 'Empty space can become community',
-    copy: 'A storefront, cafe, hall, parking lot, or school space can turn into a local market when the right people can find each other.',
-  },
-  {
-    icon: HeartHandshake,
-    title: 'Trust has to come first',
-    copy: 'Vendors need fees, deadlines, permits, load-in details, host credibility, and attendance expectations before they commit.',
-  },
-];
 
 const founders = [
   {
-    name: 'Founder',
-    role: 'Product, marketplace, and vendor experience',
-    image: '/images/founder-1.jpg',
-    copy: 'Focused on making PopUpCo practical for the people using it on busy weekends: clear listings, simple applications, and less back-and-forth.',
+    name: "Your Name",
+    role: "Co-founder & CEO",
+    bio: "I’m passionate about empowering local vendors and helping communities grow through real connections.",
+    // Placeholder image
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
   },
   {
-    name: 'Co-founder',
-    role: 'Community, operations, and local partnerships',
-    image: '/images/founder-2.jpg',
-    copy: 'Focused on building relationships with vendors, venues, hosts, and community spaces so each pop-up feels real, local, and worth showing up for.',
+    name: "Partner Name",
+    role: "Co-founder & CTO",
+    bio: "I love building technology that solves real problems and creates seamless marketplace experiences.",
+    // Placeholder image
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  }
+];
+
+const values = [
+  {
+    title: 'Why We Started',
+    Icon: Users,
+    text: 'We saw incredible local talent and amazing spaces — but no easy way to bring them together.'
   },
+  {
+    title: 'What We Believe',
+    Icon: Sun,
+    text: 'Pop-ups bring people together. They spark local economies and create lasting impact.'
+  },
+  {
+    title: 'Where We’re Going',
+    Icon: Flag,
+    text: 'We’re just getting started. The best pop-ups — and the best communities — are ahead.'
+  }
 ];
 
 export default function AboutPage() {
   return (
-    <>
-      <Header />
-      <main>
-        <section className={styles.hero}>
-          <div className={`container ${styles.heroGrid}`}>
-            <div>
-              <span className="label">About PopUpCo</span>
-              <h1>Building the home for local pop-up commerce.</h1>
-              <p>
-                PopUpCo started from a simple frustration: local vendors have talent, ambition, and products people want, but finding the next place to sell is still scattered across DMs, flyers, forms, and word of mouth.
-              </p>
-              <div className={styles.heroCtas}>
-                <Link href="/vendors" className="btn btn--primary btn--lg">Explore opportunities</Link>
-                <Link href="/contact" className="btn btn--secondary btn--lg">Talk to us</Link>
-              </div>
-            </div>
-            <div className={styles.logoPanel}>
-              <Image src="/images/popupco-logo.png" alt="PopUpCo logo" fill priority className={styles.logoImage} />
-            </div>
+    <UtilityPageShell
+      label="ABOUT US"
+      headline="Two founders. One mission."
+      subtext="We’re on a mission to make pop-up opportunities more accessible, organized, and impactful for everyone."
+    >
+      
+      {/* ── Founder Row ── */}
+      <div className={styles.founderRow}>
+        
+        {/* Left Founder */}
+        <div className={`${styles.founderCard} ${styles.founderLeft}`}>
+          <div className={styles.founderText}>
+            <h2 className={styles.founderName}>{founders[0].name}</h2>
+            <div className={styles.founderRole}>{founders[0].role}</div>
+            <p className={styles.founderBio}>{founders[0].bio}</p>
           </div>
-        </section>
+          <div className={styles.founderImageWrapper}>
+            <img src={founders[0].image} alt={founders[0].name} className={styles.founderImg} />
+          </div>
+        </div>
 
-        <section className={styles.storySection}>
-          <div className="container">
-            <div className={styles.storyGrid}>
-              <div className={styles.storyLead}>
-                <span className="label">Why we started</span>
-                <h2>We wanted to make selling in real life feel possible again.</h2>
-              </div>
-              <div className={styles.storyCopy}>
-                <p>
-                  Pop-ups are one of the most realistic ways for small businesses to grow. They let a candle maker, baker, clothing brand, jewelry seller, artist, student entrepreneur, or food vendor test demand, meet customers, and build a name without taking on a permanent storefront.
-                </p>
-                <p>
-                  But the process is harder than it should be. Vendors often have to chase Instagram posts, fill out random forms, wonder if the event is legitimate, ask about booth fees, guess the audience size, and hope setup details arrive in time. Venues have unused space but do not always know how to activate it. Hosts want to create great markets but end up buried in spreadsheets and messages.
-                </p>
-                <p>
-                  We built PopUpCo to bring those pieces into one place: opportunities, spaces, hosts, applications, messages, rules, deadlines, and trust signals. The goal is not just to rent space. The goal is to help local businesses show up, sell, and be discovered.
-                </p>
-              </div>
-            </div>
+        {/* Center Connector */}
+        <div className={styles.connectorWrapper}>
+          <div className={styles.connectorLine}></div>
+          <div className={styles.connectorBadge}>
+            <img src="/images/popupco-logo-mark.png" alt="PopUpCo Mark" />
           </div>
-        </section>
+        </div>
 
-        <section className="section bg-alt">
-          <div className="container">
-            <div className={styles.sectionHeader}>
-              <span className="label">Why it matters</span>
-              <h2>Local commerce should be easier to start and easier to trust.</h2>
-            </div>
-            <div className={styles.valuesGrid}>
-              {values.map(({ icon: Icon, title, copy }) => (
-                <div key={title} className={styles.valueCard}>
-                  <Icon size={22} />
-                  <h3>{title}</h3>
-                  <p>{copy}</p>
-                </div>
-              ))}
-            </div>
+        {/* Right Founder */}
+        <div className={`${styles.founderCard} ${styles.founderRight}`}>
+          <div className={styles.founderText}>
+            <h2 className={styles.founderName}>{founders[1].name}</h2>
+            <div className={styles.founderRole}>{founders[1].role}</div>
+            <p className={styles.founderBio}>{founders[1].bio}</p>
           </div>
-        </section>
+          <div className={styles.founderImageWrapper}>
+            <img src={founders[1].image} alt={founders[1].name} className={styles.founderImg} />
+          </div>
+        </div>
+        
+      </div>
 
-        <section className={styles.foundersSection}>
-          <div className="container">
-            <div className={styles.sectionHeader}>
-              <span className="label">The founders</span>
-              <h2>Built by people who care about local business.</h2>
-              <p>
-                PopUpCo is early, hands-on, and Bay Area first. We are talking to vendors, venues, hosts, schools, nonprofits, and community spaces so the product is shaped by real problems, not startup theater.
-              </p>
+      {/* ── Values Cards ── */}
+      <div className={`${shellStyles.card} ${styles.valuesContainer}`}>
+        {values.map((val) => (
+          <div key={val.title} className={styles.valueCard}>
+            <div className={styles.valueHeader}>
+              <val.Icon size={24} className={styles.valueIcon} />
+              <h3 className={styles.valueTitle}>{val.title}</h3>
             </div>
-            <div className={styles.founderGrid}>
-              {founders.map((founder) => (
-                <article key={founder.image} className={styles.founderCard}>
-                  <div className={styles.founderPhoto}>
-                    <Image src={founder.image} alt={`${founder.name} portrait`} fill className={styles.founderImage} />
-                  </div>
-                  <div className={styles.founderBody}>
-                    <h3>{founder.name}</h3>
-                    <span>{founder.role}</span>
-                    <p>{founder.copy}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <p className={styles.valueText}>{val.text}</p>
           </div>
-        </section>
+        ))}
+      </div>
 
-        <section className={styles.noteSection}>
-          <div className="container">
-            <div className={styles.noteCard}>
-              <span className="label">Where we are starting</span>
-              <h2>Bay Area first, community always.</h2>
-              <p>
-                The Bay Area is full of people making things, selling things, organizing things, and trying to bring neighborhoods together. PopUpCo starts here because this is where we can learn directly from the people we are building for.
-              </p>
-              <Link href="/vendors" className={styles.textLink}>See Bay Area opportunities <ArrowRight size={17} /></Link>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+      {/* ── Bottom CTA ── */}
+      <div className={styles.ctaContainer}>
+        <Link href="/contact" className={`btn btn--primary ${styles.ctaBtn}`}>
+          Let&apos;s build the future together &rarr;
+        </Link>
+      </div>
+
+    </UtilityPageShell>
   );
 }

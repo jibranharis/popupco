@@ -7,6 +7,7 @@ import { useAuth } from './AuthContext';
 import styles from './Header.module.css';
 
 const publicNav = [
+  { label: 'About', href: '/about' },
   { label: 'Discover', href: '/discover' },
   { label: 'For Vendors', href: '/vendors' },
   { label: 'For Venues', href: '/venues' },
