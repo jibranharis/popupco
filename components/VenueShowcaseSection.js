@@ -206,6 +206,17 @@ function SlideAvailability() {
             <span><CheckCircle size={12} /> Control your rules</span>
             <span><CheckCircle size={12} /> Get quality requests</span>
           </div>
+
+          <div className={styles.calSyncBox}>
+            <div className={styles.calSyncIcon}><CalendarDays size={16} /></div>
+            <div className={styles.calSyncText}>
+              <strong>Sync calendar</strong>
+              <span>Auto-block booked dates</span>
+            </div>
+            <div className={styles.toggleBtn}>
+              <div className={styles.toggleKnob} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -284,8 +284,8 @@
 .listingDetails {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  margin-top: 12px;
+  gap: 14px;
+  margin-top: 18px;
 }
 
 .detailItem {
