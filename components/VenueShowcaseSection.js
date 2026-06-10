@@ -14,7 +14,7 @@ import styles from './VenueShowcaseSection.module.css';
 /* ─── Left panel checklist ─── */
 const checklistRows = [
   { Icon: Users,        label: 'Capacity',      value: '80 people' },
-  { Icon: Wifi,         label: 'Amenities',      value: 'Wi-Fi, tables, sound system' },
+  { Icon: Wifi,         label: 'Amenities',      value: 'Wi-Fi, tables, sound' },
   { Icon: Truck,        label: 'Load-in access', value: 'Street level' },
   { Icon: CalendarDays, label: 'Availability',   value: 'Weekends + evenings' },
   { Icon: ShieldCheck,  label: 'Rules',          value: 'Food vendors allowed' },
@@ -23,11 +23,18 @@ const checklistRows = [
 /* ─── Calendar ─── */
 const DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 const dateStates = {
-  3: 'avail', 5: 'avail', 6: 'avail', 10: 'avail', 12: 'avail', 13: 'avail',
-  17: 'avail', 19: 'avail', 20: 'avail', 24: 'avail', 26: 'avail', 27: 'avail',
-  7: 'pending', 14: 'pending', 21: 'pending', 28: 'pending',
-  1: 'booked', 2: 'booked', 8: 'booked', 9: 'booked', 15: 'booked', 16: 'booked',
-  22: 'booked', 23: 'booked',
+  // A handful of booked weekends — realistic, not patterned
+  7:  'booked',
+  14: 'booked',
+  22: 'booked',
+  // A couple pending inquiries
+  20: 'pending',
+  27: 'pending',
+  // Some available days marked explicitly
+  3: 'avail', 4: 'avail', 5: 'avail',
+  10: 'avail', 11: 'avail', 12: 'avail',
+  17: 'avail', 18: 'avail',
+  24: 'avail', 25: 'avail', 26: 'avail',
 };
 
 function CalendarGrid() {
@@ -103,7 +110,7 @@ function SlideListingPreview() {
   );
 }
 
-/* ── Slide 2: Success Story — unified single card ── */
+/* ── Slide 2: Success Story — horizontal editorial layout ── */
 function SlideSuccessStory() {
   const metrics = [
     { value: '+18',    sub: 'inquiries',  label: 'first month' },
@@ -111,28 +118,39 @@ function SlideSuccessStory() {
     { value: '$3,200', sub: 'earned',     label: 'first month' },
     { value: '4.9★',   sub: 'host',       label: 'rating' },
   ];
+  const tags = ['Weekend markets', 'Product launches', 'Pop-up dining', 'Art shows'];
   return (
     <div className={styles.slide}>
       <div className={styles.successCard}>
-        <div className={styles.successImgWrap}>
-          <Image
-            src="/venue-garden-house.png"
-            alt="The Garden House interior"
-            fill
-            sizes="460px"
-            className={styles.successImg}
-          />
-          <div className={styles.successImgGrad}>
-            <strong className={styles.successVenueName}>The Garden House</strong>
-            <span className={styles.successVenueLoc}><MapPin size={11} /> Los Angeles, CA</span>
+        {/* Horizontal: image left, content right */}
+        <div className={styles.successLayout}>
+          <div className={styles.successImgCol}>
+            <Image
+              src="/venue-garden-house.png"
+              alt="The Garden House interior"
+              fill
+              sizes="220px"
+              className={styles.successImg}
+            />
           </div>
-        </div>
 
-        <div className={styles.successBody}>
-          <blockquote className={styles.quote}>
-            "We used to have long stretches of empty weekdays. PopUpCo helped us connect with amazing vendors and our weekends are now consistently booked."
-          </blockquote>
-          <p className={styles.quoteAttr}>— Maya P., Space Owner</p>
+          <div className={styles.successContent}>
+            <div className={styles.successHeader}>
+              <strong className={styles.successVenueName}>The Garden House</strong>
+              <span className={styles.successVenueLoc}><MapPin size={11} /> Los Angeles, CA</span>
+            </div>
+
+            <div className={styles.successHr} />
+
+            <blockquote className={styles.quote}>
+              &ldquo;We used to have long stretches of empty weekdays. PopUpCo helped us connect with amazing vendors and our weekends are now consistently booked.&rdquo;
+            </blockquote>
+            <p className={styles.quoteAttr}>— Maya P., Space Owner</p>
+
+            <div className={styles.successTagRow}>
+              {tags.map(t => <span key={t} className={styles.successTag}>{t}</span>)}
+            </div>
+          </div>
         </div>
 
         <div className={styles.metricsDivider} />
