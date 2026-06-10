@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import VenueShowcaseSection from '@/components/VenueShowcaseSection';
 import {
   ArrowRight,
   CalendarCheck,
@@ -77,7 +78,10 @@ export default function VenuesPage() {
           </div>
         </section>
 
-        <section className={styles.featureStripSection}>
+        {/* ── Second feature section: rotating venue showcase ── */}
+        <VenueShowcaseSection />
+
+        <section className={styles.featureStripSection} style={{ paddingTop: '80px' }}>
           <div className={`container ${styles.featureStrip}`}>
             {bottomFeatures.map(([Icon, title, copy]) => (
               <div className={styles.featureItem} key={title}>
@@ -95,3 +99,4 @@ export default function VenuesPage() {
     </>
   );
 }
+
