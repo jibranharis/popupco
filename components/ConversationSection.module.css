@@ -1,0 +1,476 @@
+/* ═══════════════════════════════════════════════════════════
+   ConversationSection.module.css
+═══════════════════════════════════════════════════════════ */
+
+/* ─── Section ───────────────────────────────────────────── */
+.outer {
+  position: relative;
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  background:
+    radial-gradient(ellipse at 86% 8%,  rgba(221,125,71,0.14), transparent 36%),
+    radial-gradient(ellipse at 8%  94%, rgba(219,198,168,0.16), transparent 44%),
+    linear-gradient(180deg, #fffaf4 0%, #fff7ef 100%);
+}
+
+/* ─── Two-column layout ─────────────────────────────────── */
+.inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 80px);
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: clamp(3.5rem, 8vw, 8.5rem);
+}
+
+/* ─── LEFT COLUMN ───────────────────────────────────────── */
+.left {
+  display: flex;
+  flex-direction: column;
+  /* Stays in view while user scrolls the page */
+  position: sticky;
+  top: clamp(80px, 10vh, 112px);
+}
+
+.sectionLabel {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #c85f2c;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.headline {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.9rem, 3vw, 3rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #26221e;
+  margin: 0 0 14px;
+}
+
+.headlineDot { color: #c85f2c; }
+
+.subtext {
+  font-size: 0.94rem;
+  color: #7b7168;
+  line-height: 1.65;
+  margin: 0 0 32px;
+}
+
+/* ─── Progress tracker ──────────────────────────────────── */
+.tracker {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.trackerStep {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+}
+
+.stepSpine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.stepCircle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #ddd3c8;
+  background: #f9f4ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #c4b5a6;
+  flex-shrink: 0;
+  transition: border-color 400ms ease, background 400ms ease, color 400ms ease;
+  position: relative;
+  z-index: 1;
+}
+
+/* Active: filled orange circle */
+.stepActive .stepCircle {
+  border-color: #c85f2c;
+  background: #c85f2c;
+  color: #fff;
+}
+
+/* Done: orange outline circle */
+.stepDone .stepCircle {
+  border-color: #c85f2c;
+  background: rgba(200,95,44,0.08);
+  color: #c85f2c;
+}
+
+/* Connector line */
+.stepLine {
+  flex: 1;
+  width: 2px;
+  min-height: 38px;
+  background: #e8ddd4;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  margin: 2px 0;
+}
+
+.stepLineFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: #c85f2c;
+  border-radius: 2px;
+  transition: height 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lineFull { height: 100%; }
+
+/* Step text */
+.stepText {
+  padding-top: 4px;
+  padding-bottom: 32px;
+}
+
+.trackerStep:last-child .stepText {
+  padding-bottom: 0;
+}
+
+.stepTitle {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #c8bbb2;
+  margin-bottom: 3px;
+  transition: color 400ms ease;
+}
+
+.stepActive .stepTitle,
+.stepDone .stepTitle { color: #3c342f; }
+
+.stepDesc {
+  font-size: 0.78rem;
+  color: #cac0b8;
+  line-height: 1.45;
+  margin: 0;
+  transition: color 400ms ease;
+}
+
+.stepActive .stepDesc { color: #7b7168; }
+.stepDone  .stepDesc  { color: #9e9188; }
+
+/* ─── RIGHT COLUMN ──────────────────────────────────────── */
+.right {
+  position: relative;
+}
+
+/* ─── Panel ─────────────────────────────────────────────── */
+.panel {
+  position: absolute;
+  top: 28px; /* Aligns with the top of the h2 (offsetting the sectionLabel) */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255,252,247,0.96);
+  border: 1px solid rgba(80,60,45,0.1);
+  border-radius: 20px;
+  box-shadow:
+    0 20px 60px rgba(38,34,30,0.08),
+    0 4px 16px rgba(38,34,30,0.04);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ─── "Now discussing" header ───────────────────────────── */
+/* Lives OUTSIDE the scroll container so it never moves */
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(80,60,45,0.08);
+  background: rgba(255,252,247,0.99);
+  flex-shrink: 0;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(200,95,44,0.1);
+  color: #c85f2c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.headerLabel {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #b8a898;
+  text-transform: uppercase;
+}
+
+.headerTopic {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #3c342f;
+  transition: all 300ms ease;
+}
+
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.headerStepCount {
+  font-size: 0.68rem;
+  color: #b8a898;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.headerDots {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.dot {
+  width: 18px;
+  height: 3px;
+  border-radius: 3px;
+  background: #e5d8ca;
+  transition: background 400ms ease;
+}
+
+.dotActive { background: #c85f2c; }
+
+/* ─── Scrollable body ───────────────────────────────────── */
+.panelBody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  /*
+   * KEY FIX: prevents scroll from propagating to the page
+   * when the panel reaches its top or bottom limit.
+   * This means page scroll only happens when cursor is NOT over the panel.
+   */
+  overscroll-behavior: contain;
+
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200,150,120,0.28) transparent;
+}
+
+.panelBody::-webkit-scrollbar { width: 4px; }
+.panelBody::-webkit-scrollbar-track { background: transparent; }
+.panelBody::-webkit-scrollbar-thumb {
+  background: rgba(200,150,120,0.28);
+  border-radius: 4px;
+}
+
+/* Each step's messages in a flex-column so align-self works on bubbles */
+.stepGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.stepMarker {
+  height: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* iMessage-style date / time separator */
+.dateSeparator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0 6px;
+}
+
+.dateSeparator span {
+  font-size: 0.63rem;
+  font-weight: 500;
+  color: #b6a99a;
+  letter-spacing: 0.03em;
+  padding: 3px 10px;
+  background: rgba(80,60,45,0.05);
+  border-radius: 20px;
+}
+
+.bodyPad { height: 20px; flex-shrink: 0; }
+
+/* ─── Bubbles ───────────────────────────────────────────── */
+.bubble {
+  display: flex;
+  align-items: flex-end;
+  gap: 9px;
+  width: fit-content;
+}
+
+.bubbleVendor {
+  flex-direction: row;
+  align-self: flex-start;
+  max-width: 63%;
+}
+
+.bubbleHost {
+  flex-direction: row-reverse;
+  align-self: flex-end;
+  max-width: 63%;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-end;
+  margin-bottom: 2px;
+}
+
+.avatar[data-vendor] {
+  background: rgba(200,95,44,0.1);
+  color: #c85f2c;
+}
+
+.avatar[data-host] {
+  background: #c85f2c;
+  color: #fff;
+}
+
+.bubbleCard {
+  padding: 10px 13px 8px;
+  border-radius: 14px;
+  min-width: 0;
+}
+
+.bubbleVendor .bubbleCard {
+  background: #fff;
+  border: 1px solid rgba(80,60,45,0.11);
+  box-shadow: 0 2px 10px rgba(38,34,30,0.05);
+}
+
+.bubbleHost .bubbleCard {
+  background: #c85f2c;
+  border: 1px solid rgba(200,95,44,0.2);
+  box-shadow: 0 6px 20px rgba(200,95,44,0.18);
+}
+
+.bubbleLabel {
+  display: block;
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+  color: #c85f2c;
+}
+
+.bubbleHost .bubbleLabel {
+  color: rgba(255,248,239,0.65);
+}
+
+.bubbleText {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  margin: 0 0 5px;
+  color: #3c342f;
+}
+
+.bubbleHost .bubbleText { color: #fff8ef; }
+
+.bubbleTime {
+  display: block;
+  font-size: 0.6rem;
+  color: #b6a99a;
+  text-align: right;
+}
+
+.bubbleHost .bubbleTime { color: rgba(255,248,239,0.5); }
+
+/* ─── Footer ────────────────────────────────────────────── */
+.panelFooter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid rgba(80,60,45,0.08);
+  background: rgba(255,248,239,0.5);
+  font-size: 0.73rem;
+  color: #b6a99a;
+  flex-shrink: 0;
+}
+
+.panelFooter svg {
+  flex-shrink: 0;
+  color: #c85f2c;
+  opacity: 0.65;
+}
+
+/* ─── Responsive ────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .left { position: static; }
+  .right { position: static; }
+  .panel { 
+    position: static; 
+    height: 520px; 
+  }
+}
+
+@media (max-width: 640px) {
+  .headline { font-size: 1.85rem; }
+  .panel { height: 480px; }
+  .panelBody { padding: 14px 12px 0; }
+  .bubbleVendor, .bubbleHost { max-width: 86%; }
+  .panelHeader { padding: 12px 14px; }
+}

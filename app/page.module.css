@@ -605,9 +605,12 @@
 .momentsSection,
 .messageSection,
 .rolesSection,
-.trustSection,
-.finalCta {
+.trustSection {
   padding: var(--sp-18) 0;
+}
+
+.finalCta {
+  padding: var(--sp-12) 0;
 }
 
 
@@ -647,12 +650,13 @@
 .messageCopy h2,
 .trustCopy h2,
 .finalInner h2 {
-  font-family: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
-  margin-top: var(--sp-2);
-  font-size: clamp(2rem, 3.5vw, 3.35rem);
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.9rem, 3vw, 3rem);
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.02em;
+  color: #26221e;
+  margin-top: var(--sp-2);
 }
 
 .sectionIntro p,
@@ -698,23 +702,10 @@
 }
 
 .momentTabs .momentOption {
-  opacity: 0;
-  translate: 0 22px;
   transition:
-    opacity 440ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    translate 440ms cubic-bezier(0.2, 0.8, 0.2, 1),
     background 160ms ease,
     color 160ms ease,
     border-color 160ms ease;
-  transition-delay:
-    calc(var(--moment-index, 0) * 90ms),
-    calc(var(--moment-index, 0) * 90ms),
-    0ms, 0ms, 0ms;
-}
-
-.momentTabs:global(.visible) .momentOption {
-  opacity: 1;
-  translate: 0 0;
 }
 
 /* Number cell */
@@ -771,11 +762,6 @@
   border-radius: 30px;
   background: #eadfd2;
   box-shadow: 0 24px 72px rgba(38, 34, 30, 0.16);
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 560ms cubic-bezier(0.2, 0.8, 0.2, 1) 780ms,
-    transform 560ms cubic-bezier(0.2, 0.8, 0.2, 1) 780ms;
 }
 
 .momentShade {
@@ -802,11 +788,6 @@
   background: rgba(255, 251, 245, 0.94);
   box-shadow: 0 18px 48px rgba(38, 34, 30, 0.16);
   backdrop-filter: blur(12px);
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 940ms,
-    transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 940ms;
 }
 
 .momentContent h3 {
@@ -837,11 +818,6 @@
   height: 420px;
   overflow: hidden;
   mask-image: linear-gradient(transparent, #000 10%, #000 90%, transparent);
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 560ms cubic-bezier(0.2, 0.8, 0.2, 1) 780ms,
-    transform 560ms cubic-bezier(0.2, 0.8, 0.2, 1) 780ms;
 }
 
 .filmstrip {
@@ -853,12 +829,7 @@
   animation-play-state: running;
 }
 
-.momentStage:global(.visible) .momentVisual,
-.momentStage:global(.visible) .momentContent,
-.momentStage:global(.visible) .filmstripWrap {
-  opacity: 1;
-  transform: translateY(0);
-}
+
 
 
 
@@ -1185,10 +1156,6 @@
 .roleIntro h2 {
   margin-top: 22px;
   max-width: 800px;
-  font-size: clamp(3rem, 4.4vw, 4.35rem);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.045em;
   white-space: normal;
 }
 
@@ -1362,12 +1329,6 @@
 .trustCopy h2 {
   max-width: 600px;
   margin-top: var(--sp-6);
-  font-family: var(--font-display);
-  font-size: clamp(4.9rem, 5.7vw, 6.25rem);
-  font-weight: 900;
-  line-height: 1.04;
-  letter-spacing: -0.065em;
-  color: #26221e;
 }
 
 .trustCopy h2 span {
@@ -1571,12 +1532,6 @@
 .trustSection .trustCopy h2 {
   max-width: 620px;
   margin-top: var(--sp-2);
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 3.35rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  color: #26221e;
 }
 
 .trustSection .trustCopy p {
@@ -2264,7 +2219,7 @@
 }
 
 .finalCta {
-  padding: clamp(4.75rem, 6.5vw, 6rem) 0;
+  padding: clamp(2.5rem, 4vw, 3.5rem) 0;
   background: #fff;
 }
 
@@ -2276,8 +2231,6 @@
 
 .finalInner h2 {
   max-width: none;
-  font-size: clamp(2.15rem, 3.2vw, 2.75rem);
-  line-height: 1.08;
   white-space: nowrap;
 }
 
@@ -2479,13 +2432,12 @@
   .momentsSection,
   .messageSection,
   .rolesSection,
-  .trustSection,
-  .finalCta {
+  .trustSection {
     padding: var(--sp-14) 0;
   }
 
   .finalCta {
-    padding: var(--sp-16) 0;
+    padding: var(--sp-10) 0;
   }
 
   .finalInner h2 {
@@ -2590,7 +2542,7 @@
   }
 
   .trustCopy h2 {
-    font-size: clamp(2rem, 11vw, 3.35rem);
+    /* removed font override */
   }
 
   .clarityTiles {

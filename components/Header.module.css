@@ -149,6 +149,11 @@
   background: var(--color-accent-hover);
 }
 
+.scrolled .signupLink,
+.scrolled .signupLink:hover {
+  color: #fff;
+}
+
 .activeNavLink {
   color: #fff;
 }
@@ -172,20 +177,9 @@
   background-color: var(--color-accent);
 }
 
-/* Position underline: first two links = left, third = center, fourth = right */
-.navCenter .activeNavLink:nth-child(1)::after,
-.navCenter .activeNavLink:nth-child(2)::after {
-  left: 0;
-}
-
-.navCenter .activeNavLink:nth-child(3)::after {
+.navCenter .activeNavLink::after {
   left: 50%;
   transform: translateX(-50%);
-}
-
-.navCenter .activeNavLink:nth-child(4)::after {
-  right: 0;
-  left: auto;
 }
 
 .messageBtn {

@@ -1,151 +1,117 @@
 import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { CheckCircle2, HelpCircle, ShieldCheck } from 'lucide-react';
+import UtilityPageShell from '@/components/UtilityPageShell';
+import { Check, ShieldCheck, MapPin, Users, Maximize, CloudSun, Clock, CalendarDays, Star } from 'lucide-react';
+import shellStyles from '@/components/UtilityPageShell.module.css';
 import styles from './page.module.css';
 
 export const metadata = {
-  title: 'Simple pricing for pop-up opportunities',
-  description: 'Transparent pricing for vendors, venues, hosts, featured placement, and dedicated pop-up opportunities.',
+  title: 'Pricing | PopUpCo',
+  description: 'Simple pricing for pop-up opportunities.',
 };
 
 const plans = [
   {
     title: 'Vendor spots',
     price: 'Varies by event',
-    eyebrow: 'For markets and booth opportunities',
-    copy: 'For vendors joining curated markets, community events, food pop-ups, and shared selling opportunities.',
-    features: ['Booth or table space', 'Event details before applying', 'Application review', 'Setup instructions', 'Host messaging when accepted'],
+    description: 'Find markets, pop-ups, and events seeking vendors like you.',
+    features: [
+      'Apply to multiple events',
+      'Booth details before applying',
+      'Application review',
+      'Setup instructions',
+      'Notifications when accepted'
+    ],
     cta: 'Find opportunities',
     href: '/vendors',
+    isPrimary: false,
   },
   {
-    title: 'Featured vendor placement',
+    badge: 'MOST POPULAR',
+    title: 'Featured placement',
     price: 'Custom',
-    eyebrow: 'For extra visibility',
-    copy: 'For vendors who want more visibility at select markets or in PopUpCo discovery experiences.',
-    features: ['Priority placement when available', 'Featured listing treatment', 'Social or event-page highlight', 'Category fit review', 'Future event consideration'],
-    cta: 'Contact us',
+    description: 'Stand out with premium visibility and priority placement options.',
+    features: [
+      'Priority placement when available',
+      'Featured listing in search',
+      'Social and email highlights',
+      'Category lift options',
+      'Partner event consideration'
+    ],
+    cta: 'Get featured',
     href: '/contact',
-    featured: true,
+    isPrimary: true,
   },
   {
-    title: 'Dedicated brand pop-up',
+    title: 'Brand pop-ups',
     price: 'Custom',
-    eyebrow: 'For solo launches and takeovers',
-    copy: 'For brands that want a focused retail moment, product launch, boutique takeover, or short-term activation.',
-    features: ['Space sourcing support', 'Launch planning guidance', 'Dedicated event page', 'Setup notes', 'Optional event-day support'],
+    description: 'Bring your brand to life with a dedicated pop-up experience.',
+    features: [
+      'Space matching support',
+      'Launch planning guidance',
+      'Dedicated event page',
+      'Setup assist',
+      'Optional event-day support'
+    ],
     cta: 'Plan a pop-up',
     href: '/contact',
-  },
+    isPrimary: false,
+  }
 ];
 
-const variables = ['Location', 'Expected attendance', 'Booth size', 'Indoor or outdoor setup', 'Tables, chairs, or electricity', 'Food permit needs', 'Event type', 'Promotion level'];
-
-const faqs = [
-    ['Do vendors always pay to apply?', 'No. Applying to PopUpCo is free unless a specific event clearly lists an application or booth fee.'],
-    ['When does a vendor pay?', 'Any required booth fee or application fee should be shown before a vendor confirms participation. Payment timing depends on the host and event terms.'],
-    ['Can nonprofits get discounted spots?', 'Yes, community organizations and nonprofits may qualify for reduced pricing depending on the event and available space.'],
-    ['What do hosts and venues pay?', 'Host support and venue pricing vary by event scope, space, services, and logistics. Contact PopUpCo for custom support while the marketplace is in beta.'],
-    ['Do attendees pay?', 'Events may be free, ticketed, or RSVP-based depending on the organizer and venue. Public event pages should show the access type.'],
+const factors = [
+  { label: 'Location', Icon: MapPin },
+  { label: 'Expected attendance', Icon: Users },
+  { label: 'Booth size', Icon: Maximize },
+  { label: 'Indoor or outdoor', Icon: CloudSun },
+  { label: 'Setup time', Icon: Clock },
+  { label: 'Event type', Icon: CalendarDays },
+  { label: 'Promotion level', Icon: Star },
 ];
 
 export default function PricingPage() {
   return (
-    <>
-      <Header />
-      <main>
-        <section className={styles.hero}>
-          <div className="container">
-            <span className="label">Pricing</span>
-            <h1>Simple pricing for pop-up opportunities.</h1>
-            <p>
-              PopUpCo should make costs easier to understand, not harder. Prices vary by location, expected attendance, booth size, amenities, and event type, but the goal is always clear fees before vendors commit.
-            </p>
-          </div>
-        </section>
-
-        <section className="section">
-          <div className="container">
-            <div className={styles.planGrid}>
-              {plans.map((plan) => (
-                <article key={plan.title} className={`${styles.planCard} ${plan.featured ? styles.featured : ''}`}>
-                  {plan.featured && <div className={styles.featuredBadge}>Most flexible</div>}
-                  <span>{plan.eyebrow}</span>
-                  <h2>{plan.title}</h2>
-                  <strong>{plan.price}</strong>
-                  <p>{plan.copy}</p>
-                  <ul>
-                    {plan.features.map((feature) => <li key={feature}><CheckCircle2 size={17} /> {feature}</li>)}
-                  </ul>
-                  <Link href={plan.href} className={`btn ${plan.featured ? 'btn--primary' : 'btn--secondary'} btn--full`}>{plan.cta}</Link>
-                </article>
+    <UtilityPageShell
+      label="PRICING"
+      headline="Simple pricing for pop-up opportunities."
+      subtext="PopUpCo keeps things clear and fair. Prices may vary by location, category, and event type, but the goal is always value you can trust."
+    >
+      <div className={styles.planGrid}>
+        {plans.map((plan) => (
+          <div key={plan.title} className={`${shellStyles.card} ${styles.pricingCard} ${plan.isPrimary ? styles.featuredCard : ''}`}>
+            {plan.badge && <span className={styles.featuredBadge}>{plan.badge}</span>}
+            <h2 className={styles.planTitle}>{plan.title}</h2>
+            <span className={styles.planPrice}>{plan.price}</span>
+            <p className={styles.planDesc}>{plan.description}</p>
+            <ul className={styles.featureList}>
+              {plan.features.map(f => (
+                <li key={f}><Check size={16} /> {f}</li>
               ))}
-            </div>
+            </ul>
+            <Link href={plan.href} className={`btn ${plan.isPrimary ? 'btn--primary' : 'btn--secondary'} btn--full`}>
+              {plan.cta}
+            </Link>
           </div>
-        </section>
+        ))}
+      </div>
 
-        <section className={styles.explainSection}>
-          <div className={`container ${styles.explainGrid}`}>
-            <div>
-              <span className="label">How pricing works</span>
-              <h2>Every opportunity is different, so pricing needs context.</h2>
-              <p>
-                A $95 booth at a small maker market and a custom boutique takeover are not the same product. PopUpCo keeps pricing tied to the details vendors actually care about.
-              </p>
-            </div>
-            <div className={styles.variableGrid}>
-              {variables.map((item) => <div key={item}>{item}</div>)}
-            </div>
-          </div>
-        </section>
+      <div className={`${shellStyles.card} ${styles.feeCallout}`}>
+        <ShieldCheck size={32} className={styles.feeCalloutIcon} />
+        <div className={styles.feeCalloutText}>
+          <h3>Application fees are not the default.</h3>
+          <p>Many listings are free to browse and apply to. Some events may include a fee set by the host for special categories or featured placement. Any required fees will be shown before you apply.</p>
+        </div>
+      </div>
 
-        <section className="section bg-alt">
-          <div className="container">
-            <div className={styles.trustPanel}>
-              <ShieldCheck size={28} />
-              <div>
-                <h2>Application fees are not the default.</h2>
-                <p>
-                Applying to PopUpCo is free unless a specific event clearly lists an application or booth fee. Booth fees vary by event, location, size, category, and host requirements. Any required fee will be shown before a vendor confirms participation.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="section">
-          <div className="container">
-            <div className={styles.faqHeader}>
-              <span className="label">Common questions</span>
-              <h2>Pricing should be easy to understand before you apply.</h2>
-            </div>
-            <div className={styles.faqGrid}>
-              {faqs.map(([question, answer]) => (
-                <article key={question} className={styles.faqCard}>
-                  <HelpCircle size={20} />
-                  <h3>{question}</h3>
-                  <p>{answer}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.ctaSection}>
-          <div className="container">
-            <div className={styles.ctaInner}>
-              <h2>Not sure what your pop-up should cost?</h2>
-              <p>Tell us what you are trying to do and we will help route you to the right vendor, venue, or host path.</p>
-              <div className={styles.ctaBtns}>
-                <Link href="/vendors" className="btn btn--primary btn--lg">Browse opportunities</Link>
-                <Link href="/contact" className="btn btn--secondary btn--lg">Ask about pricing</Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+      <div className={styles.factorsSection}>
+        <div className={styles.factorsLabel}>PRICING FACTORS</div>
+        <div className={styles.factorsRow}>
+          {factors.map((Factor) => (
+            <span key={Factor.label} className={styles.factorPill}>
+              <Factor.Icon size={14} /> {Factor.label}
+            </span>
+          ))}
+        </div>
+      </div>
+    </UtilityPageShell>
   );
 }

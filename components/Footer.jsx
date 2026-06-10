@@ -10,7 +10,6 @@ const footerLinks = [
       ['For Vendors', '/vendors'],
       ['For Venues', '/venues'],
       ['For Hosts', '/hosts'],
-      ['Upcoming Events', '/upcoming'],
     ],
   },
   {

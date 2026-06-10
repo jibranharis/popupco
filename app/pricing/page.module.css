@@ -1,273 +1,165 @@
-.hero {
-  padding: 132px 0 var(--sp-18, 72px);
-  background: linear-gradient(180deg, #fff 0%, var(--color-bg) 100%);
-}
-
-.hero h1 {
-  max-width: 780px;
-  margin-top: var(--sp-2);
-  font-size: clamp(2.75rem, 4.4vw, 4.1rem);
-  line-height: 1.08;
-  letter-spacing: -0.04em;
-}
-
-.hero p {
-  max-width: 720px;
-  margin-top: var(--sp-5);
-  color: var(--color-text-muted);
-  font-size: 1.14rem;
-  line-height: 1.75;
-}
+/* ═══════════════════════════════════════════════════════════
+   Pricing Page CSS
+═══════════════════════════════════════════════════════════ */
 
 .planGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--sp-6);
+  gap: 24px;
+  align-items: stretch;
 }
 
-.planCard {
+.pricingCard {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 620px;
-  padding: var(--sp-7, 28px);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  background: #fff;
-  box-shadow: var(--shadow-md);
+  /* Card base handled by UtilityPageShell, but we add flex styles here */
+  flex: 1;
 }
 
-.featured {
-  background: var(--color-charcoal);
-  border-color: var(--color-charcoal);
-  color: #fff;
+.featuredCard {
+  border-color: rgba(200, 95, 44, 0.4);
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(200, 95, 44, 0.08);
 }
 
 .featuredBadge {
   position: absolute;
-  top: -13px;
-  left: var(--sp-6);
-  padding: 5px 12px;
-  border-radius: var(--radius-full);
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
   background: var(--color-accent);
   color: #fff;
-  font-size: 0.78rem;
-  font-weight: 850;
-}
-
-.planCard > span {
-  color: var(--color-accent);
-  font-size: 0.78rem;
-  font-weight: 850;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
 }
 
-.featured > span {
-  color: #f4a37a;
+.planTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #26221e;
+  margin: 0 0 6px;
 }
 
-.planCard h2 {
-  margin-top: var(--sp-4);
-}
-
-.featured h2 {
-  color: #fff;
-}
-
-.planCard strong {
+.planPrice {
   display: block;
-  margin: var(--sp-4) 0;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: var(--color-accent);
-  font-family: var(--font-display);
-  font-size: 2.6rem;
-  line-height: 1;
+  margin-bottom: 16px;
 }
 
-.featured strong {
-  color: #f4a37a;
+.planDesc {
+  font-size: 0.9rem;
+  color: #6f665f;
+  line-height: 1.5;
+  margin: 0 0 24px;
 }
 
-.planCard p {
-  color: var(--color-text-muted);
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.featured p {
-  color: rgba(255,255,255,0.72);
-}
-
-.planCard ul {
-  display: grid;
-  gap: var(--sp-3);
-  margin: var(--sp-7, 28px) 0;
-}
-
-.planCard li {
+.featureList li {
   display: flex;
   align-items: flex-start;
-  gap: var(--sp-2);
-  color: var(--color-text-muted);
-  font-weight: 650;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #4a423c;
+  line-height: 1.4;
 }
 
-.featured li {
-  color: rgba(255,255,255,0.78);
-}
-
-.planCard li svg {
-  flex-shrink: 0;
-  margin-top: 3px;
-  color: var(--color-sage);
-}
-
-.planCard a {
-  margin-top: auto;
-}
-
-.explainSection {
-  padding: var(--sp-24) 0;
-  background: #fff;
-}
-
-.explainGrid {
-  display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: var(--sp-14, 56px);
-  align-items: center;
-}
-
-.explainGrid h2,
-.faqHeader h2,
-.ctaInner h2 {
-  margin-top: var(--sp-2);
-  letter-spacing: 0;
-}
-
-.explainGrid p {
-  margin-top: var(--sp-4);
-  color: var(--color-text-muted);
-  font-size: 1.07rem;
-}
-
-.variableGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--sp-3);
-}
-
-.variableGrid div {
-  padding: var(--sp-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-bg);
-  font-weight: 800;
-}
-
-.trustPanel {
-  display: grid;
-  grid-template-columns: 42px 1fr;
-  gap: var(--sp-5);
-  max-width: 920px;
-  padding: var(--sp-8);
-  border: 1px solid var(--color-accent-border);
-  border-radius: var(--radius-xl);
-  background: #fff;
-  box-shadow: var(--shadow-md);
-}
-
-.trustPanel svg {
+.featureList svg {
   color: var(--color-accent);
+  opacity: 0.8;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
-.trustPanel p,
-.faqCard p,
-.ctaInner p {
-  color: var(--color-text-muted);
-}
-
-.faqHeader {
-  max-width: 760px;
-  margin-bottom: var(--sp-8);
-}
-
-.faqGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--sp-5);
-}
-
-.faqCard {
-  padding: var(--sp-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: #fff;
-}
-
-.faqCard svg {
-  color: var(--color-sage);
-  margin-bottom: var(--sp-4);
-}
-
-.faqCard h3 {
-  margin-bottom: var(--sp-3);
-  font-size: 1.08rem;
-}
-
-.ctaSection {
-  padding: var(--sp-24) 0;
-  background: var(--color-charcoal);
-}
-
-.ctaInner {
-  max-width: 720px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.ctaInner h2 {
-  color: #fff;
-}
-
-.ctaInner p {
-  margin: var(--sp-4) auto var(--sp-8);
-  color: rgba(255,255,255,0.72);
-  font-size: 1.06rem;
-}
-
-.ctaBtns {
+/* Callout */
+.feeCallout {
+  margin-top: 40px;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 32px;
+}
+
+.feeCalloutIcon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.feeCalloutText h3 {
+  font-size: 1.1rem;
+  color: #26221e;
+  margin: 0 0 6px;
+}
+
+.feeCalloutText p {
+  font-size: 0.9rem;
+  color: #6f665f;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Factors */
+.factorsSection {
+  margin-top: 40px;
+}
+
+.factorsLabel {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #a89a8e;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.factorsRow {
+  display: flex;
   flex-wrap: wrap;
-  gap: var(--sp-3);
+  gap: 12px;
 }
 
-@media (max-width: 1040px) {
-  .planGrid,
-  .explainGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .planCard {
-    min-height: auto;
-  }
-
-  .faqGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.factorPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(80, 60, 45, 0.04);
+  border: 1px solid rgba(80, 60, 45, 0.08);
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  color: #4a423c;
+  font-weight: 500;
 }
 
-@media (max-width: 640px) {
-  .hero {
-    padding-top: 108px;
-  }
+.factorPill svg {
+  color: var(--color-accent);
+  opacity: 0.7;
+}
 
-  .variableGrid,
-  .faqGrid,
-  .trustPanel {
+@media (max-width: 900px) {
+  .planGrid {
     grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
   }
-
-  .trustPanel {
-    padding: var(--sp-6);
+  
+  .feeCallout {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
   }
 }

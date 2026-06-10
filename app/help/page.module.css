@@ -1,0 +1,93 @@
+/* ═══════════════════════════════════════════════════════════
+   Help Page CSS
+═══════════════════════════════════════════════════════════ */
+
+.helpGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.helpCard {
+  text-align: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.iconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(200, 95, 44, 0.1);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.helpCard h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #26221e;
+  margin: 0;
+}
+
+.helpDesc {
+  font-size: 0.9rem;
+  color: #6f665f;
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+}
+
+.helpLinks {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 24px;
+  text-align: left;
+  width: 100%;
+}
+
+.helpLinks li {
+  font-size: 0.85rem;
+  color: #4a423c;
+  margin-bottom: 8px;
+  padding-left: 12px;
+  position: relative;
+}
+
+.helpLinks li::before {
+  content: '-';
+  position: absolute;
+  left: 0;
+  color: #a89a8e;
+}
+
+.helpLinkBtn {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 200ms ease;
+}
+
+.helpLinkBtn:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 1024px) {
+  .helpGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .helpGrid {
+    grid-template-columns: 1fr;
+  }
+}

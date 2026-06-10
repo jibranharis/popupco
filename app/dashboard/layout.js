@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, User, FileText, Heart, Mail, Settings, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, User, FileText, Heart, Mail, Settings, LogOut, Menu, X, ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/components/AuthContext';
 import AuthGuard from '@/components/AuthGuard';
 import { supabase } from '@/lib/supabase';
@@ -32,7 +32,7 @@ export default function DashboardLayout({ children }) {
     if (!user) return;
     supabase.auth.getUser().then(({ data: { user: authUser } }) => {
       const meta = authUser?.user_metadata || {};
-      const steps = [true, Boolean(meta.name), Boolean(meta.business_name), Boolean(meta.bio), Boolean(meta.photo_url)];
+      const steps = [true, Boolean(meta.name), Boolean(meta.business_name), Boolean(meta.bio), Boolean(meta.avatar_url)];
       const completedSteps = steps.filter(Boolean).length;
       setCompletionPercent(Math.round((completedSteps / steps.length) * 100));
     });
@@ -51,9 +51,18 @@ export default function DashboardLayout({ children }) {
 
         {/* Sidebar */}
         <aside className={`${styles.sidebar} ${mobileOpen ? styles.sidebarOpen : ''}`}>
+          <Link href="/" className={styles.backLink}>
+            <ArrowLeft size={16} />
+            <span>Back to PopUpCo</span>
+          </Link>
+
           <div className={styles.profileCard}>
-            <div className={styles.avatarLarge}>
-              {user.name ? user.name.charAt(0).toUpperCase() : <User size={32} />}
+            <div className={styles.avatarLarge} style={{ overflow: 'hidden' }}>
+              {user.avatar_url ? (
+                <img src={user.avatar_url} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                user.name ? user.name.charAt(0).toUpperCase() : <User size={32} />
+              )}
             </div>
             <h2 className={styles.userName}>{user.name}</h2>
             <p className={styles.userEmail}>{user.email}</p>
