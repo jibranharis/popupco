@@ -4,6 +4,11 @@ import { Store, Building2, CalendarDays, Ticket, HelpCircle } from 'lucide-react
 import shellStyles from '@/components/UtilityPageShell.module.css';
 import styles from './page.module.css';
 
+export const metadata = {
+  title: 'Help',
+  description: 'Get help with vendor applications, venue listings, hosting events, and tickets.',
+};
+
 const helpCategories = [
   {
     title: 'For Vendors',

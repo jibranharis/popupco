@@ -4,6 +4,11 @@ import { Store, Building2, CalendarDays, HelpCircle, Mail, MapPin } from 'lucide
 import shellStyles from '@/components/UtilityPageShell.module.css';
 import styles from './page.module.css';
 
+export const metadata = {
+  title: 'Contact',
+  description: 'Tell us what you are trying to build — vendor, venue, host, or partner.',
+};
+
 export default function ContactPage() {
   return (
     <UtilityPageShell

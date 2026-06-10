@@ -19,6 +19,11 @@ import {
 } from 'lucide-react';
 import styles from '../hosts/page.module.css';
 
+export const metadata = {
+  title: 'For Vendors',
+  description: 'Find vendor markets, pop-ups, and booth opportunities with clear fees, host info, and setup details.',
+};
+
 const chips = [
   [Store, 'Booth fees upfront'],
   [Users, 'Host info included'],

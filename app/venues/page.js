@@ -17,6 +17,11 @@ import {
 } from 'lucide-react';
 import styles from '../hosts/page.module.css';
 
+export const metadata = {
+  title: 'For Venues',
+  description: 'List your space, set capacity and rules upfront, and manage bookings with PopUpCo.',
+};
+
 const chips = [
   [Users, 'Show capacity clearly'],
   [ShieldCheck, 'Set rules upfront'],

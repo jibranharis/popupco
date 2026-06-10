@@ -15,6 +15,11 @@ import {
 } from 'lucide-react';
 import styles from './page.module.css';
 
+export const metadata = {
+  title: 'For Hosts',
+  description: 'Plan and host pop-up events, review vendor applications, and manage your event in one place.',
+};
+
 const chips = [
   [Users, 'Review vendors faster'],
   [MapPin, 'Compare spaces easily'],
