@@ -5,7 +5,7 @@ import shellStyles from '@/components/UtilityPageShell.module.css';
 import styles from './page.module.css';
 
 export const metadata = {
-  title: 'About Us | PopUpCo',
+  title: 'About Us',
   description: 'Two founders. One mission. We’re on a mission to make pop-up opportunities more accessible, organized, and impactful for everyone.',
 };
 

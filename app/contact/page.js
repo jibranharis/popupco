@@ -74,8 +74,8 @@ export default function ContactPage() {
                 </div>
                 <div className={styles.formGroup}>
                   <label htmlFor="intent">What are you working on? *</label>
-                  <select id="intent" className={`${styles.formInput} ${styles.formSelect}`} required>
-                    <option value="" disabled selected>Select an option</option>
+                  <select id="intent" className={`${styles.formInput} ${styles.formSelect}`} defaultValue="" required>
+                    <option value="" disabled>Select an option</option>
                     <option value="vendor">I am a vendor</option>
                     <option value="venue">I own a venue or space</option>
                     <option value="host">I want to host an event</option>

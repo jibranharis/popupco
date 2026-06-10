@@ -5,7 +5,7 @@ import shellStyles from '@/components/UtilityPageShell.module.css';
 import styles from './page.module.css';
 
 export const metadata = {
-  title: 'Pricing | PopUpCo',
+  title: 'Pricing',
   description: 'Simple pricing for pop-up opportunities.',
 };
 

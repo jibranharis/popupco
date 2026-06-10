@@ -28,13 +28,13 @@ const cases = [
     id: 4,
     title: 'Bloom & Thread',
     description: 'Grew from a single weekend market to a recurring quarterly event with a loyal vendor community.',
-    image: '/images/case_bloom_thread.png',
+    image: '/images/use-case-4.jpg',
   },
   {
     id: 5,
     title: 'Dusk Collective',
     description: 'Partnered with local venues to host a multi-day artisan pop-up series that sold out every session.',
-    image: '/images/case_dusk_collective.png',
+    image: '/images/use-case-5.jpg',
   },
 ];
 
