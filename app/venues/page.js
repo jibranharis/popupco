@@ -4,13 +4,13 @@ import Footer from '@/components/Footer';
 import VenueShowcaseSection from '@/components/VenueShowcaseSection';
 import {
   ArrowRight,
-  CalendarCheck,
   CalendarDays,
   ChevronRight,
   ClipboardList,
   Eye,
-  Image as ImageIcon,
   MessageSquare,
+  Package,
+  Settings,
   ShieldCheck,
   Store,
   Users,
@@ -31,9 +31,9 @@ const dashboardItems = [
 ];
 
 const bottomFeatures = [
-  [ImageIcon, 'Show your space beautifully', 'Highlight photos, capacity, amenities, and rules that help the right bookings find you.'],
-  [ShieldCheck, 'Screen the right fit', 'Review hosts and events before saying yes-so your space is used the right way, by the right people.'],
-  [CalendarCheck, 'Stay organized from inquiry to booking', 'Keep availability, conversations, and details in one place-so nothing falls through the cracks.'],
+  [Package,   'Fill unused space',    'Turn quiet days into local commerce opportunities.'],
+  [Eye,       'Review the right fit', 'See host requests before you approve anything.'],
+  [Settings,  'Stay in control',      'Set rules, availability, and booking expectations upfront.'],
 ];
 
 export default function VenuesPage() {
@@ -81,7 +81,7 @@ export default function VenuesPage() {
         {/* ── Second feature section: rotating venue showcase ── */}
         <VenueShowcaseSection />
 
-        <section className={styles.featureStripSection} style={{ paddingTop: '80px' }}>
+        <section className={styles.featureStripSection}>
           <div className={`container ${styles.featureStrip}`}>
             {bottomFeatures.map(([Icon, title, copy]) => (
               <div className={styles.featureItem} key={title}>
