@@ -7,7 +7,7 @@ import {
   Users, Wifi, Truck, CalendarDays, ShieldCheck,
   CheckCircle, Star, ChevronRight, MapPin,
   ChevronLeft, ChevronRight as ChevronRightIcon,
-  ArrowRight, Package, Inbox, DollarSign,
+  ArrowRight, Package, Inbox, DollarSign, Palette
 } from 'lucide-react';
 import styles from './VenueShowcaseSection.module.css';
 
@@ -110,59 +110,97 @@ function SlideListingPreview() {
   );
 }
 
-/* ── Slide 2: Success Story — horizontal editorial layout ── */
+/* ── Slide 2: Success Story — 2 stacked reviews + Upcoming Requests ── */
 function SlideSuccessStory() {
-  const metrics = [
-    { value: '+18',    sub: 'inquiries',  label: 'first month' },
-    { value: '6',      sub: 'events',     label: 'hosted' },
-    { value: '$3,200', sub: 'earned',     label: 'first month' },
-    { value: '4.9★',   sub: 'host',       label: 'rating' },
-  ];
   const tags = ['Weekend markets', 'Product launches', 'Pop-up dining', 'Art shows'];
+  const upcomingRequests = [
+    { name: 'Wellness Market', date: 'May 16–17', meta: '12 vendors \u00b7 Downtown LA', time: 'Requested 2h ago', status: 'Pending review', statusCls: styles.statusPending, Icon: CalendarDays },
+    { name: 'Product Launch Activation', date: 'May 24', meta: '60 guests \u00b7 Brand event', time: 'Requested 1d ago', status: 'New inquiry', statusCls: styles.statusNew, Icon: Package },
+    { name: 'Art & Makers Pop-Up', date: 'Jun 7–8', meta: '20 vendors \u00b7 Community event', time: 'Requested 2d ago', status: 'Awaiting response', statusCls: styles.statusAwaiting, Icon: Palette },
+  ];
+
   return (
     <div className={styles.slide}>
-      <div className={styles.successCard}>
-        {/* Horizontal: image left, content right */}
-        <div className={styles.successLayout}>
-          <div className={styles.successImgCol}>
-            <Image
-              src="/venue-garden-house.png"
-              alt="The Garden House interior"
-              fill
-              sizes="220px"
-              className={styles.successImg}
-            />
-          </div>
-
-          <div className={styles.successContent}>
-            <div className={styles.successHeader}>
-              <strong className={styles.successVenueName}>The Garden House</strong>
-              <span className={styles.successVenueLoc}><MapPin size={11} /> Los Angeles, CA</span>
-            </div>
-
-            <div className={styles.successHr} />
-
-            <blockquote className={styles.quote}>
-              &ldquo;We used to have long stretches of empty weekdays. PopUpCo helped us connect with amazing vendors and our weekends are now consistently booked.&rdquo;
-            </blockquote>
-            <p className={styles.quoteAttr}>— Maya P., Space Owner</p>
-
-            <div className={styles.successTagRow}>
-              {tags.map(t => <span key={t} className={styles.successTag}>{t}</span>)}
-            </div>
-          </div>
+      {/* Upper area: Image left + Reviews right */}
+      <div className={styles.successUpper}>
+        <div className={styles.successImgCol}>
+          <Image
+            src="/venue-garden-house.png"
+            alt="The Garden House interior"
+            fill
+            sizes="220px"
+            className={styles.successImg}
+          />
         </div>
 
-        <div className={styles.metricsDivider} />
-
-        <div className={styles.metricsRow}>
-          {metrics.map(({ value, sub, label }) => (
-            <div key={value} className={styles.metricCell}>
-              <strong className={styles.metricVal}>{value}</strong>
-              <span className={styles.metricSub}>{sub}</span>
-              <span className={styles.metricLabel}>{label}</span>
+        <div className={styles.successReviewsCol}>
+          {/* First Review Card (includes venue identity) */}
+          <div className={styles.reviewCard}>
+            <div className={styles.reviewHeader}>
+              <h3 className={styles.successVenueName}>The Garden House</h3>
+              <span className={styles.successVenueLoc}><MapPin size={11} /> Los Angeles, CA</span>
             </div>
-          ))}
+            <div className={styles.quoteBlock}>
+              <div className={styles.quoteMarkIcon}>&ldquo;</div>
+              <p className={styles.quoteText}>We used to have long stretches of empty weekdays. PopUpCo helped us connect with amazing vendors and our weekends are now consistently booked.</p>
+            </div>
+            <div className={styles.quoteFooter}>
+              <div className={styles.quoteAvatar}>
+                <Image src="/media__1780446732663.png" alt="Maya" width={24} height={24} className={styles.avatarImg} />
+              </div>
+              <div className={styles.quoteAuthor}>
+                <strong>Maya P.</strong>
+                <span>Space Owner</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Second Review Card */}
+          <div className={styles.reviewCard}>
+            <div className={styles.quoteBlock}>
+              <div className={styles.quoteMarkIcon}>&ldquo;</div>
+              <p className={styles.quoteText}>Once we made our availability and rules clearer, we started getting better-fit requests and far fewer back-and-forth questions.</p>
+            </div>
+            <div className={styles.quoteFooter}>
+              <div className={styles.quoteAvatar}>
+                <Image src="/media__1780458659587.png" alt="Elena" width={24} height={24} className={styles.avatarImg} />
+              </div>
+              <div className={styles.quoteAuthor}>
+                <strong>Elena R.</strong>
+                <span>Venue Owner</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Tags */}
+          <div className={styles.successTagRow}>
+            {tags.map(t => <span key={t} className={styles.successTag}>{t}</span>)}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom area: Upcoming Requests */}
+      <div className={styles.upcomingRequestsCard}>
+        <div className={styles.upcomingHeader}>
+          <span className={styles.upcomingEyebrow}>UPCOMING REQUESTS</span>
+          <span className={styles.upcomingLink}>View all requests &rarr;</span>
+        </div>
+        <div className={styles.upcomingList}>
+          {upcomingRequests.map((req, i) => {
+            const Icon = req.Icon;
+            return (
+              <div key={i} className={styles.upcomingRow}>
+                <div className={styles.upcomingIcon}><Icon size={14} /></div>
+                <div className={styles.upcomingInfo}>
+                  <strong>{req.name}</strong>
+                  <span>{req.date} &middot; {req.meta}</span>
+                </div>
+                <div className={styles.upcomingTime}>{req.time}</div>
+                <div className={`${styles.upcomingPill} ${req.statusCls}`}>{req.status}</div>
+                <ChevronRight size={15} className={styles.upcomingArrow} />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
