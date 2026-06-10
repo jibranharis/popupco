@@ -110,18 +110,13 @@ function SlideListingPreview() {
   );
 }
 
-/* ── Slide 2: Success Story — 2 stacked reviews + Upcoming Requests ── */
+/* ── Slide 2: Success Story — Venue Header + 2 stacked reviews ── */
 function SlideSuccessStory() {
   const tags = ['Weekend markets', 'Product launches', 'Pop-up dining', 'Art shows'];
-  const upcomingRequests = [
-    { name: 'Wellness Market', date: 'May 16–17', meta: '12 vendors \u00b7 Downtown LA', time: 'Requested 2h ago', status: 'Pending review', statusCls: styles.statusPending, Icon: CalendarDays },
-    { name: 'Product Launch Activation', date: 'May 24', meta: '60 guests \u00b7 Brand event', time: 'Requested 1d ago', status: 'New inquiry', statusCls: styles.statusNew, Icon: Package },
-    { name: 'Art & Makers Pop-Up', date: 'Jun 7–8', meta: '20 vendors \u00b7 Community event', time: 'Requested 2d ago', status: 'Awaiting response', statusCls: styles.statusAwaiting, Icon: Palette },
-  ];
 
   return (
     <div className={styles.slide}>
-      {/* Upper area: Image left + Reviews right */}
+      {/* Full layout: Image left + Content right */}
       <div className={styles.successUpper}>
         <div className={styles.successImgCol}>
           <Image
@@ -134,12 +129,14 @@ function SlideSuccessStory() {
         </div>
 
         <div className={styles.successReviewsCol}>
-          {/* First Review Card (includes venue identity) */}
+          {/* Venue identity (Top of the section, not inside a review) */}
+          <div className={styles.reviewHeader}>
+            <h3 className={styles.successVenueName}>The Garden House</h3>
+            <span className={styles.successVenueLoc}><MapPin size={11} /> Los Angeles, CA</span>
+          </div>
+
+          {/* First Review Bubble */}
           <div className={styles.reviewCard}>
-            <div className={styles.reviewHeader}>
-              <h3 className={styles.successVenueName}>The Garden House</h3>
-              <span className={styles.successVenueLoc}><MapPin size={11} /> Los Angeles, CA</span>
-            </div>
             <div className={styles.quoteBlock}>
               <div className={styles.quoteMarkIcon}>&ldquo;</div>
               <p className={styles.quoteText}>We used to have long stretches of empty weekdays. PopUpCo helped us connect with amazing vendors and our weekends are now consistently booked.</p>
@@ -155,7 +152,7 @@ function SlideSuccessStory() {
             </div>
           </div>
 
-          {/* Second Review Card */}
+          {/* Second Review Bubble */}
           <div className={styles.reviewCard}>
             <div className={styles.quoteBlock}>
               <div className={styles.quoteMarkIcon}>&ldquo;</div>
@@ -176,31 +173,6 @@ function SlideSuccessStory() {
           <div className={styles.successTagRow}>
             {tags.map(t => <span key={t} className={styles.successTag}>{t}</span>)}
           </div>
-        </div>
-      </div>
-
-      {/* Bottom area: Upcoming Requests */}
-      <div className={styles.upcomingRequestsCard}>
-        <div className={styles.upcomingHeader}>
-          <span className={styles.upcomingEyebrow}>UPCOMING REQUESTS</span>
-          <span className={styles.upcomingLink}>View all requests &rarr;</span>
-        </div>
-        <div className={styles.upcomingList}>
-          {upcomingRequests.map((req, i) => {
-            const Icon = req.Icon;
-            return (
-              <div key={i} className={styles.upcomingRow}>
-                <div className={styles.upcomingIcon}><Icon size={14} /></div>
-                <div className={styles.upcomingInfo}>
-                  <strong>{req.name}</strong>
-                  <span>{req.date} &middot; {req.meta}</span>
-                </div>
-                <div className={styles.upcomingTime}>{req.time}</div>
-                <div className={`${styles.upcomingPill} ${req.statusCls}`}>{req.status}</div>
-                <ChevronRight size={15} className={styles.upcomingArrow} />
-              </div>
-            );
-          })}
         </div>
       </div>
     </div>
