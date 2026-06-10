@@ -374,8 +374,9 @@
 /* Calendar */
 .calWrap {
   display: flex;
-  gap: 16px;
+  flex-direction: column;
   align-items: center;
+  gap: 12px;
 }
 
 .calTile {
@@ -384,7 +385,7 @@
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
-  width: 64px;
+  width: 72px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
@@ -398,7 +399,7 @@
 }
 
 .calDay {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: #26221e;
   padding: 8px 0;
@@ -406,26 +407,29 @@
 
 .countdownRow {
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
 }
 
 .countdownCell {
   background: #fff;
   border: 1px solid #ead8c6;
   border-radius: 6px;
-  padding: 6px;
+  padding: 5px 4px;
   text-align: center;
-  min-width: 40px;
+  flex: 1;
+  min-width: 0;
 }
 
 .countdownCell strong {
   display: block;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #26221e;
 }
 
 .countdownCell span {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: #8c8279;
   text-transform: uppercase;
 }
