@@ -693,7 +693,7 @@
   padding: 11px 12px 11px 8px;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
-  color: #5f564f;
+  color: #000000;
   font-family: var(--font-display);
   font-size: 0.975rem;
   font-weight: 600;
@@ -792,11 +792,12 @@
 
 .momentContent h3 {
   font-family: var(--font-display);
+  color: #000000;
 }
 
 .momentContent p {
   margin: var(--sp-3) 0 var(--sp-4);
-  color: #6f665f;
+  color: #000000;
   line-height: 1.55;
 }
 
@@ -858,7 +859,7 @@
 .filmCard span,
 .filmCardActive span {
   display: block;
-  color: #a39e96;
+  color: #000000;
   font-size: 0.68rem;
   font-weight: 400;
   margin-bottom: 3px;
@@ -868,7 +869,7 @@
 .filmCard strong,
 .filmCardActive strong {
   display: block;
-  color: #6f665f;
+  color: #000000;
   font-size: 0.85rem;
   font-weight: 400;
   line-height: 1.4;
