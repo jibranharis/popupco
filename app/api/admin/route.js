@@ -24,14 +24,15 @@ export async function POST(request) {
 
       const db = getServiceClient();
       if (!db) {
-        return NextResponse.json({ success: true, data: { vendors: [], venues: [], hosts: [], contacts: [] } });
+        return NextResponse.json({ success: true, data: { vendors: [], venues: [], hosts: [], contacts: [], users: [] } });
       }
 
-      const [vendors, venues, hosts, contacts] = await Promise.all([
+      const [vendors, venues, hosts, contacts, usersResult] = await Promise.all([
         db.from('vendor_applications').select('*').order('created_at', { ascending: false }),
         db.from('venue_applications').select('*').order('created_at', { ascending: false }),
         db.from('host_applications').select('*').order('created_at', { ascending: false }),
         db.from('contacts').select('*').order('created_at', { ascending: false }),
+        db.auth.admin.listUsers({ perPage: 500 }),
       ]);
 
       return NextResponse.json({
@@ -41,6 +42,7 @@ export async function POST(request) {
           venues: venues.data || [],
           hosts: hosts.data || [],
           contacts: contacts.data || [],
+          users: usersResult.data?.users || [],
         },
       });
     }

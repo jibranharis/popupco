@@ -1,12 +1,58 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { RefreshCw, MapPin, Calendar, Clock, Inbox, ChevronRight, CheckCircle, AlertCircle } from 'lucide-react';
+import {
+  RefreshCw, MapPin, Calendar, Inbox, ChevronRight,
+  AlertCircle, Users, ShieldCheck, LogOut, Store,
+  Search, TrendingUp, UserCheck, UserX, Clock,
+  Mail, Phone, Globe, Instagram, Tag, ChevronDown,
+  Activity, BarChart2, MessageSquare, Building2
+} from 'lucide-react';
 import styles from './page.module.css';
 
 function formatDate(dateStr) {
+  if (!dateStr) return '—';
   const d = new Date(dateStr);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+
+function formatDateShort(dateStr) {
+  if (!dateStr) return '—';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function timeSince(dateStr) {
+  if (!dateStr) return '—';
+  const seconds = Math.floor((new Date() - new Date(dateStr)) / 1000);
+  if (seconds < 60) return `${seconds}s ago`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 30) return `${days}d ago`;
+  const months = Math.floor(days / 30);
+  return `${months}mo ago`;
+}
+
+function getInitials(user) {
+  const name = user?.user_metadata?.full_name || user?.user_metadata?.name;
+  if (name) {
+    const parts = name.split(' ');
+    return parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
+  }
+  return (user?.email || '?')[0].toUpperCase();
+}
+
+const AVATAR_COLORS = [
+  '#C4622D', '#7A9E7E', '#5B7FA6', '#9B6B9B', '#C4A72D', '#2DA87A'
+];
+
+function avatarColor(email) {
+  let hash = 0;
+  for (let i = 0; i < (email || '').length; i++) hash = (hash + email.charCodeAt(i)) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[hash];
 }
 
 export default function AdminDashboard() {
@@ -14,12 +60,17 @@ export default function AdminDashboard() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const [activeTab, setActiveTab] = useState('vendors');
-  const [data, setData] = useState({ vendors: [], venues: [], hosts: [], contacts: [] });
+  const [activeTab, setActiveTab] = useState('overview');
+  const [data, setData] = useState({ vendors: [], venues: [], hosts: [], contacts: [], users: [] });
   const [refreshing, setRefreshing] = useState(false);
-
   const [expandedRow, setExpandedRow] = useState(null);
+  const [userSearch, setUserSearch] = useState('');
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 60000);
+    return () => clearInterval(t);
+  }, []);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -36,10 +87,10 @@ export default function AdminDashboard() {
         setAuth(true);
         fetchData(password);
       } else {
-        setError('Invalid password');
+        setError('Invalid password. Access denied.');
       }
     } catch {
-      setError('Something went wrong');
+      setError('Something went wrong. Try again.');
     } finally {
       setLoading(false);
     }
@@ -48,7 +99,7 @@ export default function AdminDashboard() {
   function handleLogout() {
     setAuth(false);
     setPassword('');
-    setData({ vendors: [], venues: [], hosts: [], contacts: [] });
+    setData({ vendors: [], venues: [], hosts: [], contacts: [], users: [] });
   }
 
   async function fetchData(adminPassword = password) {
@@ -60,11 +111,8 @@ export default function AdminDashboard() {
         body: JSON.stringify({ action: 'fetch', password: adminPassword }),
       });
       const resData = await res.json();
-      if (resData.success) {
-        setData(resData.data);
-      } else {
-        if (resData.error === 'Unauthorized') handleLogout();
-      }
+      if (resData.success) setData(resData.data);
+      else if (resData.error === 'Unauthorized') handleLogout();
     } catch (err) {
       console.error(err);
     } finally {
@@ -76,158 +124,460 @@ export default function AdminDashboard() {
     setExpandedRow(expandedRow === id ? null : id);
   }
 
+  const filteredUsers = (data.users || []).filter((u) => {
+    if (!userSearch) return true;
+    const q = userSearch.toLowerCase();
+    return (
+      (u.email || '').toLowerCase().includes(q) ||
+      (u.user_metadata?.full_name || '').toLowerCase().includes(q) ||
+      (u.user_metadata?.name || '').toLowerCase().includes(q)
+    );
+  });
+
+  const usersThisWeek = (data.users || []).filter(u => (now - new Date(u.created_at)) < 7 * 86400000).length;
+  const activeToday = (data.users || []).filter(u => u.last_sign_in_at && (now - new Date(u.last_sign_in_at)) < 86400000).length;
+  const verifiedCount = (data.users || []).filter(u => u.email_confirmed_at).length;
+  const totalSubmissions = data.vendors.length + data.venues.length + data.hosts.length;
+
+  const navItems = [
+    { id: 'overview', label: 'Overview', icon: BarChart2 },
+    { id: 'users', label: 'All Accounts', icon: Users, count: data.users?.length },
+    { id: 'vendors', label: 'Vendor Apps', icon: Store, count: data.vendors.length },
+    { id: 'venues', label: 'Venues', icon: Building2, count: data.venues.length },
+    { id: 'hosts', label: 'Hosts', icon: Calendar, count: data.hosts.length },
+    { id: 'contacts', label: 'Messages', icon: MessageSquare, count: data.contacts.length },
+  ];
+
+  /* ──────────────────────────────── LOGIN SCREEN ──────────────────────────── */
   if (!auth) {
     return (
-      <div className={styles.loginWrap}>
-        <div className={`card ${styles.loginCard}`}>
-          <div className={styles.loginIcon}>🔒</div>
-          <h1 className={styles.loginTitle}>Admin Access</h1>
+      <div className={styles.loginScreen}>
+        <div className={styles.loginBg} />
+        <div className={styles.loginCard}>
+          <div className={styles.loginLogo}>
+            <ShieldCheck size={28} />
+          </div>
+          <div className={styles.loginBrand}>PopUpCo</div>
+          <h1 className={styles.loginTitle}>Admin Portal</h1>
+          <p className={styles.loginSubtitle}>Restricted access — administrators only</p>
+
           <form onSubmit={handleLogin} className={styles.loginForm}>
-            <input
-              type="password"
-              className="form-input"
-              placeholder="Admin password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            {error && <p className="form-error">{error}</p>}
-            <button type="submit" className="btn btn--primary" disabled={loading}>
-              {loading ? 'Verifying...' : 'Login'}
+            <div className={styles.inputWrap}>
+              <ShieldCheck size={16} className={styles.inputIcon} />
+              <input
+                type="password"
+                className={styles.loginInput}
+                placeholder="Enter admin password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoFocus
+              />
+            </div>
+            {error && <p className={styles.loginError}>{error}</p>}
+            <button type="submit" className={styles.loginBtn} disabled={loading}>
+              {loading ? (
+                <><RefreshCw size={15} className={styles.spin} /> Verifying...</>
+              ) : (
+                'Access Dashboard'
+              )}
             </button>
           </form>
-          <Link href="/" className={styles.homeLink}>← Back to site</Link>
+
+          <Link href="/" className={styles.loginBack}>← Return to site</Link>
         </div>
       </div>
     );
   }
 
+  /* ──────────────────────────────── DASHBOARD ─────────────────────────────── */
   return (
-    <div className={styles.layout}>
+    <div className={styles.shell}>
+
+      {/* SIDEBAR */}
       <aside className={styles.sidebar}>
-        <div className={styles.sidebarTop}>
-          <Link href="/" className={styles.logo}>PopUpCo</Link>
-          <span className="badge badge--neutral">Admin</span>
+        <div className={styles.sidebarHead}>
+          <div className={styles.sidebarLogo}>
+            <span className={styles.sidebarLogoMark}>P</span>
+            <span className={styles.sidebarLogoText}>PopUpCo</span>
+          </div>
+          <span className={styles.adminBadge}>Admin</span>
         </div>
 
-        <nav className={styles.nav}>
-          <button
-            onClick={() => { setActiveTab('vendors'); setExpandedRow(null); }}
-            className={`${styles.navBtn} ${activeTab === 'vendors' ? styles.navActive : ''}`}
-          >
-            <Inbox size={16} /> Vendor Applications
-            <span className={styles.navCount}>{data.vendors.length}</span>
-          </button>
-          <button
-            onClick={() => { setActiveTab('venues'); setExpandedRow(null); }}
-            className={`${styles.navBtn} ${activeTab === 'venues' ? styles.navActive : ''}`}
-          >
-            <MapPin size={16} /> Venue Submissions
-            <span className={styles.navCount}>{data.venues.length}</span>
-          </button>
-          <button
-            onClick={() => { setActiveTab('hosts'); setExpandedRow(null); }}
-            className={`${styles.navBtn} ${activeTab === 'hosts' ? styles.navActive : ''}`}
-          >
-            <Calendar size={16} /> Host Applications
-            <span className={styles.navCount}>{data.hosts.length}</span>
-          </button>
-          <button
-            onClick={() => { setActiveTab('contacts'); setExpandedRow(null); }}
-            className={`${styles.navBtn} ${activeTab === 'contacts' ? styles.navActive : ''}`}
-          >
-            <AlertCircle size={16} /> Contact Messages
-            <span className={styles.navCount}>{data.contacts.length}</span>
-          </button>
+        <nav className={styles.sidebarNav}>
+          {navItems.map(({ id, label, icon: Icon, count }) => (
+            <button
+              key={id}
+              onClick={() => { setActiveTab(id); setExpandedRow(null); }}
+              className={`${styles.navItem} ${activeTab === id ? styles.navItemActive : ''}`}
+            >
+              <Icon size={16} className={styles.navIcon} />
+              <span className={styles.navLabel}>{label}</span>
+              {count !== undefined && (
+                <span className={`${styles.navBadge} ${activeTab === id ? styles.navBadgeActive : ''}`}>
+                  {count}
+                </span>
+              )}
+            </button>
+          ))}
         </nav>
 
-        <div className={styles.sidebarBottom}>
-          <button onClick={handleLogout} className={styles.logoutBtn}>Logout</button>
+        <div className={styles.sidebarFoot}>
+          <div className={styles.sidebarStatus}>
+            <span className={styles.statusDot} />
+            <span>Live</span>
+          </div>
+          <button onClick={handleLogout} className={styles.logoutBtn}>
+            <LogOut size={14} />
+            Sign out
+          </button>
         </div>
       </aside>
 
+      {/* MAIN CONTENT */}
       <main className={styles.main}>
-        <header className={styles.header}>
-          <h1 className={styles.pageTitle}>
-            {activeTab === 'vendors' && 'Vendor Applications'}
-            {activeTab === 'venues' && 'Venue Submissions'}
-            {activeTab === 'hosts' && 'Host Applications'}
-            {activeTab === 'contacts' && 'Contact Messages'}
-          </h1>
-          <button onClick={fetchData} className={`btn btn--secondary btn--sm ${styles.refreshBtn}`} disabled={refreshing}>
+
+        {/* TOP BAR */}
+        <header className={styles.topbar}>
+          <div className={styles.topbarLeft}>
+            <h2 className={styles.topbarTitle}>
+              {navItems.find(n => n.id === activeTab)?.label || 'Dashboard'}
+            </h2>
+            <span className={styles.topbarTime}>
+              {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+            </span>
+          </div>
+          <button
+            onClick={fetchData}
+            className={`${styles.refreshBtn} ${refreshing ? styles.refreshing : ''}`}
+            disabled={refreshing}
+          >
             <RefreshCw size={14} className={refreshing ? styles.spin : ''} />
-            Refresh
+            {refreshing ? 'Refreshing...' : 'Refresh'}
           </button>
         </header>
 
         <div className={styles.content}>
+
+          {/* ─── OVERVIEW ─── */}
+          {activeTab === 'overview' && (
+            <div className={styles.overviewWrap}>
+              <div className={styles.kpiGrid}>
+                <div className={styles.kpiCard} onClick={() => setActiveTab('users')} style={{ cursor: 'pointer' }}>
+                  <div className={styles.kpiTop}>
+                    <span className={styles.kpiLabel}>Total Accounts</span>
+                    <div className={`${styles.kpiIcon} ${styles.kpiIconBlue}`}><Users size={18} /></div>
+                  </div>
+                  <div className={styles.kpiValue}>{data.users?.length || 0}</div>
+                  <div className={styles.kpiSub}>+{usersThisWeek} this week</div>
+                </div>
+
+                <div className={styles.kpiCard} onClick={() => setActiveTab('users')} style={{ cursor: 'pointer' }}>
+                  <div className={styles.kpiTop}>
+                    <span className={styles.kpiLabel}>Active Today</span>
+                    <div className={`${styles.kpiIcon} ${styles.kpiIconGreen}`}><Activity size={18} /></div>
+                  </div>
+                  <div className={styles.kpiValue}>{activeToday}</div>
+                  <div className={styles.kpiSub}>Signed in last 24h</div>
+                </div>
+
+                <div className={styles.kpiCard}>
+                  <div className={styles.kpiTop}>
+                    <span className={styles.kpiLabel}>Applications</span>
+                    <div className={`${styles.kpiIcon} ${styles.kpiIconOrange}`}><Inbox size={18} /></div>
+                  </div>
+                  <div className={styles.kpiValue}>{totalSubmissions}</div>
+                  <div className={styles.kpiSub}>Vendors · Venues · Hosts</div>
+                </div>
+
+                <div className={styles.kpiCard}>
+                  <div className={styles.kpiTop}>
+                    <span className={styles.kpiLabel}>Messages</span>
+                    <div className={`${styles.kpiIcon} ${styles.kpiIconPurple}`}><MessageSquare size={18} /></div>
+                  </div>
+                  <div className={styles.kpiValue}>{data.contacts.length}</div>
+                  <div className={styles.kpiSub}>Contact form submissions</div>
+                </div>
+              </div>
+
+              {/* Recent signups */}
+              <div className={styles.recentSection}>
+                <div className={styles.recentHeader}>
+                  <h3 className={styles.recentTitle}>Recent Signups</h3>
+                  <button className={styles.viewAllBtn} onClick={() => setActiveTab('users')}>
+                    View all <ChevronRight size={13} />
+                  </button>
+                </div>
+                <div className={styles.recentList}>
+                  {(data.users || []).slice(0, 8).map(u => (
+                    <div key={u.id} className={styles.recentRow}>
+                      <div
+                        className={styles.recentAvatar}
+                        style={{ background: avatarColor(u.email) }}
+                      >
+                        {getInitials(u)}
+                      </div>
+                      <div className={styles.recentInfo}>
+                        <div className={styles.recentName}>
+                          {u.user_metadata?.full_name || u.user_metadata?.name || u.email?.split('@')[0]}
+                        </div>
+                        <div className={styles.recentEmail}>{u.email}</div>
+                      </div>
+                      <div className={styles.recentMeta}>
+                        <div className={styles.recentTime}>{timeSince(u.created_at)}</div>
+                        {u.email_confirmed_at
+                          ? <span className={styles.verifiedDot} title="Verified" />
+                          : <span className={styles.unverifiedDot} title="Unverified" />}
+                      </div>
+                    </div>
+                  ))}
+                  {(data.users || []).length === 0 && (
+                    <div className={styles.emptyState}>No accounts yet.</div>
+                  )}
+                </div>
+              </div>
+
+              {/* Breakdown row */}
+              <div className={styles.breakdownGrid}>
+                <div className={styles.breakdownCard} onClick={() => setActiveTab('vendors')} style={{ cursor: 'pointer' }}>
+                  <Store size={20} className={styles.bdIcon} />
+                  <div className={styles.bdNum}>{data.vendors.length}</div>
+                  <div className={styles.bdLabel}>Vendor Apps</div>
+                </div>
+                <div className={styles.breakdownCard} onClick={() => setActiveTab('venues')} style={{ cursor: 'pointer' }}>
+                  <Building2 size={20} className={styles.bdIcon} />
+                  <div className={styles.bdNum}>{data.venues.length}</div>
+                  <div className={styles.bdLabel}>Venue Submissions</div>
+                </div>
+                <div className={styles.breakdownCard} onClick={() => setActiveTab('hosts')} style={{ cursor: 'pointer' }}>
+                  <Calendar size={20} className={styles.bdIcon} />
+                  <div className={styles.bdNum}>{data.hosts.length}</div>
+                  <div className={styles.bdLabel}>Host Applications</div>
+                </div>
+                <div className={styles.breakdownCard} onClick={() => setActiveTab('contacts')} style={{ cursor: 'pointer' }}>
+                  <MessageSquare size={20} className={styles.bdIcon} />
+                  <div className={styles.bdNum}>{data.contacts.length}</div>
+                  <div className={styles.bdLabel}>Contact Messages</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ─── ALL USERS ─── */}
+          {activeTab === 'users' && (
+            <div className={styles.tabWrap}>
+              <div className={styles.userStatRow}>
+                <div className={styles.userStat}>
+                  <div className={styles.userStatVal}>{data.users?.length || 0}</div>
+                  <div className={styles.userStatLabel}>Total</div>
+                </div>
+                <div className={styles.userStatDivider} />
+                <div className={styles.userStat}>
+                  <div className={styles.userStatVal}>{usersThisWeek}</div>
+                  <div className={styles.userStatLabel}>This week</div>
+                </div>
+                <div className={styles.userStatDivider} />
+                <div className={styles.userStat}>
+                  <div className={styles.userStatVal}>{activeToday}</div>
+                  <div className={styles.userStatLabel}>Active today</div>
+                </div>
+                <div className={styles.userStatDivider} />
+                <div className={styles.userStat}>
+                  <div className={styles.userStatVal}>{verifiedCount}</div>
+                  <div className={styles.userStatLabel}>Verified</div>
+                </div>
+              </div>
+
+              <div className={styles.searchRow}>
+                <div className={styles.searchBox}>
+                  <Search size={15} className={styles.searchIcon} />
+                  <input
+                    type="text"
+                    className={styles.searchInput}
+                    placeholder="Search accounts by name or email..."
+                    value={userSearch}
+                    onChange={(e) => setUserSearch(e.target.value)}
+                  />
+                  {userSearch && (
+                    <button className={styles.searchClear} onClick={() => setUserSearch('')}>✕</button>
+                  )}
+                </div>
+                <span className={styles.searchCount}>
+                  {filteredUsers.length} of {data.users?.length || 0}
+                </span>
+              </div>
+
+              <div className={styles.dataTable}>
+                <div className={styles.tableHead}>
+                  <div className={`${styles.tableRow} ${styles.userRow}`}>
+                    <div className={styles.th}>Account</div>
+                    <div className={styles.th}>Joined</div>
+                    <div className={styles.th}>Last Login</div>
+                    <div className={styles.th}>Status</div>
+                    <div className={styles.th}>Provider</div>
+                    <div className={styles.th}>ID</div>
+                  </div>
+                </div>
+                <div className={styles.tableBody}>
+                  {filteredUsers.length === 0 ? (
+                    <div className={styles.emptyState}>
+                      {userSearch ? `No accounts match "${userSearch}"` : 'No accounts yet.'}
+                    </div>
+                  ) : filteredUsers.map((u) => (
+                    <div key={u.id} className={`${styles.tableRow} ${styles.userRow} ${styles.tableRowHover}`}>
+                      <div className={styles.td}>
+                        <div
+                          className={styles.avatar}
+                          style={{ background: avatarColor(u.email) }}
+                        >
+                          {getInitials(u)}
+                        </div>
+                        <div className={styles.accountInfo}>
+                          <div className={styles.accountName}>
+                            {u.user_metadata?.full_name || u.user_metadata?.name || (
+                              <span className={styles.dimmed}>No name set</span>
+                            )}
+                          </div>
+                          <div className={styles.accountEmail}>{u.email}</div>
+                        </div>
+                      </div>
+                      <div className={styles.td}>
+                        <div>
+                          <div className={styles.tdMain}>{formatDateShort(u.created_at)}</div>
+                          <div className={styles.tdSub}>{timeSince(u.created_at)}</div>
+                        </div>
+                      </div>
+                      <div className={styles.td}>
+                        {u.last_sign_in_at ? (
+                          <div>
+                            <div className={styles.tdMain}>{formatDateShort(u.last_sign_in_at)}</div>
+                            <div className={styles.tdSub}>{timeSince(u.last_sign_in_at)}</div>
+                          </div>
+                        ) : <span className={styles.dimmed}>Never</span>}
+                      </div>
+                      <div className={styles.td}>
+                        {u.email_confirmed_at ? (
+                          <span className={styles.pill + ' ' + styles.pillGreen}>
+                            <UserCheck size={11} /> Verified
+                          </span>
+                        ) : (
+                          <span className={styles.pill + ' ' + styles.pillGray}>
+                            <UserX size={11} /> Unverified
+                          </span>
+                        )}
+                      </div>
+                      <div className={styles.td}>
+                        <span className={styles.providerChip}>
+                          {u.app_metadata?.provider || 'email'}
+                        </span>
+                      </div>
+                      <div className={styles.td}>
+                        <span className={styles.userId} title={u.id}>{u.id.slice(0, 8)}…</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ─── VENDORS ─── */}
           {activeTab === 'vendors' && (
-            <div className={styles.tableWrap}>
+            <div className={styles.tabWrap}>
               {data.vendors.length === 0 ? (
-                <div className={styles.empty}>No vendor applications yet.</div>
+                <div className={styles.emptyState}>No vendor applications yet.</div>
               ) : (
-                <div className={styles.table}>
-                  <div className={styles.thead}>
-                    <div className={styles.tr}>
-                      <div className={styles.th}>Date</div>
+                <div className={styles.dataTable}>
+                  <div className={styles.tableHead}>
+                    <div className={`${styles.tableRow} ${styles.vendorRow}`}>
                       <div className={styles.th}>Business</div>
                       <div className={styles.th}>Contact</div>
+                      <div className={styles.th}>Category</div>
                       <div className={styles.th}>Event Pref</div>
+                      <div className={styles.th}>Submitted</div>
                       <div className={styles.th}></div>
                     </div>
                   </div>
-                  <div className={styles.tbody}>
+                  <div className={styles.tableBody}>
                     {data.vendors.map((v) => (
                       <div key={v.id} className={styles.rowGroup}>
-                        <div className={`${styles.tr} ${styles.trClickable}`} onClick={() => toggleRow(v.id)}>
-                          <div className={styles.td}>{formatDate(v.created_at)}</div>
+                        <div
+                          className={`${styles.tableRow} ${styles.vendorRow} ${styles.tableRowHover}`}
+                          onClick={() => toggleRow(v.id)}
+                          style={{ cursor: 'pointer' }}
+                        >
                           <div className={styles.td}>
-                            <strong>{v.brand_name}</strong>
-                            <div className={styles.tdSub}>{Array.isArray(v.categories) ? v.categories.join(', ') : v.categories}</div>
+                            <div className={styles.entityAvatar} style={{ background: '#C4622D22', color: '#C4622D' }}>
+                              <Store size={14} />
+                            </div>
+                            <div>
+                              <div className={styles.tdMain}>{v.brand_name}</div>
+                              {v.website && <div className={styles.tdSub}>{v.website}</div>}
+                            </div>
                           </div>
                           <div className={styles.td}>
-                            {v.contact_name}
-                            <div className={styles.tdSub}>{v.email}</div>
+                            <div>
+                              <div className={styles.tdMain}>{v.contact_name}</div>
+                              <div className={styles.tdSub}>{v.email}</div>
+                            </div>
                           </div>
                           <div className={styles.td}>
-                            {v.event_slug || 'Any'}
+                            <span className={styles.categoryChip}>
+                              {Array.isArray(v.categories) ? v.categories[0] : v.categories}
+                              {Array.isArray(v.categories) && v.categories.length > 1 && ` +${v.categories.length - 1}`}
+                            </span>
                           </div>
-                          <div className={styles.tdRight}>
-                            <ChevronRight size={16} className={`${styles.chevron} ${expandedRow === v.id ? styles.chevronOpen : ''}`} />
+                          <div className={styles.td}>
+                            <span className={styles.dimmed}>{v.event_slug || 'Any'}</span>
+                          </div>
+                          <div className={styles.td}>
+                            <div className={styles.tdSub}>{timeSince(v.created_at)}</div>
+                          </div>
+                          <div className={styles.td}>
+                            <ChevronDown
+                              size={15}
+                              className={`${styles.expandChevron} ${expandedRow === v.id ? styles.expandChevronOpen : ''}`}
+                            />
                           </div>
                         </div>
                         {expandedRow === v.id && (
-                          <div className={styles.expandedContent}>
-                            <div className={styles.detailGrid}>
-                              <div className={styles.detailBlock}>
-                                <h4>Brand Info</h4>
-                                <p><strong>Name:</strong> {v.brand_name}</p>
-                                <p><strong>Website:</strong> {v.website || '-'}</p>
-                                <p><strong>Instagram:</strong> {v.instagram || '-'}</p>
+                          <div className={styles.expandPanel}>
+                            <div className={styles.expandGrid}>
+                              <div className={styles.expandBlock}>
+                                <div className={styles.expandBlockTitle}>Brand</div>
+                                <div className={styles.expandField}><Globe size={12} />{v.website || '—'}</div>
+                                <div className={styles.expandField}><Instagram size={12} />{v.instagram || '—'}</div>
+                                <div className={styles.expandField}><Tag size={12} />{v.price_range || '—'}</div>
                               </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Contact</h4>
-                                <p><strong>Name:</strong> {v.contact_name}</p>
-                                <p><strong>Email:</strong> {v.email}</p>
-                                <p><strong>Phone:</strong> {v.phone || '-'}</p>
+                              <div className={styles.expandBlock}>
+                                <div className={styles.expandBlockTitle}>Contact</div>
+                                <div className={styles.expandField}><Mail size={12} />{v.email}</div>
+                                <div className={styles.expandField}><Phone size={12} />{v.phone || '—'}</div>
                               </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Products</h4>
-                                <p><strong>Categories:</strong> {Array.isArray(v.categories) ? v.categories.join(', ') : v.categories}</p>
-                                <p><strong>Desc:</strong> {v.description}</p>
-                                <p><strong>Price range:</strong> {v.price_range}</p>
-                                <p><strong>Previous events:</strong> {v.previous_events || '-'}</p>
+                              <div className={styles.expandBlock}>
+                                <div className={styles.expandBlockTitle}>Categories</div>
+                                <div className={styles.chipWrap}>
+                                  {(Array.isArray(v.categories) ? v.categories : [v.categories]).map(c => (
+                                    <span key={c} className={styles.chip}>{c}</span>
+                                  ))}
+                                </div>
                               </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Booth & Permits</h4>
-                                <p><strong>Event:</strong> {v.event_slug || 'Any'}</p>
-                                <p><strong>Booth needs:</strong> {v.booth_needs || '-'}</p>
-                                <p><strong>Food permit:</strong> {v.food_permit || '-'}</p>
+                              <div className={styles.expandBlock}>
+                                <div className={styles.expandBlockTitle}>Booth & Permits</div>
+                                <div className={styles.expandRow}><span>Booth needs</span><span>{v.booth_needs || '—'}</span></div>
+                                <div className={styles.expandRow}><span>Food permit</span><span>{v.food_permit || '—'}</span></div>
+                                <div className={styles.expandRow}><span>Prev events</span><span>{v.previous_events || '—'}</span></div>
                               </div>
                             </div>
+                            {v.description && (
+                              <div className={styles.expandNote}>
+                                <div className={styles.expandBlockTitle}>Description</div>
+                                <p>{v.description}</p>
+                              </div>
+                            )}
                             {v.message && (
-                              <div className={styles.notesBlock}>
-                                <h4>Message</h4>
+                              <div className={styles.expandNote}>
+                                <div className={styles.expandBlockTitle}>Message</div>
                                 <p>{v.message}</p>
                               </div>
                             )}
@@ -241,73 +591,83 @@ export default function AdminDashboard() {
             </div>
           )}
 
+          {/* ─── VENUES ─── */}
           {activeTab === 'venues' && (
-            <div className={styles.tableWrap}>
+            <div className={styles.tabWrap}>
               {data.venues.length === 0 ? (
-                <div className={styles.empty}>No venue submissions yet.</div>
+                <div className={styles.emptyState}>No venue submissions yet.</div>
               ) : (
-                <div className={styles.table}>
-                  <div className={styles.thead}>
-                    <div className={styles.tr}>
-                      <div className={styles.th}>Date</div>
+                <div className={styles.dataTable}>
+                  <div className={styles.tableHead}>
+                    <div className={`${styles.tableRow} ${styles.venueRow}`}>
                       <div className={styles.th}>Venue</div>
                       <div className={styles.th}>Location</div>
+                      <div className={styles.th}>Type</div>
                       <div className={styles.th}>Capacity</div>
+                      <div className={styles.th}>Contact</div>
                       <div className={styles.th}></div>
                     </div>
                   </div>
-                  <div className={styles.tbody}>
+                  <div className={styles.tableBody}>
                     {data.venues.map((v) => (
                       <div key={v.id} className={styles.rowGroup}>
-                        <div className={`${styles.tr} ${styles.trClickable}`} onClick={() => toggleRow(v.id)}>
-                          <div className={styles.td}>{formatDate(v.created_at)}</div>
+                        <div
+                          className={`${styles.tableRow} ${styles.venueRow} ${styles.tableRowHover}`}
+                          onClick={() => toggleRow(v.id)}
+                          style={{ cursor: 'pointer' }}
+                        >
                           <div className={styles.td}>
-                            <strong>{v.venue_name}</strong>
-                            <div className={styles.tdSub}>{v.indoor_outdoor}</div>
+                            <div className={styles.entityAvatar} style={{ background: '#7A9E7E22', color: '#4A7A4E' }}>
+                              <Building2 size={14} />
+                            </div>
+                            <div className={styles.tdMain}>{v.venue_name}</div>
                           </div>
                           <div className={styles.td}>
-                            {v.city}
-                            <div className={styles.tdSub}>{v.address}</div>
+                            <div>
+                              <div className={styles.tdMain}>{v.city}</div>
+                              <div className={styles.tdSub}>{v.address}</div>
+                            </div>
                           </div>
                           <div className={styles.td}>
-                            {v.capacity}
+                            <span className={styles.chip}>{v.indoor_outdoor}</span>
                           </div>
-                          <div className={styles.tdRight}>
-                            <ChevronRight size={16} className={`${styles.chevron} ${expandedRow === v.id ? styles.chevronOpen : ''}`} />
+                          <div className={styles.td}>
+                            <span className={styles.tdMain}>{v.capacity}</span>
+                          </div>
+                          <div className={styles.td}>
+                            <div>
+                              <div className={styles.tdMain}>{v.contact_name}</div>
+                              <div className={styles.tdSub}>{v.email}</div>
+                            </div>
+                          </div>
+                          <div className={styles.td}>
+                            <ChevronDown size={15} className={`${styles.expandChevron} ${expandedRow === v.id ? styles.expandChevronOpen : ''}`} />
                           </div>
                         </div>
                         {expandedRow === v.id && (
-                          <div className={styles.expandedContent}>
-                            <div className={styles.detailGrid}>
-                              <div className={styles.detailBlock}>
-                                <h4>Venue Info</h4>
-                                <p><strong>Name:</strong> {v.venue_name}</p>
-                                <p><strong>Address:</strong> {v.address}, {v.city}</p>
-                                <p><strong>Indoor/Outdoor:</strong> {v.indoor_outdoor}</p>
-                                <p><strong>Capacity:</strong> {v.capacity}</p>
-                                <p><strong>Food allowed:</strong> {v.food_allowed ? 'Yes' : 'No'}</p>
+                          <div className={styles.expandPanel}>
+                            <div className={styles.expandGrid}>
+                              <div className={styles.expandBlock}>
+                                <div className={styles.expandBlockTitle}>Venue Details</div>
+                                <div className={styles.expandRow}><span>Food allowed</span><span>{v.food_allowed ? 'Yes' : 'No'}</span></div>
+                                <div className={styles.expandRow}><span>Parking</span><span>{v.parking || '—'}</span></div>
+                                <div className={styles.expandRow}><span>Amenities</span><span>{Array.isArray(v.amenities) ? v.amenities.join(', ') : (v.amenities || '—')}</span></div>
                               </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Contact</h4>
-                                <p><strong>Name:</strong> {v.contact_name}</p>
-                                <p><strong>Email:</strong> {v.email}</p>
-                                <p><strong>Phone:</strong> {v.phone || '-'}</p>
-                                <p><strong>Website:</strong> {v.website || '-'}</p>
+                              <div className={styles.expandBlock}>
+                                <div className={styles.expandBlockTitle}>Contact</div>
+                                <div className={styles.expandField}><Mail size={12} />{v.email}</div>
+                                <div className={styles.expandField}><Phone size={12} />{v.phone || '—'}</div>
+                                <div className={styles.expandField}><Globe size={12} />{v.website || '—'}</div>
                               </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Amenities & Parking</h4>
-                                <p><strong>Amenities:</strong> {Array.isArray(v.amenities) ? v.amenities.join(', ') : v.amenities}</p>
-                                <p><strong>Parking:</strong> {v.parking || '-'}</p>
-                              </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Pricing & Availability</h4>
-                                <p><strong>Rental price:</strong> {v.rental_price || '-'}</p>
-                                <p><strong>Availability:</strong> {v.availability || '-'}</p>
+                              <div className={styles.expandBlock}>
+                                <div className={styles.expandBlockTitle}>Pricing & Availability</div>
+                                <div className={styles.expandRow}><span>Rental price</span><span>{v.rental_price || '—'}</span></div>
+                                <div className={styles.expandRow}><span>Availability</span><span>{v.availability || '—'}</span></div>
                               </div>
                             </div>
                             {v.description && (
-                              <div className={styles.notesBlock}>
-                                <h4>Description</h4>
+                              <div className={styles.expandNote}>
+                                <div className={styles.expandBlockTitle}>Description</div>
                                 <p>{v.description}</p>
                               </div>
                             )}
@@ -321,64 +681,68 @@ export default function AdminDashboard() {
             </div>
           )}
 
+          {/* ─── HOSTS ─── */}
           {activeTab === 'hosts' && (
-            <div className={styles.tableWrap}>
+            <div className={styles.tabWrap}>
               {data.hosts.length === 0 ? (
-                <div className={styles.empty}>No host applications yet.</div>
+                <div className={styles.emptyState}>No host applications yet.</div>
               ) : (
-                <div className={styles.table}>
-                  <div className={styles.thead}>
-                    <div className={styles.tr}>
-                      <div className={styles.th}>Date</div>
+                <div className={styles.dataTable}>
+                  <div className={styles.tableHead}>
+                    <div className={`${styles.tableRow} ${styles.hostRow}`}>
                       <div className={styles.th}>Name / Org</div>
                       <div className={styles.th}>Event Concept</div>
                       <div className={styles.th}>Location</div>
+                      <div className={styles.th}>Budget</div>
+                      <div className={styles.th}>Submitted</div>
                       <div className={styles.th}></div>
                     </div>
                   </div>
-                  <div className={styles.tbody}>
+                  <div className={styles.tableBody}>
                     {data.hosts.map((h) => (
                       <div key={h.id} className={styles.rowGroup}>
-                        <div className={`${styles.tr} ${styles.trClickable}`} onClick={() => toggleRow(h.id)}>
-                          <div className={styles.td}>{formatDate(h.created_at)}</div>
+                        <div
+                          className={`${styles.tableRow} ${styles.hostRow} ${styles.tableRowHover}`}
+                          onClick={() => toggleRow(h.id)}
+                          style={{ cursor: 'pointer' }}
+                        >
                           <div className={styles.td}>
-                            <strong>{h.name}</strong>
-                            <div className={styles.tdSub}>{h.org_name || h.email}</div>
+                            <div className={styles.entityAvatar} style={{ background: '#5B7FA622', color: '#5B7FA6' }}>
+                              <Calendar size={14} />
+                            </div>
+                            <div>
+                              <div className={styles.tdMain}>{h.name}</div>
+                              <div className={styles.tdSub}>{h.org_name || h.email}</div>
+                            </div>
                           </div>
-                          <div className={styles.td}>{h.event_concept}</div>
-                          <div className={styles.td}>{h.location || '-'}</div>
-                          <div className={styles.tdRight}>
-                            <ChevronRight size={16} className={`${styles.chevron} ${expandedRow === h.id ? styles.chevronOpen : ''}`} />
+                          <div className={styles.td}><span className={styles.tdMain}>{h.event_concept}</span></div>
+                          <div className={styles.td}><span className={styles.dimmed}>{h.location || '—'}</span></div>
+                          <div className={styles.td}><span className={styles.tdMain}>{h.budget || '—'}</span></div>
+                          <div className={styles.td}><div className={styles.tdSub}>{timeSince(h.created_at)}</div></div>
+                          <div className={styles.td}>
+                            <ChevronDown size={15} className={`${styles.expandChevron} ${expandedRow === h.id ? styles.expandChevronOpen : ''}`} />
                           </div>
                         </div>
                         {expandedRow === h.id && (
-                          <div className={styles.expandedContent}>
-                            <div className={styles.detailGrid}>
-                              <div className={styles.detailBlock}>
-                                <h4>Contact</h4>
-                                <p><strong>Name:</strong> {h.name}</p>
-                                <p><strong>Email:</strong> {h.email}</p>
-                                <p><strong>Phone:</strong> {h.phone || '-'}</p>
-                                <p><strong>Org:</strong> {h.org_name || '-'}</p>
-                                <p><strong>Role:</strong> {h.role || '-'}</p>
+                          <div className={styles.expandPanel}>
+                            <div className={styles.expandGrid}>
+                              <div className={styles.expandBlock}>
+                                <div className={styles.expandBlockTitle}>Contact</div>
+                                <div className={styles.expandField}><Mail size={12} />{h.email}</div>
+                                <div className={styles.expandField}><Phone size={12} />{h.phone || '—'}</div>
+                                <div className={styles.expandRow}><span>Role</span><span>{h.role || '—'}</span></div>
                               </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Event Details</h4>
-                                <p><strong>Concept:</strong> {h.event_concept}</p>
-                                <p><strong>Date:</strong> {h.event_date || '-'}</p>
-                                <p><strong>Location:</strong> {h.location || '-'}</p>
-                                <p><strong>Venue status:</strong> {h.venue_status || '-'}</p>
+                              <div className={styles.expandBlock}>
+                                <div className={styles.expandBlockTitle}>Event Details</div>
+                                <div className={styles.expandRow}><span>Date</span><span>{h.event_date || '—'}</span></div>
+                                <div className={styles.expandRow}><span>Venue status</span><span>{h.venue_status || '—'}</span></div>
+                                <div className={styles.expandRow}><span>Expected vendors</span><span>{h.expected_vendors || '—'}</span></div>
+                                <div className={styles.expandRow}><span>Expected attendance</span><span>{h.expected_attendance || '—'}</span></div>
                               </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Scale & Budget</h4>
-                                <p><strong>Expected vendors:</strong> {h.expected_vendors || '-'}</p>
-                                <p><strong>Expected attendance:</strong> {h.expected_attendance || '-'}</p>
-                                <p><strong>Budget:</strong> {h.budget || '-'}</p>
-                              </div>
-                              <div className={styles.detailBlock}>
-                                <h4>Background</h4>
-                                <p><strong>Experience:</strong> {h.experience || '-'}</p>
-                                <p><strong>Goals:</strong> {h.goals || '-'}</p>
+                              <div className={styles.expandBlock}>
+                                <div className={styles.expandBlockTitle}>Background</div>
+                                <div className={styles.expandRow}><span>Experience</span><span>{h.experience || '—'}</span></div>
+                                <div className={styles.expandRow}><span>Goals</span><span>{h.goals || '—'}</span></div>
                               </div>
                             </div>
                           </div>
@@ -391,35 +755,39 @@ export default function AdminDashboard() {
             </div>
           )}
 
+          {/* ─── CONTACTS ─── */}
           {activeTab === 'contacts' && (
-            <div className={styles.tableWrap}>
+            <div className={styles.tabWrap}>
               {data.contacts.length === 0 ? (
-                <div className={styles.empty}>No contact messages yet.</div>
+                <div className={styles.emptyState}>No contact messages yet.</div>
               ) : (
-                <div className={styles.table}>
-                  <div className={styles.thead}>
-                    <div className={styles.tr}>
-                      <div className={styles.th}>Date</div>
-                      <div className={styles.th}>Name / Email</div>
+                <div className={styles.dataTable}>
+                  <div className={styles.tableHead}>
+                    <div className={`${styles.tableRow} ${styles.contactRow}`}>
+                      <div className={styles.th}>From</div>
                       <div className={styles.th}>Type</div>
                       <div className={styles.th}>Message</div>
+                      <div className={styles.th}>Received</div>
                     </div>
                   </div>
-                  <div className={styles.tbody}>
+                  <div className={styles.tableBody}>
                     {data.contacts.map((c) => (
-                      <div key={c.id} className={styles.rowGroup}>
-                        <div className={styles.tr}>
-                          <div className={styles.td}>{formatDate(c.created_at)}</div>
-                          <div className={styles.td}>
-                            <strong>{c.name}</strong>
+                      <div key={c.id} className={`${styles.tableRow} ${styles.contactRow} ${styles.tableRowHover}`}>
+                        <div className={styles.td}>
+                          <div className={styles.entityAvatar} style={{ background: '#9B6B9B22', color: '#9B6B9B' }}>
+                            <Mail size={14} />
+                          </div>
+                          <div>
+                            <div className={styles.tdMain}>{c.name}</div>
                             <div className={styles.tdSub}>{c.email}</div>
                           </div>
-                          <div className={styles.td}>
-                            <span className={`badge badge--neutral`}>{c.subject || '-'}</span>
-                          </div>
-                          <div className={`${styles.td} ${styles.tdMessage}`}>
-                            {c.message}
-                          </div>
+                        </div>
+                        <div className={styles.td}>
+                          <span className={styles.categoryChip}>{c.subject || 'General'}</span>
+                        </div>
+                        <div className={styles.td + ' ' + styles.tdMessage}>{c.message}</div>
+                        <div className={styles.td}>
+                          <div className={styles.tdSub}>{timeSince(c.created_at)}</div>
                         </div>
                       </div>
                     ))}
