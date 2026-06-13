@@ -797,7 +797,7 @@
 
 .momentContent p {
   margin: var(--sp-3) 0 var(--sp-4);
-  color: #000000;
+  color: #6f665f;
   line-height: 1.55;
 }
 
@@ -869,7 +869,7 @@
 .filmCard strong,
 .filmCardActive strong {
   display: block;
-  color: #000000;
+  color: #6f665f;
   font-size: 0.85rem;
   font-weight: 400;
   line-height: 1.4;
