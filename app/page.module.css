@@ -1547,10 +1547,10 @@
   border-left: 2px solid #c85f2c;
   padding-left: 16px;
   color: #6f665f;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.6;
-  margin: var(--sp-5) 0 var(--sp-6);
+  margin: var(--sp-5) 0 var(--sp-6) 20px;
 }
 
 .trustList {
@@ -1589,13 +1589,13 @@
 }
 
 .trustListText strong {
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   font-weight: 750;
   color: #26221e;
 }
 
 .trustListText span {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #6f665f;
 }
 
