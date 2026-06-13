@@ -18,21 +18,21 @@
 }
 
 .intro {
-  font-size: 1.1rem;
-  color: var(--color-text-muted);
-  max-width: 600px;
+  font-size: 1.05rem;
+  color: #736b63;
+  max-width: 580px;
   margin: 0 auto;
   line-height: 1.6;
 }
 
 .formCard {
   background: #ffffff;
-  border-radius: var(--radius-lg);
-  padding: var(--sp-8);
-  max-width: 600px;
+  border-radius: 20px;
+  padding: clamp(2rem, 5vw, 3rem);
+  max-width: 580px;
   margin: 0 auto;
-  box-shadow: 0 10px 40px rgba(38, 34, 30, 0.04);
-  border: 1px solid rgba(227, 207, 189, 0.5);
+  box-shadow: 0 12px 48px rgba(38, 34, 30, 0.06);
+  border: 1px solid rgba(227, 207, 189, 0.4);
 }
 
 .formGrid {
@@ -63,10 +63,10 @@
 .select,
 .textarea {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: #fff;
+  padding: 14px 16px;
+  border: 1px solid #e3cfbc;
+  border-radius: 10px;
+  background: #fdfcfb;
   font-size: 1rem;
   color: var(--color-text);
   transition: all 0.2s ease;
