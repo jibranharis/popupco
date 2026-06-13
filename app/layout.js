@@ -22,6 +22,7 @@ export const metadata = {
 };
 
 import { AuthProvider } from '@/components/AuthContext';
+import EarlyAccessFeedbackModal from '@/components/EarlyAccessFeedbackModal';
 
 export default function RootLayout({ children }) {
   return (
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
       <body>
         <AuthProvider>
           {children}
+          <EarlyAccessFeedbackModal />
         </AuthProvider>
         <Analytics />
       </body>
