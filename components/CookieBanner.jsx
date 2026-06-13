@@ -7,16 +7,13 @@ import styles from './CookieBanner.module.css';
 const CONSENT_KEY = 'popupco_cookie_consent';
 
 export default function CookieBanner({ gaId }) {
+  const DEFAULT_CONSENT = { preferences: true, statistics: true, marketing: true };
   const [consent, setConsent] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
 
   // Toggle states
-  const [toggles, setToggles] = useState({
-    preferences: false,
-    statistics: false,
-    marketing: false,
-  });
+  const [toggles, setToggles] = useState(DEFAULT_CONSENT);
 
   useEffect(() => {
     // Check if user has already answered
@@ -33,11 +30,14 @@ export default function CookieBanner({ gaId }) {
       } catch (e) {
         // Fallback for old string format if they accepted the old banner
         if (savedConsent === 'granted') {
-          const allTrue = { preferences: true, statistics: true, marketing: true };
-          setConsent(allTrue);
-          setToggles(allTrue);
+          setConsent(DEFAULT_CONSENT);
+          setToggles(DEFAULT_CONSENT);
         }
       }
+    } else {
+      // Default to OPT-OUT model (cookies ON by default)
+      setConsent(DEFAULT_CONSENT);
+      setToggles(DEFAULT_CONSENT);
     }
   }, []);
 
