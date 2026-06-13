@@ -249,7 +249,7 @@ function VendorApplicationForm() {
           <div className={styles.pageHeader}>
             <h1 className={styles.headline}>Vendor Application</h1>
             <p className={styles.intro}>
-              Apply to sell at an upcoming PopUpCo opportunity. We review applications based on event fit, category mix, setup needs, and availability.
+              We collect this information once to build your vendor profile. For early access, skip any sections that don't apply to you yet. We'll only require detailed permit and setup info when you're selected for a specific opportunity.
             </p>
             {selectedEvent && (
               <div className="notice notice--info" style={{ margin: '18px auto 0', maxWidth: '620px', textAlign: 'left' }}>

@@ -190,7 +190,7 @@ function VenueApplicationContent() {
           <div className={styles.pageHeader}>
             <h1 className={styles.headline}>Venue Partner Application</h1>
             <p className={styles.intro}>
-              Have a storefront, venue, studio, parking lot, gallery, cafe, or community space that could host a pop-up? Tell us about it.
+              Have a storefront, venue, studio, parking lot, gallery, cafe, or community space that could host a pop-up? Tell us about it. For early access, just give us the basics—we can figure out specific permit or capacity details together later.
             </p>
           </div>
 

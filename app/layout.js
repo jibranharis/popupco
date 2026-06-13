@@ -14,6 +14,11 @@ export const metadata = {
     description: 'Find vendor markets, booth opportunities, retail spaces, and local pop-up events.',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'PopUpCo | Find your next pop-up opportunity',
+    description: 'Find vendor markets, booth opportunities, retail spaces, and local pop-up events.',
+  },
 };
 
 import { AuthProvider } from '@/components/AuthContext';

@@ -382,8 +382,8 @@ export default function HomePage() {
                   Opportunity.
                 </h1>
                 <p className={styles.heroSub}>
-                  The Bay Area&apos;s most trusted marketplace for pop-up<br className={styles.heroSubBr} />
-                  spaces, vendors, and events.
+                  A new marketplace connecting local vendors, hosts,<br className={styles.heroSubBr} />
+                  and retail spaces across the Bay Area.
                 </p>
               </div>
             </div>
@@ -633,24 +633,24 @@ export default function HomePage() {
           <div className={`container ${styles.earlyStageInner}`}>
             <div className={`fade-in ${styles.earlyStageHeader}`}>
               <span className="label">Early Access</span>
-              <h2>Built with vendors in mind.</h2>
-              <p>PopUpCo is starting with a simple goal: make pop-up opportunities easier to compare before vendors commit. We are currently onboarding early vendors, hosts, and venues to shape the first marketplace experiences.</p>
+              <h2>Built for better pop-up matches.</h2>
+              <p>PopUpCo is starting with a simple goal: help vendors, hosts, and venues make better decisions before committing. We are currently onboarding early users and shaping the first marketplace experience around real feedback.</p>
             </div>
             <div className={`fade-in fade-in--d1 ${styles.earlyStageGrid}`}>
               <div className={styles.earlyStageCard}>
                 <div className={styles.earlyStageIcon}><Tag size={20} /></div>
-                <h3>Clear opportunity details</h3>
-                <p>Know the booth fee, expected attendance, setup window, and requirements before applying.</p>
+                <h3>For vendors</h3>
+                <p>Compare booth fees, attendance ranges, setup windows, and requirements before applying.</p>
               </div>
               <div className={styles.earlyStageCard}>
                 <div className={styles.earlyStageIcon}><Search size={20} /></div>
-                <h3>Better-fit applications</h3>
-                <p>Vendors can focus on events that actually match their products and audience.</p>
+                <h3>For hosts</h3>
+                <p>Collect better-fit vendor interest and organize event details in one place.</p>
               </div>
               <div className={styles.earlyStageCard}>
                 <div className={styles.earlyStageIcon}><Users size={20} /></div>
-                <h3>Early partner feedback</h3>
-                <p>We are working directly with early vendors and hosts before expanding publicly.</p>
+                <h3>For venues</h3>
+                <p>Showcase spaces that can support local pop-ups, markets, and brand activations.</p>
               </div>
             </div>
           </div>

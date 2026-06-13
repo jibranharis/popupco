@@ -144,7 +144,7 @@ function HostApplicationContent() {
           <div className={styles.pageHeader}>
             <h1 className={styles.headline}>Host a Pop-Up</h1>
             <p className={styles.intro}>
-              Tell us about the event you want to create, whether you already have a venue, and what kind of vendors you need.
+              Tell us about the event you want to create. For early access, skip any sections you aren't sure about yet—we can help you figure out the details later.
             </p>
           </div>
 

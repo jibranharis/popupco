@@ -114,9 +114,9 @@ function VendorInterestForm() {
       <Header />
       <main className={styles.main}>
         <div className={styles.pageHeader}>
-          <h1 className={styles.headline}>Sell at PopUpCo</h1>
+          <h1 className={styles.headline}>Join early vendor access</h1>
           <p className={styles.intro}>
-            We're currently onboarding early vendors. Tell us a bit about your business, and we'll reach out when we have a strong-fit opportunity for you.
+            We're currently onboarding early vendors. Tell us a bit about your business, and we'll reach out when we have a strong-fit opportunity for you. Start with the basics. We’ll only ask for detailed setup or permit information when it is relevant to a specific opportunity.
           </p>
         </div>
 
