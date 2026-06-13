@@ -408,12 +408,13 @@
 }
 
 .earlyStageLeft h2 {
-  font-size: clamp(2.5rem, 4.5vw, 4rem);
-  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3.25rem);
+  font-family: var(--font-sans), sans-serif;
   color: var(--color-text);
-  line-height: 1.05;
-  margin-bottom: var(--sp-4);
+  line-height: 1.1;
+  margin-bottom: var(--sp-3);
   letter-spacing: -0.02em;
+  font-weight: 600;
 }
 
 .earlyStageLeft p {
@@ -473,7 +474,7 @@
 }
 
 .earlyAccessPanel {
-  background: #fdfaf6;
+  background: #ffffff;
   border-radius: var(--radius-lg);
   border: 1px solid rgba(227, 207, 189, 0.6);
   box-shadow: 0 12px 40px rgba(38, 34, 30, 0.05);
@@ -1802,10 +1803,10 @@
   border-left: 2px solid #c85f2c;
   padding-left: 16px;
   color: #6f665f;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 400;
-  line-height: 1.6;
-  margin: var(--sp-5) 0 var(--sp-6) 20px;
+  line-height: 1.5;
+  margin: var(--sp-5) 0 var(--sp-6) 40px;
 }
 
 .trustList {
@@ -1817,20 +1818,20 @@
 .trustListItem {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   background: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(227, 207, 189, 0.4);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 4px 16px rgba(38, 34, 30, 0.02);
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 2px 8px rgba(38, 34, 30, 0.02);
 }
 
 .trustListIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #fff8ef;
   color: #c85f2c;
@@ -1844,13 +1845,13 @@
 }
 
 .trustListText strong {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 750;
   color: #26221e;
 }
 
 .trustListText span {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #6f665f;
 }
 
