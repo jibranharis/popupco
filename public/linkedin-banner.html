@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LinkedIn Banner Generator</title>
+<!-- Load exact fonts used by PopUpCo -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 50px;
+    background: #333;
+    color: white;
+    font-family: 'Inter', sans-serif;
+  }
+  .canvas {
+    width: 4200px;
+    height: 700px;
+    background: #fdf0e6;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 0 0 2px #000;
+  }
+  .left {
+    width: 40%;
+    height: 100%;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 300px;
+    padding-right: 100px;
+  }
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 80px;
+    margin-top: -40px;
+  }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 600;
+    color: #26221e;
+    letter-spacing: -0.02em;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 32px;
+    border: 2px solid rgba(200, 86, 48, 0.3);
+    border-radius: 100px;
+    color: #c85630;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    align-self: flex-start;
+    margin-bottom: 48px;
+  }
+  .headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 110px;
+    line-height: 1.1;
+    color: #26221e;
+    margin: 0 0 40px 0;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .subhead {
+    font-family: 'Inter', sans-serif;
+    font-size: 42px;
+    color: #5c554e;
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 30%;
+    z-index: 1;
+  }
+  .fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #fdf0e6 0%, rgba(253, 240, 230, 0.8) 15%, rgba(253, 240, 230, 0) 40%);
+    z-index: 2;
+  }
+  .bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+</style>
+</head>
+<body>
+  <p><strong>LinkedIn Banner Generator</strong><br/>
+  Zoom out your browser (Ctrl/Cmd + Minus) until you can see this entire banner. Then take a screenshot of exactly the 4200x700 cream box below.</p>
+
+  <div class="canvas">
+    <div class="left">
+      <div class="logo-wrap">
+        <svg width="64" height="64" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 5 C25 5 5 25 5 50 C5 63 10 74 18 82 L25 82 L25 65 L18 65 C13 59 10 52 10 45 C10 23 28 5 50 5 C72 5 90 23 90 45 C90 52 87 59 82 65 L75 65 L75 82 L82 82 C90 74 95 63 95 50 C95 25 75 5 50 5 Z" fill="#c85630"/>
+          <path d="M25 65 L75 65 L75 75 L50 95 L25 75 Z" fill="#c85630"/>
+          <rect x="21" y="60" width="58" height="5" rx="2" fill="#c85630"/>
+          <rect x="26" y="40" width="4" height="20" fill="#c85630"/>
+          <rect x="70" y="40" width="4" height="20" fill="#c85630"/>
+          <path d="M22 38 L32 20 L40 20 L35 38 Z" fill="#c85630"/>
+          <path d="M41 38 L44 20 L56 20 L59 38 Z" fill="#c85630"/>
+          <path d="M65 38 L60 20 L68 20 L78 38 Z" fill="#c85630"/>
+          <circle cx="28.5" cy="38" r="6.5" fill="#c85630"/>
+          <circle cx="50" cy="38" r="9" fill="#c85630"/>
+          <circle cx="71.5" cy="38" r="6.5" fill="#c85630"/>
+        </svg>
+        <span class="logo-text">PopUpCo.</span>
+      </div>
+
+      <div class="pill">EARLY ACCESS</div>
+
+      <h1 class="headline">Find your next<br/>pop-up opportunity.</h1>
+
+      <p class="subhead">Built for vendors, hosts, and venues.</p>
+    </div>
+
+    <div class="right">
+      <div class="fade"></div>
+      <img src="/opengraph-image.jpg" alt="Market" class="bg-image"/>
+    </div>
+  </div>
+</body>
+</html>
