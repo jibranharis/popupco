@@ -43,14 +43,14 @@ export async function POST(request) {
 
     const db = getServiceClient();
 
-    if (!db) {
-      console.log('[Host Application - no DB]', JSON.stringify(data, null, 2));
-      return NextResponse.json({ success: true });
+    if (db) {
+      const { error } = await db.from('host_applications').insert(submission);
+      if (error) {
+        console.error('Failed to insert host application into DB:', error);
+      }
+    } else {
+      console.log('[Host Application - no DB configured]', JSON.stringify(submission, null, 2));
     }
-
-    const { error } = await db.from('host_applications').insert(submission);
-
-    if (error) throw error;
 
     // Send emails (non-blocking)
     const firstName = submission.name?.split(' ')[0] || 'Host';

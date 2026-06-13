@@ -48,14 +48,14 @@ export async function POST(request) {
 
     const db = getServiceClient();
 
-    if (!db) {
-      console.log('[Venue Application - no DB]', JSON.stringify(data, null, 2));
-      return NextResponse.json({ success: true });
+    if (db) {
+      const { error } = await db.from('venue_applications').insert(submission);
+      if (error) {
+        console.error('Failed to insert venue application into DB:', error);
+      }
+    } else {
+      console.log('[Venue Application - no DB configured]', JSON.stringify(submission, null, 2));
     }
-
-    const { error } = await db.from('venue_applications').insert(submission);
-
-    if (error) throw error;
 
     // Send emails (non-blocking)
     const firstName = contactName?.split(' ')[0] || 'Venue Owner';

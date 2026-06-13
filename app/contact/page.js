@@ -10,14 +10,37 @@ export default function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    // Simulate API call for private beta MVP
-    setTimeout(() => {
-      setSubmitting(false);
+    
+    try {
+      const formData = new FormData(e.target);
+      const payload = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        subject: formData.get('intent'),
+        message: formData.get('message'),
+      };
+
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        throw new Error('Something went wrong. Please try again.');
+      }
+
       setSubmitted(true);
-    }, 1000);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to send message. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -83,22 +106,22 @@ export default function ContactPage() {
                   <div className={styles.formRow}>
                     <div className={styles.formGroup}>
                       <label htmlFor="name">Name *</label>
-                      <input type="text" id="name" className="form-input" placeholder="Your name" required disabled={submitting} />
+                      <input type="text" id="name" name="name" className="form-input" placeholder="Your name" required disabled={submitting} />
                     </div>
                     <div className={styles.formGroup}>
                       <label htmlFor="email">Email *</label>
-                      <input type="email" id="email" className="form-input" placeholder="you@example.com" required disabled={submitting} />
+                      <input type="email" id="email" name="email" className="form-input" placeholder="you@example.com" required disabled={submitting} />
                     </div>
                   </div>
                   
                   <div className={styles.formRow}>
                     <div className={styles.formGroup}>
                       <label htmlFor="phone">Phone <span>(optional)</span></label>
-                      <input type="tel" id="phone" className="form-input" placeholder="(555) 000-0000" disabled={submitting} />
+                      <input type="tel" id="phone" name="phone" className="form-input" placeholder="(555) 000-0000" disabled={submitting} />
                     </div>
                     <div className={styles.formGroup}>
                       <label htmlFor="intent">What are you working on? *</label>
-                      <select id="intent" className="form-input" defaultValue="" required disabled={submitting}>
+                      <select id="intent" name="intent" className="form-input" defaultValue="" required disabled={submitting}>
                         <option value="" disabled>Select an option</option>
                         <option value="vendor">I am a vendor</option>
                         <option value="venue">I own a venue or space</option>
@@ -111,7 +134,7 @@ export default function ContactPage() {
 
                   <div className={styles.formGroup}>
                     <label htmlFor="message">Message *</label>
-                    <textarea id="message" className="form-input" placeholder="What are you planning or looking for?" required disabled={submitting} style={{ minHeight: '120px', resize: 'vertical' }}></textarea>
+                    <textarea id="message" name="message" className="form-input" placeholder="What are you planning or looking for?" required disabled={submitting} style={{ minHeight: '120px', resize: 'vertical' }}></textarea>
                   </div>
 
                   <button type="submit" className="btn btn--primary btn--full btn--lg" disabled={submitting}>
