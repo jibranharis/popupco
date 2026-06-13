@@ -3,8 +3,8 @@
   inset: 0;
   z-index: 9999;
   background: rgba(248, 245, 241, 0.25);
-  backdrop-filter: blur(6px) brightness(0.96);
-  -webkit-backdrop-filter: blur(6px) brightness(0.96);
+  backdrop-filter: blur(14px) brightness(0.92);
+  -webkit-backdrop-filter: blur(14px) brightness(0.92);
   pointer-events: auto;
   opacity: 0;
   transition: opacity 0.25s ease;
@@ -21,11 +21,11 @@
 .modal {
   position: relative;
   width: 100%;
-  max-width: 680px;
+  max-width: 520px;
   background: #fffcf8;
-  border-radius: 26px;
+  border-radius: 24px;
   border: 1px solid rgba(227, 207, 189, 0.5);
-  padding: clamp(2rem, 5vw, 3.5rem);
+  padding: clamp(1.75rem, 4vw, 2.5rem);
   box-shadow: 0 24px 64px rgba(60, 48, 40, 0.12), 0 8px 24px rgba(60, 48, 40, 0.04);
   opacity: 0;
   transform: translateY(16px);
@@ -96,7 +96,7 @@
 
 .title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 2.5rem);
+  font-size: clamp(1.65rem, 2.5vw, 2rem);
   color: #26221e;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -127,18 +127,18 @@
 }
 
 .bodyCopy {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: #6f665f;
-  line-height: 1.6;
-  max-width: 500px;
+  line-height: 1.5;
+  max-width: 440px;
   margin-bottom: var(--sp-4);
 }
 
 .secondaryCopy {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: #4f4841;
-  line-height: 1.6;
-  margin-bottom: var(--sp-6);
+  line-height: 1.5;
+  margin-bottom: var(--sp-5);
   font-weight: 500;
 }
 
@@ -159,16 +159,16 @@
 }
 
 .primaryBtn, .secondaryBtn {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  padding: 14px 28px;
+  padding: 12px 24px;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 200px;
+  min-width: 180px;
 }
 
 @media (max-width: 600px) {
