@@ -29,6 +29,8 @@ import {
   Store,
   Utensils,
   Users,
+  Wrench,
+  Tag,
   Zap,
 } from 'lucide-react';
 import styles from './page.module.css';
@@ -592,11 +594,32 @@ export default function HomePage() {
             <div className={`fade-in ${styles.trustCopy}`}>
               <span className="label">Marketplace clarity</span>
               <h2>Know Before You Apply.</h2>
-              <p>Vendors should not have to guess what an event costs, what to bring, or whether the audience fits their business.</p>
-              <div className={styles.trustPoints}>
-                {['Clear booth fees', 'Attendance ranges', 'Setup requirements'].map((point) => (
-                  <span key={point}><ShieldCheck size={16} />{point}</span>
-                ))}
+              <p className={styles.trustMainCopy}>The best events are the right fit—for you and for your business.</p>
+              <div className={styles.trustQuote}>
+                We give you the details that matter so you can plan confidently and apply with clarity.
+              </div>
+              <div className={styles.trustList}>
+                <div className={styles.trustListItem}>
+                  <div className={styles.trustListIcon}><Tag size={18} /></div>
+                  <div className={styles.trustListText}>
+                    <strong>Clear booth fees</strong>
+                    <span>See exactly what it costs to participate.</span>
+                  </div>
+                </div>
+                <div className={styles.trustListItem}>
+                  <div className={styles.trustListIcon}><Users size={18} /></div>
+                  <div className={styles.trustListText}>
+                    <strong>Attendance ranges</strong>
+                    <span>Understand who shows up and how many.</span>
+                  </div>
+                </div>
+                <div className={styles.trustListItem}>
+                  <div className={styles.trustListIcon}><Wrench size={18} /></div>
+                  <div className={styles.trustListText}>
+                    <strong>Setup requirements</strong>
+                    <span>Know what's needed to show up and succeed.</span>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="fade-in fade-in--d2">

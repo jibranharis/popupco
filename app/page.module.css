@@ -1543,28 +1543,60 @@
   line-height: 1.62;
 }
 
-.trustPoints {
+.trustQuote {
+  border-left: 2px solid #c85f2c;
+  padding-left: 16px;
+  color: #6f665f;
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.6;
+  margin: var(--sp-5) 0 var(--sp-6);
+}
+
+.trustList {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-2);
-  margin-top: var(--sp-5);
+  flex-direction: column;
+  gap: 12px;
 }
 
-.trustPoints span {
-  display: inline-flex;
+.trustListItem {
+  display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 9px 12px;
-  border: 1px solid #e5d8ca;
-  border-radius: var(--radius-full);
-  background: #fff8ef;
-  color: #554b43;
-  font-size: 0.86rem;
-  font-weight: 850;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(227, 207, 189, 0.4);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(38, 34, 30, 0.02);
 }
 
-.trustPoints svg {
-  color: #7a9e7e;
+.trustListIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff8ef;
+  color: #c85f2c;
+  flex-shrink: 0;
+}
+
+.trustListText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.trustListText strong {
+  font-size: 0.95rem;
+  font-weight: 750;
+  color: #26221e;
+}
+
+.trustListText span {
+  font-size: 0.85rem;
+  color: #6f665f;
 }
 
 .trustSection .detailsCard {
