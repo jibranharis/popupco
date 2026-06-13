@@ -34,8 +34,13 @@ export default function EarlyAccessFeedbackModal() {
       if (hasTriggered) return;
       hasTriggered = true;
       setIsRendered(true);
-      // Small delay for animation
-      setTimeout(() => setIsVisible(true), 10);
+      // Use requestAnimationFrame to ensure the browser paints the initial state
+      // before we apply the visible class to trigger the CSS transition
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsVisible(true);
+        });
+      });
       
       cleanup();
     };
