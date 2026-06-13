@@ -52,9 +52,32 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const event = await getEvent(slug);
   if (!event) return {};
+
+  const url = `https://popupco.vercel.app/upcoming/${slug}`;
+  const title = `${event.event_name} | PopUpCo Upcoming`;
+  const description = (event.publicDescription || event.description)?.substring(0, 160) || 'Discover upcoming pop-up events and markets on PopUpCo.';
+  const images = event.image_url ? [{ url: event.image_url }] : [{ url: 'https://popupco.vercel.app/images/popupco-og.png' }];
+
   return {
-    title: event.event_name,
-    description: event.publicDescription || event.description,
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'PopUpCo',
+      images,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images,
+    },
   };
 }
 
@@ -71,7 +94,7 @@ export default async function EventDetailPage({ params }) {
   if (!event) notFound();
 
   const status = statusConfig[event.status] || statusConfig.coming_soon;
-  const vendorHref = `/apply/vendor?event=${event.slug}`;
+  const vendorHref = `/apply/vendor/interest?event=${event.slug}`;
 
   const faqs = [
     {

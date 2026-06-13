@@ -178,7 +178,7 @@ export default function SpaceDetailClient({ space, similar }) {
                 </div>
                 {space.deadline && <div className={styles.bookingFact}><Clock size={16} /> Deadline: {space.deadline}</div>}
                 {space.trust && <div className={styles.bookingFact}><ShieldCheck size={16} /> {space.trust}</div>}
-                <GatedLink href={`/apply/vendor?event=${space.slug}`} intent="apply" className="btn btn--primary btn--full">
+                <GatedLink href={`/apply/vendor/interest?event=${space.slug}`} intent="apply" className="btn btn--primary btn--full">
                   {space.cta === 'Apply' ? 'Apply to sell' : 'Request this opportunity'}
                 </GatedLink>
                 <GatedLink href={`/contact?subject=${encodeURIComponent(space.name)}`} intent="message" className="btn btn--secondary btn--full">

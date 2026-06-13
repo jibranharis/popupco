@@ -1,15 +1,25 @@
+'use client';
+import { useState } from 'react';
 import Link from 'next/link';
 import UtilityPageShell from '@/components/UtilityPageShell';
-import { Store, Building2, CalendarDays, HelpCircle, Mail, MapPin } from 'lucide-react';
+import { Store, Building2, CalendarDays, HelpCircle, Mail, MapPin, CheckCircle } from 'lucide-react';
 import shellStyles from '@/components/UtilityPageShell.module.css';
 import styles from './page.module.css';
 
-export const metadata = {
-  title: 'Contact',
-  description: 'Tell us what you are trying to build — vendor, venue, host, or partner.',
-};
-
 export default function ContactPage() {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    // Simulate API call for private beta MVP
+    setTimeout(() => {
+      setSubmitting(false);
+      setSubmitted(true);
+    }, 1000);
+  };
+
   return (
     <UtilityPageShell
       label="CONTACT"
@@ -25,7 +35,7 @@ export default function ContactPage() {
               <div className={styles.intentContent}>
                 <h3>Vendor or small business</h3>
                 <p>Ask about opportunities, booth fees, applications, setup needs, or your vendor profile.</p>
-                <Link href="/apply/vendor" className={styles.intentLink}>Start vendor application &rarr;</Link>
+                <Link href="/apply/vendor/interest" className={styles.intentLink}>Get vendor early access &rarr;</Link>
               </div>
             </div>
             
@@ -59,45 +69,58 @@ export default function ContactPage() {
         
         <div className={styles.rightCol}>
           <div className={`${shellStyles.card} ${styles.formContainer}`}>
-            <h2>Contact PopUpCo</h2>
-            <form className={styles.contactForm}>
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="name">Name *</label>
-                  <input type="text" id="name" className={styles.formInput} placeholder="Your name" required />
-                </div>
-                <div className={styles.formGroup}>
-                  <label htmlFor="email">Email *</label>
-                  <input type="email" id="email" className={styles.formInput} placeholder="you@example.com" required />
-                </div>
+            {submitted ? (
+              <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                <CheckCircle size={48} color="#3b7b4a" style={{ marginBottom: '16px' }} />
+                <h2>Message sent!</h2>
+                <p>Thanks for reaching out. We typically respond within 1–2 business days.</p>
+                <button type="button" className="btn btn--secondary" style={{ marginTop: '24px' }} onClick={() => setSubmitted(false)}>Send another message</button>
               </div>
-              
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="phone">Phone <span>(optional)</span></label>
-                  <input type="tel" id="phone" className={styles.formInput} placeholder="(555) 000-0000" />
-                </div>
-                <div className={styles.formGroup}>
-                  <label htmlFor="intent">What are you working on? *</label>
-                  <select id="intent" className={`${styles.formInput} ${styles.formSelect}`} defaultValue="" required>
-                    <option value="" disabled>Select an option</option>
-                    <option value="vendor">I am a vendor</option>
-                    <option value="venue">I own a venue or space</option>
-                    <option value="host">I want to host an event</option>
-                    <option value="attendee">I am attending an event</option>
-                    <option value="other">Partnership / other</option>
-                  </select>
-                </div>
-              </div>
+            ) : (
+              <>
+                <h2>Contact PopUpCo</h2>
+                <form className={styles.contactForm} onSubmit={handleSubmit}>
+                  <div className={styles.formRow}>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="name">Name *</label>
+                      <input type="text" id="name" className="form-input" placeholder="Your name" required disabled={submitting} />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="email">Email *</label>
+                      <input type="email" id="email" className="form-input" placeholder="you@example.com" required disabled={submitting} />
+                    </div>
+                  </div>
+                  
+                  <div className={styles.formRow}>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="phone">Phone <span>(optional)</span></label>
+                      <input type="tel" id="phone" className="form-input" placeholder="(555) 000-0000" disabled={submitting} />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="intent">What are you working on? *</label>
+                      <select id="intent" className="form-input" defaultValue="" required disabled={submitting}>
+                        <option value="" disabled>Select an option</option>
+                        <option value="vendor">I am a vendor</option>
+                        <option value="venue">I own a venue or space</option>
+                        <option value="host">I want to host an event</option>
+                        <option value="attendee">I am attending an event</option>
+                        <option value="other">Partnership / other</option>
+                      </select>
+                    </div>
+                  </div>
 
-              <div className={styles.formGroup}>
-                <label htmlFor="message">Message *</label>
-                <textarea id="message" className={`${styles.formInput} ${styles.formTextarea}`} placeholder="What are you planning or looking for?" required></textarea>
-              </div>
+                  <div className={styles.formGroup}>
+                    <label htmlFor="message">Message *</label>
+                    <textarea id="message" className="form-input" placeholder="What are you planning or looking for?" required disabled={submitting} style={{ minHeight: '120px', resize: 'vertical' }}></textarea>
+                  </div>
 
-              <button type="button" className="btn btn--primary btn--full btn--lg">Send message</button>
-              <p className={styles.submitNote}>We typically respond within 1–2 business days.</p>
-            </form>
+                  <button type="submit" className="btn btn--primary btn--full btn--lg" disabled={submitting}>
+                    {submitting ? 'Sending...' : 'Send message'}
+                  </button>
+                  <p className={styles.submitNote}>We typically respond within 1–2 business days.</p>
+                </form>
+              </>
+            )}
           </div>
         </div>
 

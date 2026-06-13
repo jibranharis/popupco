@@ -56,7 +56,7 @@ export default function VendorsPage() {
               <p>Browse markets, booth opportunities, and local events with the details you need before you apply. Fees, deadlines, setup needs, and host info stay in one place.</p>
               <div className={styles.ctas}>
                 <Link href="/browse" className={`${styles.roleButton} ${styles.primaryButton}`}>Find opportunities <ArrowRight size={20} /></Link>
-                <Link href="/apply/vendor" className={`${styles.roleButton} ${styles.secondaryButton}`}>Create your vendor profile</Link>
+                <Link href="/apply/vendor/interest" className={`${styles.roleButton} ${styles.secondaryButton}`}>Get early access</Link>
               </div>
               <div className={styles.heroChips}>
                 {chips.map(([Icon, text]) => (

@@ -13,9 +13,32 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const space = await getSpace(slug);
   if (!space) return {};
+  
+  const url = `https://popupco.vercel.app/spaces/${slug}`;
+  const title = `${space.name} | PopUpCo Venues`;
+  const description = space.description?.substring(0, 160) || 'Find pop-up retail spaces and venues on PopUpCo.';
+  const images = space.images?.length > 0 ? [{ url: space.images[0] }] : [{ url: 'https://popupco.vercel.app/images/popupco-og.png' }];
+
   return {
-    title: space.name,
-    description: space.description,
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'PopUpCo',
+      images,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images,
+    },
   };
 }
 

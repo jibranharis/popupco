@@ -15,7 +15,7 @@ export default function UpcomingEventNotFound() {
           </p>
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <Link href="/upcoming" className="btn btn--primary">Browse upcoming events</Link>
-            <Link href="/apply/vendor" className="btn btn--secondary">Apply as a vendor</Link>
+            <Link href="/apply/vendor/interest" className="btn btn--secondary">Apply as a vendor</Link>
           </div>
         </div>
       </main>

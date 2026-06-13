@@ -356,6 +356,82 @@
   background: #f5f0e8;
 }
 
+/* ── EARLY STAGE CREDIBILITY ──────────────────────────────── */
+
+.earlyStageSection {
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  background: var(--color-bg);
+}
+
+.earlyStageInner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+
+.earlyStageHeader {
+  max-width: 700px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.earlyStageHeader h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-family: var(--font-display);
+  color: var(--color-text);
+  margin-bottom: var(--sp-3);
+  letter-spacing: -0.02em;
+}
+
+.earlyStageHeader p {
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.earlyStageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-6);
+}
+
+.earlyStageCard {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  border: 1px solid rgba(227, 207, 189, 0.4);
+  box-shadow: 0 4px 16px rgba(38, 34, 30, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.earlyStageIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #fff8ef;
+  color: #c85f2c;
+  border-radius: 50%;
+  margin-bottom: var(--sp-2);
+}
+
+.earlyStageCard h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.earlyStageCard p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* ── FINAL CTA ──────────────────────────────── */
+
 /* ─── Calendar UI ─────────────────────────────────────── */
 .calendarContainer {
   display: flex;
@@ -2447,6 +2523,11 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  .modeTabs::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
   }
 
   .modeTabs button {
@@ -2505,6 +2586,11 @@
     display: flex;
     overflow-x: auto;
     padding-bottom: var(--sp-2);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .momentTabs::-webkit-scrollbar {
+    display: none;
   }
 
   .momentTabs a {
