@@ -1,0 +1,132 @@
+.bannerWrap {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  padding: var(--sp-4);
+  pointer-events: none;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+}
+
+.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.banner {
+  background: #fffcf8;
+  border: 1px solid rgba(227, 207, 189, 0.8);
+  border-radius: 16px;
+  padding: var(--sp-4) var(--sp-6);
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 12px 32px rgba(60, 48, 40, 0.12), 0 4px 12px rgba(60, 48, 40, 0.04);
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #26221e;
+  margin: 0;
+}
+
+.text {
+  font-size: 0.9rem;
+  color: #5c554e;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.text a {
+  color: #ea580c;
+  text-decoration: underline;
+  text-decoration-color: rgba(234, 88, 12, 0.3);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.text a:hover {
+  text-decoration-color: #ea580c;
+}
+
+.actions {
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.btnAccept, .btnDecline {
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btnAccept {
+  background: #ea580c;
+  color: #fff;
+  border: 1px solid #ea580c;
+}
+
+.btnAccept:hover {
+  background: #c85f2c;
+  border-color: #c85f2c;
+}
+
+.btnDecline {
+  background: transparent;
+  color: #5c554e;
+  border: 1px solid rgba(227, 207, 189, 0.8);
+}
+
+.btnDecline:hover {
+  background: rgba(227, 207, 189, 0.2);
+  color: #26221e;
+}
+
+@media (min-width: 768px) {
+  .banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .actions {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .bannerWrap {
+    padding: var(--sp-2);
+  }
+  .banner {
+    padding: var(--sp-4);
+  }
+  .actions {
+    width: 100%;
+  }
+  .btnAccept, .btnDecline {
+    flex: 1;
+    text-align: center;
+  }
+}

@@ -23,6 +23,7 @@ export const metadata = {
 
 import { AuthProvider } from '@/components/AuthContext';
 import EarlyAccessFeedbackModal from '@/components/EarlyAccessFeedbackModal';
+import CookieBanner from '@/components/CookieBanner';
 
 export default function RootLayout({ children }) {
   return (
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
           <EarlyAccessFeedbackModal />
         </AuthProvider>
         <Analytics />
+        <CookieBanner gaId={process.env.NEXT_PUBLIC_GA_ID} />
       </body>
     </html>
   );
