@@ -122,7 +122,7 @@ function VendorInterestForm() {
 
         <div className={styles.formCard}>
           {submitted ? (
-            <div className={`fade-in ${styles.successCard}`}>
+            <div className={styles.successCard}>
               <div className={styles.successIcon}>
                 <CheckCircle size={32} />
               </div>
@@ -142,7 +142,7 @@ function VendorInterestForm() {
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="fade-in">
+            <form onSubmit={handleSubmit}>
               {submitError && (
                 <div className={styles.formError}>
                   {submitError}
