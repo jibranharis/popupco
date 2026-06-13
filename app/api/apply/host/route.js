@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServiceClient } from '@/lib/supabase';
 import { validateFields } from '@/lib/validate';
+import { sendHostWelcomeEmail, sendAdminNotification } from '@/lib/email';
 
 export async function POST(request) {
   try {
@@ -50,6 +51,20 @@ export async function POST(request) {
     const { error } = await db.from('host_applications').insert(submission);
 
     if (error) throw error;
+
+    // Send emails (non-blocking)
+    const firstName = submission.name?.split(' ')[0] || 'Host';
+    const eventName = data.event_name || data.eventName || 'your pop-up event';
+    Promise.all([
+      sendHostWelcomeEmail(submission.email, firstName, eventName),
+      sendAdminNotification(`New Host Request: ${eventName}`, {
+        Name: submission.name,
+        Email: submission.email,
+        Organization: submission.org_name || 'N/A',
+        VenueStatus: submission.venue_status,
+      })
+    ]).catch((err) => console.error('Failed to send notification emails', err));
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Host application error:', error);

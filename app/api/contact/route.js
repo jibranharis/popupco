@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServiceClient } from '@/lib/supabase';
 import { validateFields } from '@/lib/validate';
+import { sendContactAutoReply, sendAdminNotification } from '@/lib/email';
 
 export async function POST(request) {
   try {
@@ -29,6 +30,18 @@ export async function POST(request) {
     const { error } = await db.from('contacts').insert(submission);
 
     if (error) throw error;
+
+    // Send emails (non-blocking)
+    const firstName = submission.name?.split(' ')[0] || 'there';
+    Promise.all([
+      sendContactAutoReply(submission.email, firstName),
+      sendAdminNotification(`New Contact Message: ${submission.subject}`, {
+        Name: submission.name,
+        Email: submission.email,
+        Message: submission.message,
+      })
+    ]).catch((err) => console.error('Failed to send notification emails', err));
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Contact error:', error);

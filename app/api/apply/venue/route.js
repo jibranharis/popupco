@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServiceClient } from '@/lib/supabase';
 import { validateFields } from '@/lib/validate';
+import { sendVenueWelcomeEmail, sendAdminNotification } from '@/lib/email';
 
 export async function POST(request) {
   try {
@@ -55,6 +56,19 @@ export async function POST(request) {
     const { error } = await db.from('venue_applications').insert(submission);
 
     if (error) throw error;
+
+    // Send emails (non-blocking)
+    const firstName = contactName?.split(' ')[0] || 'Venue Owner';
+    Promise.all([
+      sendVenueWelcomeEmail(submission.email, firstName, submission.venue_name),
+      sendAdminNotification(`New Venue Submission: ${submission.venue_name}`, {
+        Contact: submission.contact_name,
+        Email: submission.email,
+        Venue: submission.venue_name,
+        City: submission.city || 'N/A',
+      })
+    ]).catch((err) => console.error('Failed to send notification emails', err));
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Venue application error:', error);
