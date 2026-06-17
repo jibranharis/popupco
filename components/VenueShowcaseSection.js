@@ -143,7 +143,7 @@ function SlideSuccessStory() {
             </div>
             <div className={styles.quoteFooter}>
               <div className={styles.quoteAvatar}>
-                <Image src="/media__1780446732663.png" alt="Maya" width={24} height={24} className={styles.avatarImg} />
+                <div className={styles.avatarInitials}>MP</div>
               </div>
               <div className={styles.quoteAuthor}>
                 <strong>Maya P.</strong>
@@ -160,7 +160,7 @@ function SlideSuccessStory() {
             </div>
             <div className={styles.quoteFooter}>
               <div className={styles.quoteAvatar}>
-                <Image src="/media__1780458659587.png" alt="Elena" width={24} height={24} className={styles.avatarImg} />
+                <div className={styles.avatarInitials}>ER</div>
               </div>
               <div className={styles.quoteAuthor}>
                 <strong>Elena R.</strong>
