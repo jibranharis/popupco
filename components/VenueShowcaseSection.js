@@ -295,13 +295,14 @@ export default function VenueShowcaseSection() {
   return (
     <section className={styles.section}>
       <div className={`container ${styles.inner}`}>
+        <button className={`${styles.navArrow} ${styles.navPrev}`} onClick={goPrev} aria-label="Previous Slide">
+          <ChevronLeft size={22} />
+        </button>
+        <button className={`${styles.navArrow} ${styles.navNext}`} onClick={goNext} aria-label="Next Slide">
+          <ChevronRight size={22} />
+        </button>
+
         <div className={styles.featureCard}>
-          <button className={`${styles.navArrow} ${styles.navPrev}`} onClick={goPrev} aria-label="Previous Slide">
-            <ChevronLeft size={22} />
-          </button>
-          <button className={`${styles.navArrow} ${styles.navNext}`} onClick={goNext} aria-label="Next Slide">
-            <ChevronRightIcon size={22} />
-          </button>
 
           {/* LEFT panel — static */}
           <div className={styles.leftPanel}>

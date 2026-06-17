@@ -9,6 +9,7 @@
 .inner {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 /* ── Outer feature card — full rounded ── */
