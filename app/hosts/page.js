@@ -76,8 +76,10 @@ export default function HostsPage() {
           </div>
         </section>
 
+        <HostPlanningSection />
+
         <section className={styles.featureStripSection}>
-          <div className={`container ${styles.featureStrip}`}>
+          <div className={styles.featureStrip}>
             {bottomFeatures.map(([Icon, title, copy]) => (
               <div className={styles.featureItem} key={title}>
                 <span className={styles.featureIcon}><Icon size={31} /></span>
@@ -89,8 +91,6 @@ export default function HostsPage() {
               ))}
           </div>
         </section>
-
-        <HostPlanningSection />
       </main>
       <Footer />
     </>

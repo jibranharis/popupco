@@ -103,7 +103,7 @@ export default function HostPlanningSection() {
         setActiveEventIdx(prev => (prev + 1) % EVENT_STATES.length);
         setAnimating(false);
       }, 400); // Wait for fade out
-    }, 6000); // Rotate every 6s
+    }, 10000); // Rotate every 10s
 
     return () => clearInterval(interval);
   }, []);
@@ -129,7 +129,6 @@ export default function HostPlanningSection() {
           {/* LEFT PANEL */}
           <div className={styles.leftPanel}>
             <div className={styles.eyebrowContainer}>
-              <div className={styles.badge}>1</div>
               <span className={styles.eyebrow}>PLAN WITH CONFIDENCE</span>
             </div>
             <h2 className={styles.headline}>Everything you need to plan the perfect pop-up.</h2>
