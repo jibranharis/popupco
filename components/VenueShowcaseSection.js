@@ -110,10 +110,8 @@ function SlideListingPreview() {
   );
 }
 
-/* ── Slide 2: Success Story — Venue Header + 2 stacked reviews ── */
+/* ── Slide 2: Success Story — Venue Header + 3 stacked reviews ── */
 function SlideSuccessStory() {
-  const tags = ['Weekend markets', 'Product launches', 'Pop-up dining', 'Art shows'];
-
   return (
     <div className={styles.slide}>
       {/* Full layout: Image left + Content right */}
@@ -169,9 +167,21 @@ function SlideSuccessStory() {
             </div>
           </div>
 
-          {/* Tags */}
-          <div className={styles.successTagRow}>
-            {tags.map(t => <span key={t} className={styles.successTag}>{t}</span>)}
+          {/* Third Review Bubble */}
+          <div className={styles.reviewCard}>
+            <div className={styles.quoteBlock}>
+              <div className={styles.quoteMarkIcon}>&ldquo;</div>
+              <p className={styles.quoteText}>The vendor quality is incredible. PopUpCo&apos;s vetting system means we never worry about who&apos;s setting up in our space.</p>
+            </div>
+            <div className={styles.quoteFooter}>
+              <div className={styles.quoteAvatar}>
+                <div className={styles.avatarInitials}>DJ</div>
+              </div>
+              <div className={styles.quoteAuthor}>
+                <strong>David J.</strong>
+                <span>Studio Director</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
