@@ -256,6 +256,73 @@
   border-top: 1px solid rgba(196, 98, 45, 0.12);
 }
 
+/* Feature Strip */
+.featureStripSection {
+  position: relative;
+  z-index: 2;
+  padding: 0 0 66px;
+  margin-top: -8px;
+  background: #ffffff;
+}
+
+.featureStrip {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  padding: 34px 48px;
+  border: 1px solid rgba(203, 174, 145, 0.42);
+  border-radius: 22px;
+  background: rgba(255, 252, 246, 0.92);
+  box-shadow: 0 22px 60px rgba(80, 55, 35, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.featureItem {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  padding: 12px 42px;
+}
+
+.featureItem:not(:last-child) {
+  border-right: 1px solid rgba(203, 174, 145, 0.5);
+}
+
+.featureIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(196, 98, 45, 0.08);
+  color: var(--color-accent, #c4622d);
+  flex-shrink: 0;
+}
+
+.featureItem > span:last-child {
+  display: grid;
+  gap: 7px;
+}
+
+.featureItem strong {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #24211f;
+  font-size: 1.26rem;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+}
+
+.featureItem span span {
+  color: #57504a;
+  font-size: 0.98rem;
+  line-height: 1.48;
+}
+
 .sectionIntro {
   text-align: center;
   margin-bottom: var(--sp-10, 40px);
@@ -372,6 +439,14 @@
   .visualCard {
     width: 420px;
   }
+
+  .featureStrip {
+    padding: 28px 22px;
+  }
+
+  .featureItem {
+    padding: 8px 22px;
+  }
 }
 
 @media (max-width: 980px) {
@@ -392,6 +467,21 @@
 
   .pathGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .featureStrip {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .featureItem {
+    padding: 12px 8px;
+  }
+
+  .featureItem:not(:last-child) {
+    border-right: 0;
+    border-bottom: 1px solid rgba(203, 174, 145, 0.5);
+    padding-bottom: 24px;
   }
 }
 
