@@ -211,19 +211,22 @@ function SlideAvailability() {
         </div>
 
         <div className={styles.calExplainer}>
-          <p className={styles.calExplainerHead}>Make your availability clear.</p>
-          <p className={styles.calExplainerBody}>Show hosts when you&apos;re free and what you allow — so the right people inquire with confidence.</p>
-          <div className={styles.calBullets}>
-            <span><CheckCircle size={12} /> Set your hours</span>
-            <span><CheckCircle size={12} /> Control your rules</span>
-            <span><CheckCircle size={12} /> Get quality requests</span>
+          <div className={styles.calSettingsRow}>
+            <div className={styles.calSettingsIcon}><CheckCircle size={16} /></div>
+            <div className={styles.calSettingsText}>
+              <strong>Smart Availability</strong>
+              <span>Set hours, control rules, and filter requests.</span>
+            </div>
+            <div className={styles.calSettingsAction}>
+              <span className={styles.calSettingsLink}>Edit</span>
+            </div>
           </div>
 
-          <div className={styles.calSyncBox}>
-            <div className={styles.calSyncIcon}><CalendarDays size={16} /></div>
-            <div className={styles.calSyncText}>
-              <strong>Sync calendar</strong>
-              <span>Auto-block booked dates</span>
+          <div className={styles.calSettingsRow}>
+            <div className={styles.calSettingsIcon}><CalendarDays size={16} /></div>
+            <div className={styles.calSettingsText}>
+              <strong>Sync Calendar</strong>
+              <span>Auto-block booked dates to avoid overlap.</span>
             </div>
             <div className={styles.toggleBtn}>
               <div className={styles.toggleKnob} />
