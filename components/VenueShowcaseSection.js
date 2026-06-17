@@ -212,6 +212,17 @@ function SlideAvailability() {
 
         <div className={styles.calExplainer}>
           <div className={styles.calSettingsRow}>
+            <div className={styles.calSettingsIcon}><ShieldCheck size={16} /></div>
+            <div className={styles.calSettingsText}>
+              <strong>Instant Book</strong>
+              <span>Allow verified vendors to book instantly.</span>
+            </div>
+            <div className={styles.toggleBtn}>
+              <div className={styles.toggleKnob} />
+            </div>
+          </div>
+
+          <div className={styles.calSettingsRow}>
             <div className={styles.calSettingsIcon}><CheckCircle size={16} /></div>
             <div className={styles.calSettingsText}>
               <strong>Smart Availability</strong>
