@@ -259,15 +259,17 @@ const SLIDES = [
 export default function VenueShowcaseSection() {
   const [active, setActive] = useState(0);
   const [animating, setAnimating] = useState(false);
+  const [direction, setDirection] = useState('next');
   const timerRef = useRef(null);
 
   const startTimer = () => {
     timerRef.current = setInterval(() => {
+      setDirection('next');
       setAnimating(true);
       setTimeout(() => {
         setActive(prev => (prev + 1) % SLIDES.length);
         setAnimating(false);
-      }, 240);
+      }, 300);
     }, 7500);
   };
 
@@ -276,19 +278,20 @@ export default function VenueShowcaseSection() {
     return () => clearInterval(timerRef.current);
   }, []);
 
-  const resetTimer = (idx) => {
+  const navigate = (idx, dir) => {
     if (idx === active || animating) return;
     clearInterval(timerRef.current);
+    setDirection(dir);
     setAnimating(true);
     setTimeout(() => {
       setActive(idx);
       setAnimating(false);
-    }, 240);
+    }, 300);
     startTimer();
   };
 
-  const goNext = () => resetTimer((active + 1) % SLIDES.length);
-  const goPrev = () => resetTimer((active - 1 + SLIDES.length) % SLIDES.length);
+  const goNext = () => navigate((active + 1) % SLIDES.length, 'next');
+  const goPrev = () => navigate((active - 1 + SLIDES.length) % SLIDES.length, 'prev');
 
   const { Component } = SLIDES[active];
 
@@ -344,7 +347,12 @@ export default function VenueShowcaseSection() {
 
           {/* RIGHT panel — rotating */}
           <div className={styles.rightPanel}>
-            <div className={[styles.slideWrap, animating ? styles.slideOut : styles.slideIn].join(' ')}>
+            <div className={[
+              styles.slideWrap,
+              animating
+                ? (direction === 'next' ? styles.slideExitLeft : styles.slideExitRight)
+                : (direction === 'next' ? styles.slideEnterRight : styles.slideEnterLeft)
+            ].join(' ')}>
               <Component />
             </div>
             <div className={styles.dots} role="tablist" aria-label="Carousel navigation">
@@ -355,7 +363,7 @@ export default function VenueShowcaseSection() {
                   aria-selected={i === active}
                   aria-label={s.label}
                   className={[styles.dot, i === active ? styles.dotActive : ''].join(' ')}
-                  onClick={() => resetTimer(i)}
+                  onClick={() => navigate(i, i > active ? 'next' : 'prev')}
                 />
               ))}
             </div>
