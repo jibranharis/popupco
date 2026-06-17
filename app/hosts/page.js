@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import HostPlanningSection from '@/components/HostPlanningSection';
 import {
   ArrowRight,
   CalendarDays,
@@ -88,6 +89,8 @@ export default function HostsPage() {
               ))}
           </div>
         </section>
+
+        <HostPlanningSection />
       </main>
       <Footer />
     </>
