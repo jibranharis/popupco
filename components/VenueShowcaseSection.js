@@ -287,12 +287,22 @@ export default function VenueShowcaseSection() {
     startTimer();
   };
 
+  const goNext = () => resetTimer((active + 1) % SLIDES.length);
+  const goPrev = () => resetTimer((active - 1 + SLIDES.length) % SLIDES.length);
+
   const { Component } = SLIDES[active];
 
   return (
     <section className={styles.section}>
       <div className={`container ${styles.inner}`}>
         <div className={styles.featureCard}>
+          <button className={`${styles.navArrow} ${styles.navPrev}`} onClick={goPrev} aria-label="Previous Slide">
+            <ChevronLeft size={22} />
+          </button>
+          <button className={`${styles.navArrow} ${styles.navNext}`} onClick={goNext} aria-label="Next Slide">
+            <ChevronRightIcon size={22} />
+          </button>
+
           {/* LEFT panel — static */}
           <div className={styles.leftPanel}>
             <span className={styles.eyebrow}>HOST MATCH FIT</span>
