@@ -85,8 +85,10 @@ function SlideListingPreview() {
               { Icon: CalendarDays, label: 'Availability', val: 'Weekends + evenings' },
             ].map(({ Icon, label, val }) => (
               <div key={label} className={styles.detailItem}>
-                <i className={styles.detailIcon}><Icon size={13} strokeWidth={2.2} /></i>
-                <span className={styles.detailLabel}>{label}</span>
+                <div className={styles.detailLeft}>
+                  <i className={styles.detailIcon}><Icon size={13} strokeWidth={2.2} /></i>
+                  <span className={styles.detailLabel}>{label}</span>
+                </div>
                 <span className={styles.detailVal}>{val}</span>
               </div>
             ))}

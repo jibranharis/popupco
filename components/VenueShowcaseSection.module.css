@@ -283,45 +283,51 @@
 }
 
 .listingDetails {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 24px;
-  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 18px;
   border-top: 1px solid rgba(203, 174, 145, 0.22);
+  padding-top: 4px;
 }
 
 .detailItem {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(203, 174, 145, 0.15);
+}
+.detailItem:last-child {
+  border-bottom: none;
+}
+
+.detailLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .detailIcon {
   display: inline-grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   background: rgba(196, 98, 45, 0.08);
   color: #c4622d;
 }
 
 .detailLabel {
-  font-size: 0.68rem;
-  color: #9c9490;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: 0.82rem;
+  color: #6b6560;
+  font-weight: 500;
 }
 
 .detailVal {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: #2a2825;
   font-weight: 600;
-  text-align: left;
-  line-height: 1.35;
+  text-align: right;
 }
 
 /* Matched request */
