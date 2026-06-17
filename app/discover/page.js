@@ -10,9 +10,6 @@ import {
   Store,
   Users,
   Sparkles,
-  Compass,
-  Handshake,
-  Zap,
 } from 'lucide-react';
 import styles from './page.module.css';
 
@@ -59,12 +56,6 @@ const pathCards = [
     cta: 'Submit a venue',
     Icon: MapPin,
   },
-];
-
-const discoverFeatures = [
-  [Compass, 'One place to start', 'Whether you sell, host, attend, or own a space — PopUpCo has a path built for you.'],
-  [Zap, 'Get connected fast', 'No chasing emails or DMs. Discover, apply, and connect all in one streamlined place.'],
-  [Handshake, 'Built on real community', 'Every listing, event, and vendor opportunity is powered by people building something real.'],
 ];
 
 export const metadata = {
@@ -124,20 +115,6 @@ export default function DiscoverPage() {
           </div>
           
           <DiscoverPathsCarousel />
-        </section>
-
-        <section className={styles.featureStripSection}>
-          <div className={styles.featureStrip}>
-            {discoverFeatures.map(([Icon, title, copy]) => (
-              <div className={styles.featureItem} key={title}>
-                <span className={styles.featureIcon}><Icon size={31} /></span>
-                <span>
-                  <strong>{title}</strong>
-                  <span>{copy}</span>
-                </span>
-              </div>
-            ))}
-          </div>
         </section>
       </main>
       <Footer />

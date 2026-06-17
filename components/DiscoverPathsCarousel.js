@@ -267,27 +267,21 @@ export default function DiscoverPathsCarousel() {
          </div>
       </div>
 
-      {/* Why This Path Works — connected below the carousel */}
-      <div className={styles.whySection}>
-        <div className={styles.whyCard}>
-          <p className={styles.whyTitle}>Why this path works</p>
-          <div className={styles.whyColumns}>
-            {activePath.whyWorks.map((item, i) => {
-              const WIcon = item.icon;
-              return (
-                <div key={i} className={styles.whyCol}>
-                  {i > 0 && <div className={styles.whyDivider} />}
-                  <div className={styles.whyColInner}>
-                    <span className={styles.whyIconWrap}><WIcon size={18} /></span>
-                    <div>
-                      <strong className={styles.whyColTitle}>{item.title}</strong>
-                      <p className={styles.whyColCopy}>{item.copy}</p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+      {/* Dynamic feature strip — synced to active slide */}
+      <div className={styles.pathFeatureSection}>
+        <div className={styles.pathFeatureStrip} key={activeIndex}>
+          {activePath.whyWorks.map((item, i) => {
+            const WIcon = item.icon;
+            return (
+              <div key={i} className={styles.pathFeatureItem}>
+                <span className={styles.pathFeatureIcon}><WIcon size={26} /></span>
+                <span className={styles.pathFeatureText}>
+                  <strong>{item.title}</strong>
+                  <span>{item.copy}</span>
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
